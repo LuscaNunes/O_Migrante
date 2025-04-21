@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Fases</title>
+</head>
+
+<body class="bg-gray-100 text-gray-900 font-sans">
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="bg-white w-64 p-6 shadow-lg">
+            <h2 class="text-2xl font-bold mb-6">Menu</h2>
+            <ul>
+                <!-- Itens comuns -->
+                <li class="mb-4">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-user mr-3"></i> Perfil
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="teste02.html" class="flex items-center text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-scroll mr-3"></i> Pergaminho
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="Fases.html" class="flex items-center text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-tasks mr-3"></i> Missão
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-bell mr-3"></i> Notificação
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-user-friends mr-3"></i> Amigos
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-blog mr-3"></i> Blog
+                    </a>
+                </li>
+                <!-- Dropdown de Administração -->
+                <li id="adminDropdown" class="mb-4 hidden">
+                    <div class="relative">
+                        <button id="adminMenuButton" class="flex items-center text-gray-700 hover:text-gray-900 w-full">
+                            <i class="fas fa-cog mr-3"></i> Administração
+                            <i class="fas fa-chevron-down ml-auto"></i>
+                        </button>
+                        <ul id="adminMenuItems" class="hidden absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
+                            <li><a href="PesquisaUsuario.html" class="block px-4 py-2 hover:bg-gray-100">Usuários</a>
+                            </li>
+                            <li><a href="CaPerguntas.html" class="block px-4 py-2 hover:bg-gray-100">Cadastrar
+                                    Perguntas</a></li>
+                            <li><a href="DadosFases.html" class="block px-4 py-2 hover:bg-gray-100">Dados das Fases</a>
+                            </li>
+                            <li>
+                                <a href="DadosNiveis.html" class="block px-4 py-2 hover:bg-gray-100">
+                                    Busca de Níveis e Perguntas
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col items-center justify-center p-8 ml-64">
+            <h1 class="text-3xl font-bold mb-6 text-center">Fases Ativas</h1>
+            <div id="niveisContainer" class="flex flex-col items-center space-y-8">
+                <!-- Os blocos de níveis serão renderizados aqui -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Verifica autenticação ao carregar a página
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            // Verifica o token e exibe o menu de administração se for administrador
+            fetch("http://localhost:3000/verifyToken", {
+                method: "GET",
+                headers: { "Authorization": token }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.auth || (data.user.tipo !== 'admin' && data.user.tipo !== 'user')) {
+                        localStorage.removeItem('token');
+                        window.location.href = "index.html";
+                    } else {
+                        // Mostra o menu "Administração" apenas para admins
+                        if (data.user.tipo === 'admin') {
+                            const adminDropdown = document.getElementById('adminDropdown');
+                            adminDropdown.classList.remove('hidden');
+
+                            // Lógica do dropdown
+                            const adminMenuButton = document.getElementById('adminMenuButton');
+                            const adminMenuItems = document.getElementById('adminMenuItems');
+
+                            adminMenuButton.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                adminMenuItems.classList.toggle('hidden');
+                            });
+
+                            document.addEventListener('click', (e) => {
+                                if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
+                                    adminMenuItems.classList.add('hidden');
+                                }
+                            });
+                        }
+
+                        // Busca os níveis ativos após a autenticação
+                        fetchNiveisAtivos();
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao verificar token:", error);
+                    window.location.href = "index.html";
+                });
+        });
+
+        // Função para buscar níveis ativos
+        function fetchNiveisAtivos() {
+            fetch("http://localhost:3000/niveis/ativos")
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`Erro na requisição: ${res.status} ${res.statusText}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    const container = document.getElementById("niveisContainer");
+                    container.innerHTML = ""; // Limpa o container
+
+                    if (!data.niveis || data.niveis.length === 0) {
+                        alert("Nenhum nível ativo encontrado.");
+                        return;
+                    }
+
+                    data.niveis.forEach(nivel => {
+                        // Criação do bloco do nível
+                        const nivelBlock = document.createElement("div");
+                        nivelBlock.className = "w-full max-w-md bg-white p-6 rounded-lg shadow-lg text-center cursor-pointer";
+                        nivelBlock.setAttribute("onclick", `redirectToNivel(${nivel.id})`);
+
+                        // Nome do nível
+                        nivelBlock.innerHTML += `
+                            <h2 class="text-xl font-bold text-gray-900 mb-4">${nivel.titulo}</h2>
+                            <p class="text-gray-700">${nivel.descricao}</p>
+                        `;
+
+                        container.appendChild(nivelBlock);
+                    });
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar níveis ativos:", error);
+                    alert("Erro ao carregar níveis. Verifique o console.");
+                });
+        }
+        async function carregarProgresso() {
+            try {
+                const response = await fetch("http://localhost:3000/progresso/detalhado", {
+                    method: "GET",
+                    headers: { "Authorization": localStorage.getItem('token') }
+                });
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar progresso");
+                }
+                const data = await response.json();
+
+                // Habilitar/desabilitar botões com base no progresso
+                const botoes = document.querySelectorAll('.nivel-button');
+                botoes.forEach((botao, index) => {
+                    const nivelId = botao.dataset.nivelId;
+                    const perguntasCompletas = data.niveisCompletos[nivelId] || 0;
+
+                    if (perguntasCompletas >= 5) {
+                        botao.disabled = false; // Habilita o botão se o nível foi concluído
+                    } else {
+                        botao.disabled = true; // Desabilita o botão se o nível não foi concluído
+                    }
+                });
+            } catch (error) {
+                console.error("Erro ao carregar progresso:", error);
+            }
+        }
+
+        // Função para redirecionar ao PainelNivel.html com o ID do nível
+        function redirectToNivel(nivelId) {
+            window.location.href = `PainelNivel.html?nivel_id=${nivelId}`;
+        }
+    </script>
+</body>
+
+</html>

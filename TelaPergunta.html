@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Perguntas e Respostas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #sairContainer {
+            z-index: 10;
+            /* Coloca o botão "Sair" acima de outros elementos */
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .glow {
+            animation: glow 1.5s infinite;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 5px #00F0FF;
+            }
+
+            50% {
+                box-shadow: 0 0 20px #00F0FF;
+            }
+
+            100% {
+                box-shadow: 0 0 5px #00F0FF;
+            }
+        }
+
+        .indicador-progresso {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-[#7194ce] flex items-center justify-center min-h-screen">
+    <!-- Botão Sair -->
+    <div id="sairContainer" class="absolute top-4 right-4">
+        <button id="sairButton" class="text-[#7194ce] text-lg">
+            <i class="fas fa-times"></i> Sair
+        </button>
+    </div>
+
+    <!-- Indicadores de Progresso -->
+    <div class="absolute top-4 left-0 right-0 flex justify-center space-x-2">
+        <div class="w-4 h-4 bg-gray-500 rounded-full indicador-progresso"></div>
+        <div class="w-4 h-4 bg-gray-500 rounded-full indicador-progresso"></div>
+        <div class="w-4 h-4 bg-gray-500 rounded-full indicador-progresso"></div>
+        <div class="w-4 h-4 bg-gray-500 rounded-full indicador-progresso"></div>
+        <div class="w-4 h-4 bg-gray-500 rounded-full indicador-progresso"></div>
+    </div>
+
+    <!-- Container do Quiz -->
+    <div id="quizContainer" class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md glow">
+        <h1 class="text-2xl font-bold mb-6 text-center" id="pergunta-titulo">Carregando...</h1>
+        <div id="pergunta-container" class="space-y-4">
+            <!-- Perguntas serão carregadas aqui -->
+        </div>
+        <button id="confirmarResposta"
+            class="w-full mt-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition transform hover:scale-105"
+            disabled>
+            <i class="fas fa-check"></i> Confirmar Resposta
+        </button>
+    </div>
+
+    <!-- Resultado Final -->
+    <div id="resultadoContainer" class="hidden">
+        <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+            <h1 class="text-2xl font-bold text-center mb-4" id="resultadoTitulo">Parabéns!</h1>
+            <p class="text-center text-lg mb-4">
+                Você completou a missão com sucesso.
+            </p>
+            <div class="text-center mb-4">
+                <p class="text-xl font-semibold">
+                    Total de XP:
+                    <span class="text-green-500" id="xpTotal">[XP Total]</span>
+                </p>
+                <p class="text-xl font-semibold">
+                    Total de Acertos:
+                    <span class="text-green-500" id="totalAcertos">[Total de Acertos]</span>
+                </p>
+                <p class="text-xl font-semibold">
+                    Porcentagem de Acertos:
+                    <span class="text-green-500" id="porcentagemAcertos">[Porcentagem de Acertos]%</span>
+                </p>
+            </div>
+            <div class="flex justify-between mt-6">
+                <button id="voltarMissoesButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+                    Voltar às Missões
+                </button>
+                <button id="proximoNivelButton" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+                    Próximo Nível
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de Feedback -->
+    <div id="feedbackOverlay" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 text-center w-full max-w-md">
+            <p id="feedbackMessage" class="text-xl font-semibold mb-4 text-gray-900"></p>
+        </div>
+    </div>
+
+    <!-- Overlay de Confirmação de Saída -->
+    <div id="sairOverlay" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 text-center w-full max-w-md">
+            <p class="text-xl font-semibold mb-4 text-gray-900">Se sair, irá perder seu progresso até o momento.</p>
+            <div class="flex space-x-4">
+                <button id="confirmarSair"
+                    class="w-full py-2 bg-white border border-gray-900 text-gray-900 rounded hover:bg-gray-100">Sim</button>
+                <button id="cancelarSair"
+                    class="w-full py-2 bg-red-500 text-white rounded hover:bg-red-600">Não</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensagem de Erro -->
+    <div id="erroContainer" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 text-center w-full max-w-md">
+            <h2 class="text-xl font-bold mb-4 text-red-600">Erro</h2>
+            <p id="mensagemErro" class="mb-4">Ocorreu um erro ao carregar as perguntas.</p>
+            <button id="recarregarPagina" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+                Recarregar Página
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token');
+            let userName = '';
+
+            // Elementos do layout
+            const confirmarRespostaButton = document.getElementById('confirmarResposta');
+            const sairButton = document.getElementById('sairButton');
+            const sairOverlay = document.getElementById('sairOverlay');
+            const confirmarSairButton = document.getElementById('confirmarSair');
+            const cancelarSairButton = document.getElementById('cancelarSair');
+            const feedbackOverlay = document.getElementById('feedbackOverlay');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            const quizContainer = document.getElementById('quizContainer');
+            const resultadoContainer = document.getElementById('resultadoContainer');
+            const xpTotalElement = document.getElementById('xpTotal');
+            const totalAcertosElement = document.getElementById('totalAcertos');
+            const porcentagemAcertosElement = document.getElementById('porcentagemAcertos');
+            const voltarMissoesButton = document.getElementById('voltarMissoesButton');
+            const proximoNivelButton = document.getElementById('proximoNivelButton');
+            const erroContainer = document.getElementById('erroContainer');
+            const mensagemErro = document.getElementById('mensagemErro');
+            const recarregarPagina = document.getElementById('recarregarPagina');
+
+            // Verificação de autenticação
+            if (!token) {
+                mostrarErro("Você precisa estar logado para acessar esta página.");
+                setTimeout(() => window.location.href = "index.html", 3000);
+                return;
+            }
+
+            // Obtém o ID do nível da URL
+            const params = new URLSearchParams(window.location.search);
+            const nivelId = params.get('nivel_id');
+            if (!nivelId || isNaN(nivelId)) {
+                mostrarErro("ID do nível inválido.");
+                setTimeout(() => window.location.href = "Fases.html", 3000);
+                return;
+            }
+
+            let perguntas = [];
+            let indicePerguntaAtual = 0;
+            let acertos = 0;
+            let respostaSelecionada = null;
+
+            // Função para mostrar erros
+            function mostrarErro(mensagem) {
+                mensagemErro.textContent = mensagem;
+                erroContainer.classList.remove('hidden');
+                quizContainer.classList.add('hidden');
+            }
+
+            // Função para atualizar os indicadores de progresso
+            function atualizarIndicadoresProgresso(indiceAtual) {
+                const indicadores = document.querySelectorAll('.indicador-progresso');
+                indicadores.forEach((indicador, index) => {
+                    indicador.classList.remove('w-6', 'h-6', 'bg-blue-500');
+                    indicador.classList.add('w-4', 'h-4', 'bg-gray-500');
+                    if (index === indiceAtual) {
+                        indicador.classList.remove('w-4', 'h-4', 'bg-gray-500');
+                        indicador.classList.add('w-6', 'h-6', 'bg-blue-500');
+                    }
+                    if (index < indiceAtual) {
+                        indicador.classList.remove('bg-gray-500');
+                        indicador.classList.add('bg-blue-500');
+                    }
+                });
+            }
+
+            // Função para embaralhar array
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Função para buscar perguntas aleatórias do backend
+            async function buscarPerguntas() {
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    const nivelId = params.get('nivel_id');
+                    const ordem = params.get('ordem');
+
+                    if (!nivelId || !ordem) {
+                        throw new Error("nivel_id ou ordem não fornecidos");
+                    }
+
+                    const response = await fetch(`http://localhost:3000/perguntas/aleatorias?nivel_id=${nivelId}&quantidade=5`, {
+                        method: "GET",
+                        headers: { "Authorization": token }
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || "Erro ao buscar perguntas");
+                    }
+                    const data = await response.json();
+                    if (!data || !Array.isArray(data.perguntas) || data.perguntas.length === 0) {
+                        throw new Error("Nenhuma pergunta válida encontrada");
+                    }
+                    perguntas = data.perguntas;
+                    xpTotal = data.xp_total;
+                    carregarPergunta();
+                } catch (error) {
+                    console.error("Erro ao buscar perguntas:", error);
+                    mostrarErro(`Erro ao carregar perguntas: ${error.message}`);
+                }
+            }
+
+            // Função para carregar uma pergunta
+            function carregarPergunta() {
+                try {
+                    const perguntaContainer = document.getElementById('pergunta-container');
+                    const perguntaAtual = perguntas[indicePerguntaAtual];
+                    if (!perguntaAtual) {
+                        finalizarQuiz();
+                        return;
+                    }
+                    if (!perguntaAtual.texto || !perguntaAtual.resposta_correta) {
+                        throw new Error("Pergunta com estrutura inválida");
+                    }
+                    document.getElementById('pergunta-titulo').textContent = perguntaAtual.texto;
+                    const todasOpcoes = [
+                        perguntaAtual.resposta_correta,
+                        perguntaAtual.opcao1,
+                        perguntaAtual.opcao2,
+                        perguntaAtual.opcao3
+                    ].filter(opcao => opcao);
+                    if (todasOpcoes.length < 2) {
+                        throw new Error("Pergunta não tem opções suficientes");
+                    }
+                    const opcoesEmbaralhadas = shuffleArray([...todasOpcoes]);
+                    perguntaContainer.innerHTML = '';
+                    opcoesEmbaralhadas.forEach(opcao => {
+                        const button = document.createElement('button');
+                        button.className = 'w-full py-2 bg-transparent border border-[#7194ce] rounded hover:bg-[#7194ce] hover:text-white transition transform hover:scale-105 resposta';
+                        button.textContent = opcao;
+                        button.addEventListener('click', () => {
+                            document.querySelectorAll('.resposta').forEach(btn => {
+                                btn.classList.remove('bg-[#7194ce]', 'text-white');
+                            });
+                            button.classList.add('bg-[#7194ce]', 'text-white');
+                            respostaSelecionada = opcao;
+                            confirmarRespostaButton.disabled = false;
+                        });
+                        perguntaContainer.appendChild(button);
+                    });
+                    respostaSelecionada = null;
+                    confirmarRespostaButton.disabled = true;
+                    atualizarIndicadoresProgresso(indicePerguntaAtual);
+                } catch (error) {
+                    console.error("Erro ao carregar pergunta:", error);
+                    mostrarErro(`Erro ao carregar pergunta: ${error.message}`);
+                }
+            }
+
+            // Evento para confirmar resposta
+            confirmarRespostaButton.addEventListener('click', () => {
+                try {
+                    const perguntaAtual = perguntas[indicePerguntaAtual];
+                    if (!perguntaAtual || !perguntaAtual.resposta_correta) {
+                        throw new Error("Pergunta inválida");
+                    }
+                    if (!respostaSelecionada) {
+                        feedbackMessage.textContent = "Selecione uma resposta antes de confirmar";
+                        feedbackOverlay.classList.remove('hidden');
+                        feedbackOverlay.classList.add('fade-in');
+                        setTimeout(() => feedbackOverlay.classList.add('hidden'), 2000);
+                        return;
+                    }
+                    if (respostaSelecionada === perguntaAtual.resposta_correta) {
+                        acertos++;
+                        feedbackMessage.textContent = "Parabéns, resposta certa! Vamos à próxima pergunta.";
+                    } else {
+                        feedbackMessage.textContent = `Resposta errada. A resposta certa era: ${perguntaAtual.resposta_correta}.`;
+                    }
+                    feedbackOverlay.classList.remove('hidden');
+                    feedbackOverlay.classList.add('fade-in');
+                    setTimeout(() => {
+                        feedbackOverlay.classList.add('hidden');
+                        indicePerguntaAtual++;
+                        if (indicePerguntaAtual < perguntas.length) {
+                            carregarPergunta();
+                        } else {
+                            finalizarQuiz();
+                        }
+                        atualizarIndicadoresProgresso(indicePerguntaAtual);
+                    }, 2000);
+                } catch (error) {
+                    console.error("Erro ao confirmar resposta:", error);
+                    mostrarErro(`Erro ao processar resposta: ${error.message}`);
+                }
+            });
+
+            // Função para finalizar o quiz
+            async function finalizarQuiz() {
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    const nivelId = params.get('nivel_id');
+                    const ordem = params.get('ordem');
+
+                    // Verificar se o botão já foi concluído
+                    const responseProgresso = await fetch(`http://localhost:3000/progresso/botoes/${nivelId}`, {
+                        method: "GET",
+                        headers: { "Authorization": localStorage.getItem('token') }
+                    });
+                    const progressoData = await responseProgresso.json();
+                    const botaoConcluido = progressoData.botoesCompletos[ordem]?.concluido;
+
+                    // Calcular XP
+                    let xpGanho = Math.round((xpTotal / perguntas.length) * acertos);
+                    if (botaoConcluido) {
+                        xpGanho = Math.min(acertos, 5); // Limitar a 5 XP para repetições
+                    }
+
+                    // Salvar o progresso no servidor
+                    const resultadoSalvamento = await salvarProgressoNoServidor(nivelId, xpGanho, ordem);
+                    if (!resultadoSalvamento.success) {
+                        throw new Error(resultadoSalvamento.error || "Erro ao salvar progresso");
+                    }
+
+                    // Exibir os resultados
+                    document.getElementById('sairContainer').classList.add('hidden');
+                    quizContainer.classList.add('hidden');
+                    resultadoContainer.classList.remove('hidden');
+                    document.getElementById('resultadoTitulo').textContent = `Parabéns, ${userName}!`;
+                    xpTotalElement.textContent = xpGanho;
+                    totalAcertosElement.textContent = `${acertos} de ${perguntas.length}`;
+                    porcentagemAcertosElement.textContent = ((acertos / perguntas.length) * 100).toFixed(2);
+                } catch (error) {
+                    console.error("Erro ao finalizar quiz:", error);
+                    feedbackMessage.textContent = "Erro ao finalizar o quiz. Tente novamente mais tarde.";
+                    feedbackOverlay.classList.remove('hidden');
+                    feedbackOverlay.classList.add('fade-in');
+                    setTimeout(() => feedbackOverlay.classList.add('hidden'), 3000);
+                }
+            }
+            // Função para salvar progresso no servidor
+            async function salvarProgressoNoServidor(nivelId, xpGanho, ordem) {
+                try {
+                    const response = await fetch("http://localhost:3000/progresso", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": token,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            nivel_id: parseInt(nivelId),
+                            xp_ganho: parseInt(xpGanho),
+                            ordem: parseInt(ordem)
+                        })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || "Falha ao salvar progresso");
+                    }
+                    const data = await response.json();
+                    console.log("Progresso salvo com sucesso:", data);
+                    return data;
+                } catch (error) {
+                    console.error("Erro ao salvar progresso:", error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            // Event listeners para botões
+            voltarMissoesButton.addEventListener('click', () => {
+                const nivelId = new URLSearchParams(window.location.search).get('nivel_id');
+                if (nivelId && !isNaN(nivelId)) {
+                    window.location.href = `PainelNivel.html?nivel_id=${nivelId}`;
+                } else {
+                    mostrarErro("ID do nível inválido.");
+                    setTimeout(() => window.location.href = "Fases.html", 3000);
+                }
+            });
+            proximoNivelButton.addEventListener('click', () => {
+                const params = new URLSearchParams(window.location.search);
+                const nivelId = params.get('nivel_id');
+                const ordem = params.get('ordem');
+
+                if (!nivelId || isNaN(nivelId) || !ordem || isNaN(ordem)) {
+                    mostrarErro("Parâmetros inválidos.");
+                    setTimeout(() => window.location.href = "Fases.html", 3000);
+                    return;
+                }
+
+                const ordemNum = parseInt(ordem);
+                const nivelIdNum = parseInt(nivelId);
+
+                let proximaOrdem;
+                let proximoNivelId;
+
+                if (ordemNum === 12) {
+                    // Avança para o próximo nível, botão 1
+                    proximoNivelId = nivelIdNum + 1;
+                    proximaOrdem = 1;
+                } else {
+                    // Avança para o próximo botão no mesmo nível
+                    proximoNivelId = nivelIdNum;
+                    proximaOrdem = ordemNum + 1;
+                }
+
+                window.location.href = `TelaPergunta.html?nivel_id=${proximoNivelId}&ordem=${proximaOrdem}`;
+            });
+
+            sairButton.addEventListener('click', () => {
+                sairOverlay.classList.remove('hidden');
+                sairOverlay.classList.add('fade-in');
+            });
+            confirmarSairButton.addEventListener('click', () => {
+                const nivelId = new URLSearchParams(window.location.search).get('nivel_id');
+                if (nivelId && !isNaN(nivelId)) {
+                    window.location.href = `PainelNivel.html?nivel_id=${nivelId}`;
+                } else {
+                    mostrarErro("ID do nível inválido.");
+                    setTimeout(() => window.location.href = "Fases.html", 3000);
+                }
+            });
+
+            cancelarSairButton.addEventListener('click', () => {
+                sairOverlay.classList.add('hidden');
+            });
+
+            recarregarPagina.addEventListener('click', () => {
+                window.location.reload();
+            });
+
+            // Inicializa o quiz
+            buscarPerguntas();
+        });
+    </script>
+</body>
+
+</html>

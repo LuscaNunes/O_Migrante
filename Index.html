@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login e Cadastro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <!-- Container do Login -->
+    <div id="loginContainer" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+        <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email" class="w-full p-2 border rounded mb-2">
+        <input type="password" id="loginPassword" placeholder="Senha" class="w-full p-2 border rounded mb-2">
+        <button id="loginButton" class="w-full bg-blue-500 text-white p-2 rounded">Entrar</button>
+        <p class="mt-2 text-center">Não tem uma conta? <a href="#" id="showRegister" class="text-blue-500">Cadastre-se</a></p>
+        <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Email ou senha incorretos.</p>
+    </div>
+
+    <!-- Container do Cadastro (Oculto inicialmente) -->
+    <div id="registerContainer" class="hidden bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+        <h2 class="text-2xl font-bold mb-4 text-center">Cadastro</h2>
+        <input type="text" id="registerName" placeholder="Nome" class="w-full p-2 border rounded mb-2">
+        <input type="email" id="registerEmail" placeholder="Email" class="w-full p-2 border rounded mb-2">
+        <input type="password" id="registerPassword" placeholder="Senha" class="w-full p-2 border rounded mb-2">
+        <button id="registerButton" class="w-full bg-green-500 text-white p-2 rounded">Cadastrar</button>
+        <p class="mt-2 text-center">Já tem uma conta? <a href="#" id="showLogin" class="text-blue-500">Faça login</a></p>
+        <p id="registerError" class="text-red-500 text-sm mt-2 hidden">Erro no cadastro. Tente novamente.</p>
+    </div>
+
+    <script>
+        
+        // Alternar entre Login e Cadastro
+        document.getElementById("showRegister").addEventListener("click", function() {
+            document.getElementById("loginContainer").classList.add("hidden");
+            document.getElementById("registerContainer").classList.remove("hidden");
+        });
+
+        document.getElementById("showLogin").addEventListener("click", function() {
+            document.getElementById("registerContainer").classList.add("hidden");
+            document.getElementById("loginContainer").classList.remove("hidden");
+        });
+
+        // Função de Cadastro
+        document.getElementById("registerButton").addEventListener("click", async function() {
+            const nome = document.getElementById("registerName").value;
+            const email = document.getElementById("registerEmail").value;
+            const senha = document.getElementById("registerPassword").value;
+
+            if (!nome || !email || !senha) {
+                document.getElementById("registerError").textContent = "Preencha todos os campos.";
+                document.getElementById("registerError").classList.remove("hidden");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nome, email, senha })
+                });
+
+                const data = await response.text();
+                if (response.ok) {
+                    alert(data);
+                    document.getElementById("registerContainer").classList.add("hidden");
+                    document.getElementById("loginContainer").classList.remove("hidden");
+                } else {
+                    document.getElementById("registerError").textContent = data;
+                    document.getElementById("registerError").classList.remove("hidden");
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                document.getElementById("registerError").textContent = "Erro no cadastro. Tente novamente.";
+                document.getElementById("registerError").classList.remove("hidden");
+            }
+        });
+
+        // Função de Login
+        document.getElementById("loginButton").addEventListener("click", async function() {
+            const email = document.getElementById("loginEmail").value;
+            const senha = document.getElementById("loginPassword").value;
+
+            if (!email || !senha) {
+                document.getElementById("loginError").textContent = "Preencha todos os campos.";
+                document.getElementById("loginError").classList.remove("hidden");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, senha })
+                });
+
+                const data = await response.json();
+                if (data.auth) {
+                    localStorage.setItem('token', data.token); // Armazena o token
+                    window.location.href = "Painel.html"; // Redireciona para o painel
+                } else {
+                    document.getElementById("loginError").textContent = "Email ou senha incorretos.";
+                    document.getElementById("loginError").classList.remove("hidden");
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                document.getElementById("loginError").textContent = "Erro ao fazer login. Tente novamente.";
+                document.getElementById("loginError").classList.remove("hidden");
+            }
+        });
+    </script>
+</body>
+</html>

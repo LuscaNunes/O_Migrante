@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Perguntas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <h1 class="text-2xl font-bold mb-6" id="pergunta-titulo">Carregando...</h1>
+        <div id="pergunta-container" class="space-y-4">
+            <!-- Perguntas serão carregadas aqui -->
+        </div>
+        <button id="proxima-pergunta" class="w-full mt-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 hidden">
+            Próxima Pergunta
+        </button>
+    </div>
+
+    <div id="feedbackOverlay" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 text-center w-full max-w-md">
+            <p id="feedbackMessage" class="text-xl font-semibold mb-4 text-gray-900"></p>
+            <button id="finalizarQuizButton" class="w-full py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                Finalizar Quiz
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Você precisa estar logado para acessar esta página.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            // Obtém o ID do nível da URL
+            const params = new URLSearchParams(window.location.search);
+            const nivelId = params.get('nivel_id') || 1; // Define o nível padrão como 1
+
+            console.log("nivelId:", nivelId); // Verifica o valor de nivelId
+
+            if (!nivelId || isNaN(nivelId)) {
+                alert("ID do nível inválido.");
+                window.location.href = "Fases.html";
+                return;
+            }
+
+            let perguntas = [];
+            let indicePerguntaAtual = 0;
+            let acertos = 0;
+
+            // Função para buscar perguntas aleatórias do backend
+            async function buscarPerguntas() {
+                try {
+                    console.log("Buscando perguntas para nivelId:", nivelId);
+
+                    if (!nivelId || isNaN(nivelId)) {
+                        console.error("ID do nível inválido ou ausente.");
+                        alert("ID do nível inválido.");
+                        return;
+                    }
+
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        console.error("Token JWT não encontrado.");
+                        alert("Você precisa estar logado para acessar esta página.");
+                        window.location.href = "index.html";
+                        return;
+                    }
+
+                    console.log("Fazendo requisição GET para buscar perguntas...");
+                    console.log("URL da requisição:", `http://localhost:3000/perguntas/aleatorias?nivel_id=${nivelId}&quantidade=5`);
+                    console.log("Token JWT sendo enviado:", token);
+
+                    const response = await fetch(`http://localhost:3000/perguntas/aleatorias?nivel_id=${nivelId}&quantidade=5`, {
+                        method: "GET",
+                        headers: { "Authorization": token }
+                    });
+
+                    console.log("Resposta recebida do backend:", response);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error("Erro na resposta do backend:", errorData);
+                        throw new Error(`Erro na requisição: ${response.status} - ${errorData.error || "Erro desconhecido"}`);
+                    }
+
+                    const data = await response.json();
+                    console.log("Dados recebidos do backend:", data);
+
+                    if (!data || !Array.isArray(data.perguntas)) {
+                        console.error("A resposta da API não contém perguntas válidas.");
+                        throw new Error("A resposta da API não contém perguntas válidas.");
+                    }
+
+                    perguntas = data.perguntas;
+                    carregarPergunta();
+                } catch (error) {
+                    console.error("Erro ao buscar perguntas:", error.message);
+                    alert(`Erro ao carregar perguntas: ${error.message}`);
+                }
+            }
+
+            // Função para carregar uma pergunta
+            function carregarPergunta() {
+                const perguntaContainer = document.getElementById('pergunta-container');
+                const perguntaAtual = perguntas[indicePerguntaAtual];
+
+                if (!perguntaAtual) {
+                    finalizarQuiz();
+                    return;
+                }
+
+                document.getElementById('pergunta-titulo').textContent = `Pergunta ${indicePerguntaAtual + 1}: ${perguntaAtual.texto}`;
+                perguntaContainer.innerHTML = `
+                    <button class="w-full py-2 bg-gray-200 rounded hover:bg-gray-300 resposta" data-correta="${perguntaAtual.resposta_correta}" data-resposta="${perguntaAtual.opcao1}">
+                        ${perguntaAtual.opcao1}
+                    </button>
+                    <button class="w-full py-2 bg-gray-200 rounded hover:bg-gray-300 resposta" data-correta="${perguntaAtual.resposta_correta}" data-resposta="${perguntaAtual.opcao2}">
+                        ${perguntaAtual.opcao2}
+                    </button>
+                    <button class="w-full py-2 bg-gray-200 rounded hover:bg-gray-300 resposta" data-correta="${perguntaAtual.resposta_correta}" data-resposta="${perguntaAtual.opcao3}">
+                        ${perguntaAtual.opcao3}
+                    </button>
+                `;
+
+                document.querySelectorAll('.resposta').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const respostaSelecionada = e.target.dataset.resposta;
+                        const respostaCorreta = e.target.dataset.correta;
+                        if (respostaSelecionada === respostaCorreta) {
+                            acertos++;
+                        }
+                        indicePerguntaAtual++;
+                        document.getElementById('proxima-pergunta').classList.remove('hidden');
+                    });
+                });
+            }
+
+            // Função para finalizar o quiz
+            function finalizarQuiz() {
+                const xpTotal = 100; // Exemplo de XP total do nível
+                const xpGanho = (xpTotal / 5) * acertos;
+
+                const feedbackMessage = document.getElementById('feedbackMessage');
+                feedbackMessage.textContent = `Você acertou ${acertos} de 5 perguntas e ganhou ${xpGanho} XP!`;
+
+                const feedbackOverlay = document.getElementById('feedbackOverlay');
+                feedbackOverlay.classList.remove('hidden');
+                feedbackOverlay.classList.add('fade-in');
+            }
+
+            // Evento para avançar para a próxima pergunta
+            document.getElementById('proxima-pergunta').addEventListener('click', () => {
+                carregarPergunta();
+                document.getElementById('proxima-pergunta').classList.add('hidden');
+            });
+
+            // Evento para finalizar o quiz
+            document.getElementById('finalizarQuizButton').addEventListener('click', () => {
+                window.location.href = "Resultado.html";
+            });
+
+            // Inicializa o quiz
+            buscarPerguntas();
+        });
+    </script>
+</body>
+
+</html>
