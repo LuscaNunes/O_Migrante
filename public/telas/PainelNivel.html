@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Detalhes do Nível</title>
+</head>
+
+<body class="bg-gray-100 text-gray-900 font-sans">
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen">
+            <h2 class="text-2xl font-bold mb-6">Menu</h2>
+            <ul>
+                <li class="mb-4">
+                    <a href="Painel.html"
+                        class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded">
+                        <i class="fas fa-home mr-3"></i> Inicio
+                    </a>
+                </li>
+                <li class="mb-4">
+                    <a href="DadoUsuario.html"
+                        class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded">
+                        <i class="fas fa-user mr-3"></i> Perfil
+                    </a>
+                </li>
+                
+                <li class="mb-4">
+                    <a href="Fases.html"
+                        class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded">
+                        <i class="fas fa-tasks mr-3"></i> Missão
+                    </a>
+                </li>
+                
+                <li class="mb-4">
+                    <a href="../Biblioteca/paginaBiblioteca.html"
+                        class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded">
+                        <i class="fas fa-book mr-3"></i> Biblioteca
+                    </a>
+                </li>
+                <li id="adminDropdown" class="mb-4 hidden">
+                    <div class="relative">
+                        <button id="adminMenuButton"
+                            class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded w-full">
+                            <i class="fas fa-cog mr-3"></i> Administração
+                            <i class="fas fa-chevron-down ml-auto"></i>
+                        </button>
+                        <ul id="adminMenuItems" class="hidden absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
+                             <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href='../../admin/telas/PesquisaUsuario.html'>
+                                Usuários
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/CaPerguntas.html">
+                                Cadastrar Níveis e Perguntas
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">
+                                Dados das Fases
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosNiveis.html">
+                                Editar Níveis e Perguntas
+                            </a>
+                        </li>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col items-center justify-center p-8 ml-64">
+            <h1 id="nivelTitle" class="text-4xl font-bold text-center mb-4">Carregando...</h1>
+            <h2 id="nivelDescription" class="text-2xl text-center mb-8">Carregando descrição...</h2>
+
+            <!-- Botão 1 -->
+            <button style="top: 150px; left: 650px;"
+                class="absolute w-32 h-32 text-white text-5xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="1" onclick="redirectToPerguntas(1)">
+                1
+            </button>
+            <!-- Bolinha entre 1 e 2 -->
+            <div style="top: 295px; left: 655px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 2 -->
+            <button style="top: 350px; left: 580px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="2" onclick="redirectToPerguntas(2)" disabled>
+                2
+            </button>
+            <!-- Bolinha entre 2 e 3 -->
+            <div style="top: 505px; left: 580px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 3 -->
+            <button style="top: 575px; left: 500px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="3" onclick="redirectToPerguntas(3)" disabled>
+                3
+            </button>
+            <!-- Bolinha entre 3 e 4 -->
+            <div style="top: 720px; left: 550px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 4 -->
+            <button style="top: 770px; left: 530px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="4" onclick="redirectToPerguntas(4)" disabled>
+                4
+            </button>
+            <!-- Bolinha entre 4 e 5 -->
+            <div style="top: 910px; left: 605px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 5 -->
+            <button style="top: 950px; left: 600px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="5" onclick="redirectToPerguntas(5)" disabled>
+                5
+            </button>
+            <!-- Bolinha entre 5 e 6 -->
+            <div style="top: 1100px; left: 695px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 6 -->
+            <button style="top: 1140px; left: 700px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="6" onclick="redirectToPerguntas(6)" disabled>
+                6
+            </button>
+            <!-- Bolinha entre 6 e 7 -->
+            <div style="top: 1295px; left: 775px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 7 -->
+            <button style="top: 1355px; left: 750px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="7" onclick="redirectToPerguntas(7)" disabled>
+                7
+            </button>
+            <!-- Bolinha entre 7 e 8 -->
+            <div style="top: 1499px; left: 760px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 8 -->
+            <button style="top: 1550px; left: 680px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="8" onclick="redirectToPerguntas(8)" disabled>
+                8
+            </button>
+            <!-- Bolinha entre 8 e 9 -->
+            <div style="top: 1690px; left: 675px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 9 -->
+            <button style="top: 1740px; left: 580px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="9" onclick="redirectToPerguntas(9)" disabled>
+                9
+            </button>
+            <!-- Bolinha entre 9 e 10 -->
+            <div style="top: 1890px; left: 605px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 10 -->
+            <button style="top: 1950px; left: 550px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="10" onclick="redirectToPerguntas(10)" disabled>
+                10
+            </button>
+            <!-- Bolinha entre 10 e 11 -->
+            <div style="top: 2105px; left: 605px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 11 -->
+            <button style="top: 2150px; left: 600px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="11" onclick="redirectToPerguntas(11)" disabled>
+                11
+            </button>
+            <!-- Bolinha entre 11 e 12 -->
+            <div style="top: 2300px; left: 665px;" class="bolinha absolute w-8 h-8 bg-blue-500 rounded-full shadow-lg">
+            </div>
+
+            <!-- Botão 12 -->
+            <button style="top: 2350px; left: 650px;"
+                class="absolute w-32 h-32 text-white text-3xl rounded-full flex items-center justify-center hover-animate shadow-lg nivel-button"
+                data-ordem="12" onclick="redirectToPerguntas(12)" disabled>
+                12
+            </button>
+        </main>
+    </div>
+
+    <script>
+    // Função para redirecionar para a página de perguntas
+    function redirectToPerguntas(numeroPergunta) {
+        const nivelId = new URLSearchParams(window.location.search).get('nivel_id');
+        if (!nivelId || isNaN(parseInt(nivelId))) {
+            showFeedback("ID do nível inválido.");
+            return;
+        }
+
+        const botao = document.querySelector(`.nivel-button[data-ordem="${numeroPergunta}"]`);
+        if (botao && botao.disabled) {
+            showFeedback("Complete as perguntas anteriores para acessar esta fase.");
+            return;
+        }
+
+        window.location.href = `TelaPergunta.html?nivel_id=${nivelId}&ordem=${numeroPergunta}`;
+    }
+
+    // Função para exibir mensagens de feedback
+    function showFeedback(message, isError = true) {
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${isError ? 'bg-red-500' : 'bg-green-500'} text-white z-50`;
+        feedbackDiv.textContent = message;
+        document.body.appendChild(feedbackDiv);
+        setTimeout(() => feedbackDiv.remove(), 3000);
+    }
+
+    // Verifica autenticação ao carregar a página
+    document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem('token');
+        console.log('Token on load:', token ? 'Presente' : 'Ausente');
+        if (!token) {
+            showFeedback("Você precisa estar logado para acessar esta página.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const nivelId = urlParams.get('nivel_id');
+        if (!nivelId || isNaN(parseInt(nivelId))) {
+            showFeedback("ID do nível inválido.");
+            window.location.href = "Fases.html";
+            return;
+        }
+
+        fetch("http://localhost:3000/verifyToken", {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        })
+            .then(res => {
+                console.log('Verify token response:', res.status);
+                return res.json();
+            })
+            .then(data => {
+                console.log('Verify token data:', data);
+                if (!data.auth) {
+                    localStorage.removeItem('token');
+                    showFeedback("Sessão inválida ou expirada.");
+                    window.location.href = "index.html";
+                } else {
+                    if (data.user.tipo === 'admin') {
+                        const adminDropdown = document.getElementById('adminDropdown');
+                        adminDropdown.classList.remove('hidden');
+                        const adminMenuButton = document.getElementById('adminMenuButton');
+                        const adminMenuItems = document.getElementById('adminMenuItems');
+                        adminMenuButton.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            adminMenuItems.classList.toggle('hidden');
+                        });
+                        document.addEventListener('click', (e) => {
+                            if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
+                                adminMenuItems.classList.add('hidden');
+                            }
+                        });
+                    }
+                    loadNivelData(nivelId);
+                    carregarProgressoBotoes(nivelId);
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao verificar token:", error);
+                showFeedback("Erro ao verificar autenticação.");
+                localStorage.removeItem('token');
+                window.location.href = "index.html";
+            });
+    });
+
+    // Função para carregar os dados do nível
+    async function loadNivelData(nivelId) {
+        try {
+            console.log("Carregando dados do nível:", nivelId);
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:3000/niveis/${nivelId}`, {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            console.log('Resposta do backend:', response.status, response.statusText);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `Erro ${response.status}: ${response.statusText}`);
+            }
+            const data = await response.json();
+            console.log("Dados do nível recebidos:", data);
+            if (!data || !data.titulo || !data.descricao) {
+                throw new Error("Dados do nível inválidos ou não encontrados.");
+            }
+            document.getElementById("nivelTitle").textContent = data.titulo;
+            document.getElementById("nivelDescription").textContent = data.descricao;
+        } catch (error) {
+            console.error("Erro ao carregar dados do nível:", error);
+            showFeedback(`Erro ao carregar dados do nível: ${error.message}`);
+            window.location.href = "Fases.html";
+        }
+    }
+
+    // Função para carregar o progresso dos botões
+    async function carregarProgressoBotoes(nivelId) {
+        try {
+            console.log("Carregando progresso para nível:", nivelId);
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:3000/progresso/botoes/${nivelId}`, {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            console.log('Resposta do progresso:', response.status, response.statusText);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erro ${response.status}: Falha ao carregar progresso`);
+            }
+            const data = await response.json();
+            console.log("Dados de progresso recebidos:", data);
+            if (!data.botoesCompletos || typeof data.botoesCompletos !== 'object') {
+                throw new Error("Resposta inválida do servidor");
+            }
+
+            // Log detalhado dos botoesCompletos
+            console.log("Detalhes de botoesCompletos:", Object.entries(data.botoesCompletos).map(([ordem, info]) => ({
+                ordem,
+                xp_ganho: info.xp_ganho,
+                concluido: info.concluido
+            })));
+
+            // Determinar o último botão com progresso
+            let ultimoBotaoConcluido = 0;
+            for (let i = 1; i <= 12; i++) {
+                if (data.botoesCompletos[i]?.xp_ganho > 0) {
+                    ultimoBotaoConcluido = Math.max(ultimoBotaoConcluido, i);
+                }
+            }
+            console.log("Último botão concluído:", ultimoBotaoConcluido);
+
+            // Obter a ordem atual da URL
+            const params = new URLSearchParams(window.location.search);
+            const ordemAtual = parseInt(params.get('ordem')) || ultimoBotaoConcluido + 1;
+            console.log("Ordem atual:", ordemAtual);
+
+            // Atualizar botões
+            document.querySelectorAll('.nivel-button').forEach(botao => {
+                const botaoOrdem = parseInt(botao.getAttribute('data-ordem'));
+                botao.classList.remove('bloqueado', 'disponivel', 'concluido');
+
+                if (data.botoesCompletos[botaoOrdem]?.xp_ganho > 0) {
+                    botao.classList.add('concluido');
+                    botao.disabled = false;
+                    console.log(`Botão ${botaoOrdem}: Concluído (verde)`);
+                } else if (botaoOrdem === ultimoBotaoConcluido + 1) {
+                    botao.classList.add('disponivel');
+                    botao.disabled = false;
+                    console.log(`Botão ${botaoOrdem}: Disponível (azul)`);
+                } else {
+                    botao.classList.add('bloqueado');
+                    botao.disabled = true;
+                    console.log(`Botão ${botaoOrdem}: Bloqueado (vermelho)`);
+                }
+            });
+
+            // Atualizar bolinhas
+            document.querySelectorAll('.bolinha').forEach((bolinha, index) => {
+                bolinha.classList.remove('bg-blue-500', 'bg-green-500', 'bg-gray-500');
+                // Bolinha entre botões N e N+1 tem index = N-1
+                if (index + 1 <= ultimoBotaoConcluido) {
+                    bolinha.classList.add('bg-green-500');
+                    console.log(`Bolinha ${index + 1} (entre botões ${index + 1} e ${index + 2}): Verde`);
+                } else {
+                    bolinha.classList.add('bg-gray-500');
+                    console.log(`Bolinha ${index + 1} (entre botões ${index + 1} e ${index + 2}): Cinza`);
+                }
+            });
+        } catch (error) {
+            console.error("Erro ao carregar progresso dos botões:", error);
+            showFeedback(`Erro ao carregar progresso: ${error.message}`);
+            window.location.href = "Fases.html";
+        }
+    }
+</script>
+
+    <style>
+        .nivel-button {
+            background-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+
+        .nivel-button.bloqueado {
+            background-color: #ff0000;
+        }
+
+        .nivel-button.disponivel {
+            background-color: #007bff;
+        }
+
+        .nivel-button.concluido {
+            background-color: #28a745;
+        }
+
+        .nivel-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .hover-animate:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+
+            .nivel-button,
+            .bolinha {
+                transform: scale(0.7);
+            }
+
+            .nivel-button[data-ordem="1"] {
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(1) {
+                top: 200px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="2"] {
+                top: 250px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(2) {
+                top: 350px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="3"] {
+                top: 400px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(3) {
+                top: 500px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="4"] {
+                top: 550px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(4) {
+                top: 650px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="5"] {
+                top: 700px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(5) {
+                top: 800px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="6"] {
+                top: 850px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(6) {
+                top: 950px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="7"] {
+                top: 1000px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(7) {
+                top: 1100px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="8"] {
+                top: 1150px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(8) {
+                top: 1250px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="9"] {
+                top: 1300px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(9) {
+                top: 1400px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="10"] {
+                top: 1450px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(10) {
+                top: 1550px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="11"] {
+                top: 1600px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .bolinha:nth-child(11) {
+                top: 1700px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nivel-button[data-ordem="12"] {
+                top: 1750px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</body>
+
+</html>

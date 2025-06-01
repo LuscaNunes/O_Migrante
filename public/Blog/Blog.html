@@ -1,0 +1,1056 @@
+<html class="scroll-smooth" lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Minimalist Social - Inspired by Apple
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+        sans-serif;
+      background-color: #f9fafb;
+      color: #1c1c1e;
+    }
+    /* Scrollbar for desktop */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #c7c7cc;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  </style>
+ </head>
+ <body class="relative min-h-screen flex flex-col bg-white">
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm backdrop-blur-sm backdrop-filter">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <!-- Left: Logo + Links -->
+    <div class="flex items-center space-x-8">
+     <a aria-label="Minimalist Social Home" class="flex items-center space-x-2 text-black hover:text-blue-600 transition-colors duration-300" href="#">
+      <img alt="Minimalist Social logo, a simple blue apple icon" class="w-8 h-8" draggable="false" height="32" src="https://storage.googleapis.com/a1aa/image/2c61f51d-de53-42d8-08b4-2137de62f8d7.jpg" width="32"/>
+      <span class="font-semibold text-xl select-none tracking-tight">
+       The Good Friend
+      </span>
+     </a>
+     <ul class="hidden md:flex space-x-6 font-semibold text-gray-700 text-sm select-none" role="menubar">
+      <li role="none">
+       <a class="hover:text-blue-600 transition-colors duration-300" href="../Painel.html" role="menuitem">
+        Início
+       </a>
+      </li>
+      <li role="none">
+       <a class="hover:text-blue-600 transition-colors duration-300" href="#friends" role="menuitem">
+        Amigos
+       </a>
+      </li>
+      <li role="none">
+       <a class="hover:text-blue-600 transition-colors duration-300" href="#videos" role="menuitem">
+        Vídeos
+       </a>
+      </li>
+     </ul>
+    </div>
+    <!-- Center: Search (desktop) -->
+    <div class="hidden md:flex items-center relative w-64">
+     <input aria-label="Buscar usuários" autocomplete="off" class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" id="searchInput" placeholder="Buscar usuários..." type="search"/>
+     <i aria-hidden="true" class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+     </i>
+     <div aria-label="Resultados da busca" class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-b-lg shadow-lg max-h-60 overflow-y-auto mt-1 z-50 hidden" id="searchResults" role="listbox">
+     </div>
+    </div>
+    <!-- Right: Icons + Profile -->
+    <div class="flex items-center space-x-4">
+     <button aria-label="Notificações" class="relative p-2 rounded-full hover:bg-gray-100 transition" id="btnNotifications" type="button">
+      <i class="fas fa-bell text-gray-700 text-lg">
+      </i>
+      <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-semibold rounded-full px-1.5 select-none" id="notifBadge">
+       3
+      </span>
+     </button>
+     <button aria-label="Mensagens" class="relative p-2 rounded-full hover:bg-gray-100 transition" id="btnMessages" type="button">
+      <i class="fas fa-envelope text-gray-700 text-lg">
+      </i>
+      <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-semibold rounded-full px-1.5 select-none" id="msgBadge">
+       5
+      </span>
+     </button>
+     <button aria-label="Buscar usuários" class="md:hidden p-2 rounded-full hover:bg-gray-100 transition" id="btnSearchMobile" type="button">
+      <i class="fas fa-search text-gray-700 text-lg">
+      </i>
+     </button>
+     <!-- Profile dropdown -->
+     <div class="relative" id="profileDropdownWrapper">
+      <button aria-expanded="false" aria-haspopup="true" class="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full" id="btnProfile" type="button">
+       <img alt="Foto do perfil do usuário, avatar azul com letra U branca" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/340797ff-a74c-4a8a-fad2-90356af08397.jpg" width="40"/>
+       <i aria-hidden="true" class="fas fa-chevron-down text-gray-600 text-sm select-none hidden md:block">
+       </i>
+      </button>
+      <div aria-label="Configurações do usuário" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2 text-gray-700 text-sm" id="profileDropdown" role="menu">
+       <a class="block px-4 py-2 hover:bg-gray-100 transition" href="#profile" role="menuitem">
+        Perfil
+       </a>
+       <a class="block px-4 py-2 hover:bg-gray-100 transition" href="#settings" role="menuitem">
+        Configurações
+       </a>
+       <button class="w-full text-left px-4 py-2 hover:bg-gray-100 transition" id="btnLogout" role="menuitem" type="button">
+        Sair
+       </button>
+      </div>
+     </div>
+     <!-- Hamburger menu mobile -->
+     <button aria-expanded="false" aria-label="Abrir menu" class="md:hidden p-2 rounded-md hover:bg-gray-100 transition" id="btnHamburger" type="button">
+      <i class="fas fa-bars text-gray-700 text-lg">
+      </i>
+     </button>
+    </div>
+   </div>
+   <!-- Mobile menu -->
+   <div class="hidden md:hidden border-t border-gray-200 bg-white shadow-sm" id="mobileMenu">
+    <ul class="flex flex-col space-y-1 py-2 px-4 font-semibold text-gray-700 text-base select-none">
+     <li>
+      <a class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition" href="#feed">
+       Início
+      </a>
+     </li>
+     <li>
+      <a class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition" href="#friends">
+       Amigos
+      </a>
+     </li>
+     <li>
+      <a class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition" href="#videos">
+       Vídeos
+      </a>
+     </li>
+     <li>
+      <a class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition" href="#notifications">
+       Notificações
+      </a>
+     </li>
+     <li>
+      <a class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition" href="#messages">
+       Mensagens
+      </a>
+     </li>
+     <li>
+      <a class="block py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition" href="#profile">
+       Perfil
+      </a>
+     </li>
+     <li>
+      <button class="w-full text-left py-2 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition" id="btnLogoutMobile" type="button">
+       Sair
+      </button>
+     </li>
+    </ul>
+   </div>
+  </nav>
+  <!-- Search modal mobile -->
+  <div aria-labelledby="searchModalLabel" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-start justify-center p-4 pt-24 z-50 hidden" id="searchModal" role="dialog">
+   <div class="bg-white rounded-xl w-full max-w-md shadow-lg p-4 flex flex-col" tabindex="-1">
+    <div class="flex items-center justify-between mb-3">
+     <h2 class="text-lg font-semibold text-gray-900 select-none" id="searchModalLabel">
+      Buscar usuários
+     </h2>
+     <button aria-label="Fechar busca" class="text-gray-600 hover:text-gray-900 transition" id="btnCloseSearchModal" type="button">
+      <i class="fas fa-times text-xl">
+      </i>
+     </button>
+    </div>
+    <div class="relative w-full">
+     <input aria-label="Buscar usuários" autocomplete="off" class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" id="searchInputMobile" placeholder="Digite nome ou ID" type="search"/>
+     <i aria-hidden="true" class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+     </i>
+     <div aria-label="Resultados da busca" class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-b-lg shadow-lg max-h-60 overflow-y-auto mt-1 z-50 hidden" id="searchResultsMobile" role="listbox">
+     </div>
+    </div>
+   </div>
+  </div>
+  <!-- Main content wrapper -->
+  <main class="flex flex-1 pt-16 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-4rem)]">
+   <!-- Feed center -->
+   <section aria-label="Feed de publicações" class="flex-1 max-w-3xl mx-auto w-full min-h-[calc(100vh-4rem)] pb-24 sm:pb-32" id="feed">
+    <!-- Criar nova publicação -->
+    <article aria-label="Criar nova publicação" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-8">
+     <form class="space-y-4" id="formCreatePost" novalidate="">
+      <textarea aria-label="Texto da nova publicação" class="w-full resize-none rounded-lg border border-gray-300 p-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" id="postText" maxlength="500" name="postText" placeholder="No que você está pensando?" required="" rows="3"></textarea>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
+       <label class="flex items-center space-x-2 cursor-pointer text-blue-600 hover:text-blue-700 font-semibold select-none" for="postMedia">
+        <i class="fas fa-image text-lg">
+        </i>
+        <span>
+         Adicionar imagem/vídeo
+        </span>
+        <input accept="image/*,video/*" aria-label="Adicionar imagem ou vídeo à publicação" class="hidden" id="postMedia" name="postMedia" type="file"/>
+       </label>
+       <button class="ml-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
+        Publicar
+       </button>
+      </div>
+      <div aria-live="polite" class="mt-4 rounded-lg overflow-hidden max-h-64 hidden" id="previewContainer">
+       <img alt="Pré-visualização da imagem selecionada para publicação" class="w-full object-contain max-h-64 rounded-lg" draggable="false" id="previewImage" src=""/>
+       <video aria-label="Pré-visualização do vídeo selecionado para publicação" class="w-full max-h-64 rounded-lg hidden" controls="" id="previewVideo">
+       </video>
+       <button class="mt-2 text-red-600 hover:text-red-800 font-semibold focus:outline-none" id="btnRemovePreview" type="button">
+        Remover mídia
+       </button>
+      </div>
+     </form>
+    </article>
+    <!-- Lista de posts -->
+    <div aria-live="polite" aria-relevant="additions" class="space-y-8" id="postsList">
+     <!-- Post 1 -->
+     <article aria-label="Publicação de João Silva feita em 10 de junho de 2024 às 14h30" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5" tabindex="0">
+      <header class="flex items-center space-x-4 mb-4">
+       <img alt="Foto de perfil de João Silva, avatar azul com letras JS" class="w-12 h-12 rounded-full object-cover" draggable="false" height="48" src="https://storage.googleapis.com/a1aa/image/4eb29290-b8e9-4d58-f1b3-3bd28ba8615b.jpg" width="48"/>
+       <div>
+        <p class="font-semibold text-gray-900">
+         João Silva
+        </p>
+        <time class="text-gray-500 text-sm select-text" datetime="2024-06-10T14:30:00">
+         10 de junho de 2024 às 14h30
+        </time>
+       </div>
+      </header>
+      <p class="whitespace-pre-line text-gray-800 mb-4">
+       Olá, pessoal! Estou muito animado para compartilhar essa foto da minha
+            última viagem. Foi incrível! 🌄✈️
+      </p>
+      <img alt="Paisagem de montanha com céu azul e sol brilhante, foto da viagem de João Silva" class="rounded-lg max-h-72 w-full object-cover mb-4" draggable="false" height="300" src="https://storage.googleapis.com/a1aa/image/8400be13-9836-4526-2d71-bdf4a312d1c5.jpg" width="600"/>
+      <footer class="flex items-center justify-between text-gray-600 text-sm select-none">
+       <div class="flex items-center space-x-6">
+        <button aria-pressed="false" class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" type="button">
+         <i class="fas fa-heart">
+         </i>
+         <span>
+          24
+         </span>
+        </button>
+        <button aria-controls="comments1" aria-expanded="false" class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" id="btnComments1" type="button">
+         <i class="fas fa-comment">
+         </i>
+         <span>
+          5
+         </span>
+        </button>
+        <button class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" type="button">
+         <i class="fas fa-share">
+         </i>
+         <span>
+          Compartilhar
+         </span>
+        </button>
+       </div>
+      </footer>
+      <section aria-label="Seção de comentários da publicação de João Silva" class="mt-4 hidden border-t border-gray-200 pt-4 space-y-4" id="comments1">
+       <div class="space-y-3 max-h-48 overflow-y-auto pr-2">
+        <div class="flex items-start space-x-3">
+         <img alt="Avatar azul com letras MC, comentário de Maria Costa" class="w-8 h-8 rounded-full object-cover mt-1" draggable="false" height="32" src="https://storage.googleapis.com/a1aa/image/0404a16a-d90e-408d-78df-7da1510c4ae1.jpg" width="32"/>
+         <div>
+          <p class="text-gray-900 font-semibold">
+           Maria Costa
+          </p>
+          <p class="text-gray-700 whitespace-pre-line">
+           Que foto linda, João! Parece um lugar incrível.
+          </p>
+          <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T15:00:00">
+           10 de junho de 2024 às 15h00
+          </time>
+         </div>
+        </div>
+        <div class="flex items-start space-x-3">
+         <img alt="Avatar azul com letras RL, comentário de Rafael Lima" class="w-8 h-8 rounded-full object-cover mt-1" draggable="false" height="32" src="https://storage.googleapis.com/a1aa/image/c7d90078-f7a1-4552-f4ef-798ee04684bb.jpg" width="32"/>
+         <div>
+          <p class="text-gray-900 font-semibold">
+           Rafael Lima
+          </p>
+          <p class="text-gray-700 whitespace-pre-line">
+           Que vibe boa! Quero conhecer esse lugar também.
+          </p>
+          <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T15:15:00">
+           10 de junho de 2024 às 15h15
+          </time>
+         </div>
+        </div>
+       </div>
+       <form aria-label="Adicionar comentário" class="mt-3 flex space-x-3">
+        <input aria-label="Campo para escrever comentário" class="flex-1 rounded-lg border border-gray-300 p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Escreva um comentário..." type="text"/>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
+         Enviar
+        </button>
+       </form>
+      </section>
+     </article>
+     <!-- Post 2 -->
+     <article aria-label="Publicação de Mariana Souza feita em 9 de junho de 2024 às 19h45" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5" tabindex="0">
+      <header class="flex items-center space-x-4 mb-4">
+       <img alt="Foto de perfil de Mariana Souza, avatar azul com letras MS" class="w-12 h-12 rounded-full object-cover" draggable="false" height="48" src="https://storage.googleapis.com/a1aa/image/d8d28dbd-9278-4e3a-2615-e1b772e91da1.jpg" width="48"/>
+       <div>
+        <p class="font-semibold text-gray-900">
+         Mariana Souza
+        </p>
+        <time class="text-gray-500 text-sm select-text" datetime="2024-06-09T19:45:00">
+         9 de junho de 2024 às 19h45
+        </time>
+       </div>
+      </header>
+      <p class="whitespace-pre-line text-gray-800 mb-4">
+       Acabei de assistir a esse vídeo incrível sobre design minimalista. Vale a
+            pena conferir! 🎥✨
+      </p>
+      <video aria-label="Vídeo sobre design minimalista compartilhado por Mariana Souza" class="rounded-lg max-h-72 w-full object-cover mb-4" controls="">
+       <source src="https://placehold.co/600x300/0071e3/ffffff/mp4?text=Vídeo+de+design+minimalista" type="video/mp4"/>
+       Seu navegador não suporta o elemento de vídeo.
+      </video>
+      <footer class="flex items-center justify-between text-gray-600 text-sm select-none">
+       <div class="flex items-center space-x-6">
+        <button aria-pressed="false" class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" type="button">
+         <i class="fas fa-heart">
+         </i>
+         <span>
+          38
+         </span>
+        </button>
+        <button aria-controls="comments2" aria-expanded="false" class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" id="btnComments2" type="button">
+         <i class="fas fa-comment">
+         </i>
+         <span>
+          12
+         </span>
+        </button>
+        <button class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" type="button">
+         <i class="fas fa-share">
+         </i>
+         <span>
+          Compartilhar
+         </span>
+        </button>
+       </div>
+      </footer>
+      <section aria-label="Seção de comentários da publicação de Mariana Souza" class="mt-4 hidden border-t border-gray-200 pt-4 space-y-4" id="comments2">
+       <div class="space-y-3 max-h-48 overflow-y-auto pr-2">
+        <div class="flex items-start space-x-3">
+         <img alt="Avatar azul com letras LP, comentário de Lucas Pereira" class="w-8 h-8 rounded-full object-cover mt-1" draggable="false" height="32" src="https://storage.googleapis.com/a1aa/image/402cce93-56a9-47dd-e84f-1e89d15bb603.jpg" width="32"/>
+         <div>
+          <p class="text-gray-900 font-semibold">
+           Lucas Pereira
+          </p>
+          <p class="text-gray-700 whitespace-pre-line">
+           Muito bom! Adoro conteúdos assim, simples e diretos.
+          </p>
+          <time class="text-gray-400 text-xs select-text" datetime="2024-06-09T20:10:00">
+           9 de junho de 2024 às 20h10
+          </time>
+         </div>
+        </div>
+        <div class="flex items-start space-x-3">
+         <img alt="Avatar azul com letras FC, comentário de Fernanda Costa" class="w-8 h-8 rounded-full object-cover mt-1" draggable="false" height="32" src="https://storage.googleapis.com/a1aa/image/b2f70bc9-5579-42d0-17f2-eea3bcf147fa.jpg" width="32"/>
+         <div>
+          <p class="text-gray-900 font-semibold">
+           Fernanda Costa
+          </p>
+          <p class="text-gray-700 whitespace-pre-line">
+           Obrigada pela indicação, Mariana! Vou assistir agora mesmo.
+          </p>
+          <time class="text-gray-400 text-xs select-text" datetime="2024-06-09T20:30:00">
+           9 de junho de 2024 às 20h30
+          </time>
+         </div>
+        </div>
+       </div>
+       <form aria-label="Adicionar comentário" class="mt-3 flex space-x-3">
+        <input aria-label="Campo para escrever comentário" class="flex-1 rounded-lg border border-gray-300 p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Escreva um comentário..." type="text"/>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
+         Enviar
+        </button>
+       </form>
+      </section>
+     </article>
+     <!-- Post 3 -->
+     <article aria-label="Publicação de Pedro Almeida feita em 8 de junho de 2024 às 11h20" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5" tabindex="0">
+      <header class="flex items-center space-x-4 mb-4">
+       <img alt="Foto de perfil de Pedro Almeida, avatar azul com letras PA" class="w-12 h-12 rounded-full object-cover" draggable="false" height="48" src="https://storage.googleapis.com/a1aa/image/443602bc-1bcf-49c0-4b63-b41cd4e5b790.jpg" width="48"/>
+       <div>
+        <p class="font-semibold text-gray-900">
+         Pedro Almeida
+        </p>
+        <time class="text-gray-500 text-sm select-text" datetime="2024-06-08T11:20:00">
+         8 de junho de 2024 às 11h20
+        </time>
+       </div>
+      </header>
+      <p class="whitespace-pre-line text-gray-800 mb-4">
+       Compartilhando um pouco do meu dia com essa foto do café da manhã ☕️🥐
+      </p>
+      <img alt="Foto de café da manhã com café e croissant, compartilhada por Pedro Almeida" class="rounded-lg max-h-72 w-full object-cover mb-4" draggable="false" height="300" src="https://storage.googleapis.com/a1aa/image/1e4295b6-3c75-4a98-7ad7-d0aebc6f841e.jpg" width="600"/>
+      <footer class="flex items-center justify-between text-gray-600 text-sm select-none">
+       <div class="flex items-center space-x-6">
+        <button aria-pressed="false" class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" type="button">
+         <i class="fas fa-heart">
+         </i>
+         <span>
+          15
+         </span>
+        </button>
+        <button aria-controls="comments3" aria-expanded="false" class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" id="btnComments3" type="button">
+         <i class="fas fa-comment">
+         </i>
+         <span>
+          3
+         </span>
+        </button>
+        <button class="flex items-center space-x-1 hover:text-blue-600 transition focus:outline-none" type="button">
+         <i class="fas fa-share">
+         </i>
+         <span>
+          Compartilhar
+         </span>
+        </button>
+       </div>
+      </footer>
+      <section aria-label="Seção de comentários da publicação de Pedro Almeida" class="mt-4 hidden border-t border-gray-200 pt-4 space-y-4" id="comments3">
+       <div class="space-y-3 max-h-48 overflow-y-auto pr-2">
+        <div class="flex items-start space-x-3">
+         <img alt="Avatar azul com letras AS, comentário de Ana Silva" class="w-8 h-8 rounded-full object-cover mt-1" draggable="false" height="32" src="https://storage.googleapis.com/a1aa/image/1f30fc88-fbd0-4165-fc64-05c626ae7958.jpg" width="32"/>
+         <div>
+          <p class="text-gray-900 font-semibold">
+           Ana Silva
+          </p>
+          <p class="text-gray-700 whitespace-pre-line">
+           Que delícia! Bom dia para você também.
+          </p>
+          <time class="text-gray-400 text-xs select-text" datetime="2024-06-08T11:45:00">
+           8 de junho de 2024 às 11h45
+          </time>
+         </div>
+        </div>
+       </div>
+       <form aria-label="Adicionar comentário" class="mt-3 flex space-x-3">
+        <input aria-label="Campo para escrever comentário" class="flex-1 rounded-lg border border-gray-300 p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Escreva um comentário..." type="text"/>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
+         Enviar
+        </button>
+       </form>
+      </section>
+     </article>
+    </div>
+   </section>
+  </main>
+  <!-- Barra inferior fixa mobile -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg flex justify-center p-3 md:hidden z-50" id="bottomBarMobile">
+   <button aria-label="Criar nova publicação" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" id="btnCreatePostMobile" type="button">
+    <i class="fas fa-plus text-xl">
+    </i>
+   </button>
+  </div>
+  <!-- Modal Criar Publicação (mobile & desktop) -->
+  <div aria-labelledby="modalCreatePostLabel" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden" id="modalCreatePost" role="dialog">
+   <div class="bg-white rounded-xl w-full max-w-lg shadow-lg p-6 max-h-[90vh] overflow-y-auto" tabindex="-1">
+    <div class="flex items-center justify-between mb-4">
+     <h2 class="text-xl font-semibold text-gray-900 select-none" id="modalCreatePostLabel">
+      Criar nova publicação
+     </h2>
+     <button aria-label="Fechar modal de criar publicação" class="text-gray-600 hover:text-gray-900 transition" id="btnCloseCreatePostModal" type="button">
+      <i class="fas fa-times text-2xl">
+      </i>
+     </button>
+    </div>
+    <form class="space-y-4" id="formCreatePostModal" novalidate="">
+     <textarea aria-label="Texto da nova publicação" class="w-full resize-none rounded-lg border border-gray-300 p-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" id="postTextModal" maxlength="500" name="postTextModal" placeholder="No que você está pensando?" required="" rows="4"></textarea>
+     <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
+      <label class="flex items-center space-x-2 cursor-pointer text-blue-600 hover:text-blue-700 font-semibold select-none" for="postMediaModal">
+       <i class="fas fa-image text-lg">
+       </i>
+       <span>
+        Adicionar imagem/vídeo
+       </span>
+       <input accept="image/*,video/*" aria-label="Adicionar imagem ou vídeo à publicação" class="hidden" id="postMediaModal" name="postMediaModal" type="file"/>
+      </label>
+      <button class="ml-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
+       Publicar
+      </button>
+     </div>
+     <div aria-live="polite" class="mt-4 rounded-lg overflow-hidden max-h-64 hidden" id="previewContainerModal">
+      <img alt="Pré-visualização da imagem selecionada para publicação" class="w-full object-contain max-h-64 rounded-lg" draggable="false" id="previewImageModal" src=""/>
+      <video aria-label="Pré-visualização do vídeo selecionado para publicação" class="w-full max-h-64 rounded-lg hidden" controls="" id="previewVideoModal">
+      </video>
+      <button class="mt-2 text-red-600 hover:text-red-800 font-semibold focus:outline-none" id="btnRemovePreviewModal" type="button">
+       Remover mídia
+      </button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <!-- Modal Notificações -->
+  <div aria-labelledby="modalNotificationsLabel" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden" id="modalNotifications" role="dialog">
+   <div class="bg-white rounded-xl w-full max-w-md shadow-lg p-6 max-h-[80vh] overflow-y-auto" tabindex="-1">
+    <div class="flex items-center justify-between mb-4">
+     <h2 class="text-xl font-semibold text-gray-900 select-none" id="modalNotificationsLabel">
+      Notificações
+     </h2>
+     <button aria-label="Fechar modal de notificações" class="text-gray-600 hover:text-gray-900 transition" id="btnCloseNotificationsModal" type="button">
+      <i class="fas fa-times text-2xl">
+      </i>
+     </button>
+    </div>
+    <ul class="divide-y divide-gray-200 text-gray-800">
+     <li class="py-3 flex items-start space-x-3">
+      <i aria-hidden="true" class="fas fa-heart text-blue-600 text-xl mt-1 flex-shrink-0">
+      </i>
+      <div>
+       <p>
+        <span class="font-semibold">
+         Alice Lima
+        </span>
+        curtiu sua publicação.
+       </p>
+       <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T16:00:00">
+        10 de junho de 2024 às 16h00
+       </time>
+      </div>
+     </li>
+     <li class="py-3 flex items-start space-x-3">
+      <i aria-hidden="true" class="fas fa-comment text-blue-600 text-xl mt-1 flex-shrink-0">
+      </i>
+      <div>
+       <p>
+        <span class="font-semibold">
+         Bruno Reis
+        </span>
+        comentou sua publicação.
+       </p>
+       <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T16:30:00">
+        10 de junho de 2024 às 16h30
+       </time>
+      </div>
+     </li>
+     <li class="py-3 flex items-start space-x-3">
+      <i aria-hidden="true" class="fas fa-user-plus text-blue-600 text-xl mt-1 flex-shrink-0">
+      </i>
+      <div>
+       <p>
+        <span class="font-semibold">
+         Camila Martins
+        </span>
+        começou a seguir você.
+       </p>
+       <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T17:00:00">
+        10 de junho de 2024 às 17h00
+       </time>
+      </div>
+     </li>
+    </ul>
+   </div>
+  </div>
+  <!-- Modal Mensagens -->
+  <div aria-labelledby="modalMessagesLabel" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden" id="modalMessages" role="dialog">
+   <div class="bg-white rounded-xl w-full max-w-3xl shadow-lg p-6 max-h-[90vh] flex flex-col" tabindex="-1">
+    <div class="flex items-center justify-between mb-4">
+     <h2 class="text-xl font-semibold text-gray-900 select-none" id="modalMessagesLabel">
+      Mensagens
+     </h2>
+     <button aria-label="Fechar modal de mensagens" class="text-gray-600 hover:text-gray-900 transition" id="btnCloseMessagesModal" type="button">
+      <i class="fas fa-times text-2xl">
+      </i>
+     </button>
+    </div>
+    <div class="flex flex-1 overflow-hidden rounded-lg border border-gray-200">
+     <!-- Lista de conversas -->
+     <nav aria-label="Lista de conversas recentes" class="w-1/3 border-r border-gray-200 overflow-y-auto bg-gray-50">
+      <ul class="divide-y divide-gray-200">
+       <li aria-current="true" class="flex items-center space-x-3 p-3 cursor-pointer hover:bg-blue-50 transition" tabindex="0">
+        <img alt="Avatar azul com letras AL, conversa com Alice Lima" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/5f965200-1872-4567-5e0d-afd2a0e16b11.jpg" width="40"/>
+        <div class="flex-1 min-w-0">
+         <p class="font-semibold text-gray-900 truncate select-text">
+          Alice Lima
+         </p>
+         <p class="text-gray-500 text-sm truncate select-text">
+          Oi, tudo bem? Você viu o evento?
+         </p>
+        </div>
+        <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T18:00:00">
+         18:00
+        </time>
+       </li>
+       <li class="flex items-center space-x-3 p-3 cursor-pointer hover:bg-blue-50 transition" tabindex="0">
+        <img alt="Avatar azul com letras BR, conversa com Bruno Reis" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/ee38c286-fd6e-497b-2247-15bcf73912cf.jpg" width="40"/>
+        <div class="flex-1 min-w-0">
+         <p class="font-semibold text-gray-900 truncate select-text">
+          Bruno Reis
+         </p>
+         <p class="text-gray-500 text-sm truncate select-text">
+          Vamos marcar algo para o fim de semana?
+         </p>
+        </div>
+        <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T17:45:00">
+         17:45
+        </time>
+       </li>
+       <li class="flex items-center space-x-3 p-3 cursor-pointer hover:bg-blue-50 transition" tabindex="0">
+        <img alt="Avatar azul com letras CM, conversa com Camila Martins" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/e2b2d97e-beb8-4bf2-65ac-23376ccb325a.jpg" width="40"/>
+        <div class="flex-1 min-w-0">
+         <p class="font-semibold text-gray-900 truncate select-text">
+          Camila Martins
+         </p>
+         <p class="text-gray-500 text-sm truncate select-text">
+          Obrigada pela ajuda no projeto!
+         </p>
+        </div>
+        <time class="text-gray-400 text-xs select-text" datetime="2024-06-10T16:30:00">
+         16:30
+        </time>
+       </li>
+      </ul>
+     </nav>
+     <!-- Visualização da conversa -->
+     <section aria-label="Visualização da conversa com Alice Lima" class="flex-1 flex flex-col">
+      <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-r-lg" id="messagesContainer">
+       <div class="flex justify-start">
+        <div class="bg-blue-50 text-gray-900 rounded-xl px-4 py-2 max-w-xs break-words">
+         Oi, tudo bem? Você viu o evento?
+        </div>
+       </div>
+       <div class="flex justify-end">
+        <div class="bg-blue-600 text-white rounded-xl px-4 py-2 max-w-xs break-words">
+         Oi Alice! Vi sim, vai ser ótimo.
+        </div>
+       </div>
+       <div class="flex justify-start">
+        <div class="bg-blue-50 text-gray-900 rounded-xl px-4 py-2 max-w-xs break-words">
+         Que bom! Vamos juntos então.
+        </div>
+       </div>
+      </div>
+      <form aria-label="Enviar mensagem" class="flex border-t border-gray-200 p-3 space-x-3" id="formSendMessage">
+       <input aria-label="Campo para escrever mensagem" autocomplete="off" class="flex-1 rounded-lg border border-gray-300 p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" id="inputMessage" placeholder="Escreva uma mensagem..." required="" type="text"/>
+       <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
+        Enviar
+       </button>
+      </form>
+     </section>
+    </div>
+   </div>
+  </div>
+  <!-- Toast notification -->
+  <div aria-live="assertive" class="fixed bottom-20 right-5 bg-blue-600 text-white px-5 py-3 rounded-lg shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 select-none" id="toast" role="alert">
+   Publicação realizada com sucesso!
+  </div>
+  <script>
+   // Toggle profile dropdown
+    const btnProfile = document.getElementById('btnProfile');
+    const profileDropdown = document.getElementById('profileDropdown');
+    btnProfile.addEventListener('click', () => {
+      const expanded = btnProfile.getAttribute('aria-expanded') === 'true';
+      btnProfile.setAttribute('aria-expanded', !expanded);
+      profileDropdown.classList.toggle('hidden');
+    });
+    // Close dropdown if clicked outside
+    document.addEventListener('click', (e) => {
+      if (
+        !btnProfile.contains(e.target) &&
+        !profileDropdown.contains(e.target)
+      ) {
+        profileDropdown.classList.add('hidden');
+        btnProfile.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Hamburger menu toggle
+    const btnHamburger = document.getElementById('btnHamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    btnHamburger.addEventListener('click', () => {
+      const expanded = btnHamburger.getAttribute('aria-expanded') === 'true';
+      btnHamburger.setAttribute('aria-expanded', !expanded);
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Search input desktop
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    // Search input mobile
+    const searchInputMobile = document.getElementById('searchInputMobile');
+    const searchResultsMobile = document.getElementById('searchResultsMobile');
+
+    // Search modal mobile open/close
+    const btnSearchMobile = document.getElementById('btnSearchMobile');
+    const searchModal = document.getElementById('searchModal');
+    const btnCloseSearchModal = document.getElementById('btnCloseSearchModal');
+
+    btnSearchMobile.addEventListener('click', () => {
+      searchModal.classList.remove('hidden');
+      searchInputMobile.focus();
+    });
+    btnCloseSearchModal.addEventListener('click', () => {
+      searchModal.classList.add('hidden');
+      searchInputMobile.value = '';
+      searchResultsMobile.innerHTML = '';
+      searchResultsMobile.classList.add('hidden');
+    });
+
+    // Mock users data for search
+    const users = [
+      {
+        id: 'alice123',
+        name: 'Alice Lima',
+        email: 'alice@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=AL',
+      },
+      {
+        id: 'bruno456',
+        name: 'Bruno Reis',
+        email: 'bruno@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=BR',
+      },
+      {
+        id: 'camila789',
+        name: 'Camila Martins',
+        email: 'camila@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=CM',
+      },
+      {
+        id: 'daniel321',
+        name: 'Daniel Pereira',
+        email: 'daniel@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=DP',
+      },
+      {
+        id: 'elisa654',
+        name: 'Elisa Lopes',
+        email: 'elisa@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=EL',
+      },
+      {
+        id: 'felipe987',
+        name: 'Felipe Santos',
+        email: 'felipe@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=FS',
+      },
+      {
+        id: 'gabriela111',
+        name: 'Gabriela Rocha',
+        email: 'gabriela@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=GR',
+      },
+      {
+        id: 'joaosilva',
+        name: 'João Silva',
+        email: 'joao@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=JS',
+      },
+      {
+        id: 'marianasouza',
+        name: 'Mariana Souza',
+        email: 'mariana@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=MS',
+      },
+      {
+        id: 'pedroalmeida',
+        name: 'Pedro Almeida',
+        email: 'pedro@email.com',
+        avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=PA',
+      },
+    ];
+
+    function renderSearchResults(container, query) {
+      if (!query.trim()) {
+        container.innerHTML = '';
+        container.classList.add('hidden');
+        return;
+      }
+      const filtered = users.filter(
+        (u) =>
+          u.name.toLowerCase().includes(query.toLowerCase()) ||
+          u.id.toLowerCase().includes(query.toLowerCase())
+      );
+      if (filtered.length === 0) {
+        container.innerHTML =
+          '<p class="p-3 text-gray-500 select-none">Nenhum usuário encontrado.</p>';
+        container.classList.remove('hidden');
+        return;
+      }
+      container.innerHTML = filtered
+        .map(
+          (u) => `
+        <div
+          class="flex items-center space-x-3 p-3 hover:bg-blue-50 cursor-pointer transition rounded"
+          role="option"
+          tabindex="0"
+          aria-label="Usuário ${u.name}, email ${u.email}"
+        >
+          <img
+            src="${u.avatar}"
+            alt="Avatar azul com letras iniciais do usuário ${u.name}"
+            class="w-10 h-10 rounded-full object-cover"
+            draggable="false"
+          />
+          <div>
+            <p class="font-semibold text-gray-900 select-text">${u.name}</p>
+            <p class="text-gray-500 text-sm select-text">${u.email}</p>
+          </div>
+        </div>
+      `
+        )
+        .join('');
+      container.classList.remove('hidden');
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      renderSearchResults(searchResults, e.target.value);
+    });
+    searchInputMobile.addEventListener('input', (e) => {
+      renderSearchResults(searchResultsMobile, e.target.value);
+    });
+
+    // Close search results on click outside
+    document.addEventListener('click', (e) => {
+      if (
+        !searchInput.contains(e.target) &&
+        !searchResults.contains(e.target)
+      ) {
+        searchResults.classList.add('hidden');
+      }
+      if (
+        !searchInputMobile.contains(e.target) &&
+        !searchResultsMobile.contains(e.target) &&
+        !searchModal.contains(e.target)
+      ) {
+        searchResultsMobile.classList.add('hidden');
+      }
+    });
+
+    // Toggle comments sections
+    const commentButtons = [
+      { btnId: 'btnComments1', commentsId: 'comments1' },
+      { btnId: 'btnComments2', commentsId: 'comments2' },
+      { btnId: 'btnComments3', commentsId: 'comments3' },
+    ];
+    commentButtons.forEach(({ btnId, commentsId }) => {
+      const btn = document.getElementById(btnId);
+      const comments = document.getElementById(commentsId);
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        comments.classList.toggle('hidden');
+      });
+    });
+
+    // Handle create post preview and submission (desktop and modal)
+    function handleFilePreview(inputFile, previewContainer, previewImage, previewVideo, btnRemove) {
+      inputFile.addEventListener('change', () => {
+        const file = inputFile.files[0];
+        if (!file) {
+          previewContainer.classList.add('hidden');
+          previewImage.src = '';
+          previewImage.classList.add('hidden');
+          previewVideo.src = '';
+          previewVideo.classList.add('hidden');
+          return;
+        }
+        const fileType = file.type;
+        if (fileType.startsWith('image/')) {
+          const url = URL.createObjectURL(file);
+          previewImage.src = url;
+          previewImage.classList.remove('hidden');
+          previewVideo.src = '';
+          previewVideo.classList.add('hidden');
+          previewContainer.classList.remove('hidden');
+        } else if (fileType.startsWith('video/')) {
+          const url = URL.createObjectURL(file);
+          previewVideo.src = url;
+          previewVideo.classList.remove('hidden');
+          previewImage.src = '';
+          previewImage.classList.add('hidden');
+          previewContainer.classList.remove('hidden');
+        } else {
+          previewContainer.classList.add('hidden');
+          previewImage.src = '';
+          previewImage.classList.add('hidden');
+          previewVideo.src = '';
+          previewVideo.classList.add('hidden');
+        }
+      });
+      btnRemove.addEventListener('click', () => {
+        inputFile.value = '';
+        previewContainer.classList.add('hidden');
+        previewImage.src = '';
+        previewImage.classList.add('hidden');
+        previewVideo.src = '';
+        previewVideo.classList.add('hidden');
+      });
+    }
+
+    // Desktop create post preview
+    const postMedia = document.getElementById('postMedia');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const previewVideo = document.getElementById('previewVideo');
+    const btnRemovePreview = document.getElementById('btnRemovePreview');
+    handleFilePreview(postMedia, previewContainer, previewImage, previewVideo, btnRemovePreview);
+
+    // Modal create post preview
+    const postMediaModal = document.getElementById('postMediaModal');
+    const previewContainerModal = document.getElementById('previewContainerModal');
+    const previewImageModal = document.getElementById('previewImageModal');
+    const previewVideoModal = document.getElementById('previewVideoModal');
+    const btnRemovePreviewModal = document.getElementById('btnRemovePreviewModal');
+    handleFilePreview(postMediaModal, previewContainerModal, previewImageModal, previewVideoModal, btnRemovePreviewModal);
+
+    // Show toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Handle form submission for create post (desktop)
+    const formCreatePost = document.getElementById('formCreatePost');
+    formCreatePost.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = e.target.postText.value.trim();
+      if (!text && !postMedia.files.length) {
+        alert('Por favor, escreva algo ou adicione uma mídia.');
+        return;
+      }
+      // Mock adding post to feed
+      showToast('Publicação realizada com sucesso!');
+      e.target.reset();
+      previewContainer.classList.add('hidden');
+      previewImage.src = '';
+      previewVideo.src = '';
+    });
+
+    // Handle form submission for create post (modal)
+    const formCreatePostModal = document.getElementById('formCreatePostModal');
+    formCreatePostModal.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = e.target.postTextModal.value.trim();
+      if (!text && !postMediaModal.files.length) {
+        alert('Por favor, escreva algo ou adicione uma mídia.');
+        return;
+      }
+      showToast('Publicação realizada com sucesso!');
+      e.target.reset();
+      previewContainerModal.classList.add('hidden');
+      previewImageModal.src = '';
+      previewVideoModal.src = '';
+      closeModalCreatePost();
+    });
+
+    // Open/close modal create post
+    const modalCreatePost = document.getElementById('modalCreatePost');
+    const btnCreatePostMobile = document.getElementById('btnCreatePostMobile');
+    const btnCloseCreatePostModal = document.getElementById('btnCloseCreatePostModal');
+
+    function openModalCreatePost() {
+      modalCreatePost.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('postTextModal').focus();
+    }
+    function closeModalCreatePost() {
+      modalCreatePost.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    btnCreatePostMobile.addEventListener('click', openModalCreatePost);
+    btnCloseCreatePostModal.addEventListener('click', closeModalCreatePost);
+
+    // Close modals on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!modalCreatePost.classList.contains('hidden')) {
+          closeModalCreatePost();
+        }
+        if (!modalNotifications.classList.contains('hidden')) {
+          closeModalNotifications();
+        }
+        if (!modalMessages.classList.contains('hidden')) {
+          closeModalMessages();
+        }
+        if (!searchModal.classList.contains('hidden')) {
+          searchModal.classList.add('hidden');
+          searchInputMobile.value = '';
+          searchResultsMobile.innerHTML = '';
+          searchResultsMobile.classList.add('hidden');
+        }
+      }
+    });
+
+    // Modal Notifications open/close
+    const btnNotifications = document.getElementById('btnNotifications');
+    const modalNotifications = document.getElementById('modalNotifications');
+    const btnCloseNotificationsModal = document.getElementById('btnCloseNotificationsModal');
+
+    function openModalNotifications() {
+      modalNotifications.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModalNotifications() {
+      modalNotifications.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    btnNotifications.addEventListener('click', openModalNotifications);
+    btnCloseNotificationsModal.addEventListener('click', closeModalNotifications);
+
+    // Modal Messages open/close
+    const btnMessages = document.getElementById('btnMessages');
+    const modalMessages = document.getElementById('modalMessages');
+    const btnCloseMessagesModal = document.getElementById('btnCloseMessagesModal');
+
+    function openModalMessages() {
+      modalMessages.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('inputMessage').focus();
+    }
+    function closeModalMessages() {
+      modalMessages.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    btnMessages.addEventListener('click', openModalMessages);
+    btnCloseMessagesModal.addEventListener('click', closeModalMessages);
+
+    // Handle send message form (mock)
+    const formSendMessage = document.getElementById('formSendMessage');
+    const messagesContainer = document.getElementById('messagesContainer');
+    formSendMessage.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = e.target.inputMessage;
+      const message = input.value.trim();
+      if (!message) return;
+      // Append message to container
+      const div = document.createElement('div');
+      div.className = 'flex justify-end';
+      div.innerHTML = `<div class="bg-blue-600 text-white rounded-xl px-4 py-2 max-w-xs break-words">${message}</div>`;
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      input.value = '';
+    });
+
+    // Logout buttons
+    const btnLogout = document.getElementById('btnLogout');
+    const btnLogoutMobile = document.getElementById('btnLogoutMobile');
+    function logout() {
+      alert('Logout realizado.');
+    }
+    btnLogout.addEventListener('click', logout);
+    btnLogoutMobile.addEventListener('click', logout);
+  </script>
+ </body>
+</html>

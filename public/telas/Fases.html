@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fases</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .sidebar-link:hover {
+      color: #2563EB;
+      background-color: #EFF6FF;
+      transform: scale(1.05);
+    }
+
+    .nivel-card {
+      transition: all 0.3s ease;
+    }
+
+    .nivel-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
+    }
+
+    .action-button {
+      transition: all 0.2s ease;
+    }
+
+    .action-button:hover {
+      transform: scale(1.05);
+      background-color: #EFF6FF;
+      color: #2563EB;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex">
+  <!-- Sidebar -->
+  <nav class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen flex flex-col items-start justify-start z-20">
+    <h2 class="text-2xl font-bold mb-6">
+      Menu
+    </h2>
+    <ul class="flex flex-col gap-2 w-full justify-start">
+      <li>
+        <a href="Painel.html"
+          class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded">
+          <i class="fas fa-home mr-3"></i> Inicio
+        </a>
+      </li>
+      <li>
+        <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+          href="DadoUsuario.html">
+          <i class="fas fa-user mr-3"></i>
+          Perfil
+        </a>
+      </li>
+      <li>
+        <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+          href="Fases.html">
+          <i class="fas fa-tasks mr-3"></i>
+          Missão
+        </a>
+      </li>
+
+      <li>
+        <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+          href="../Biblioteca/paginaBiblioteca.html">
+          <i class="fas fa-book mr-3"></i>
+          Biblioteca
+        </a>
+      </li>
+
+      <li class="mb-4 hidden w-full" id="adminDropdown">
+        <div class="relative w-full">
+          <button
+            class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded w-full transition justify-between"
+            id="adminMenuButton">
+            <span>
+              <i class="fas fa-cog mr-3"></i>
+              Administração
+            </span>
+            <i class="fas fa-chevron-down ml-2"></i>
+          </button>
+          <ul class="hidden absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-30" id="adminMenuItems">
+            <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/PesquisaUsuario.html">Usuários</a>
+            </li>
+            <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/CaPerguntas.html">Cadastrar Níveis
+                e Perguntas</a></li>
+            <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">Dados das
+                Fases</a></li>
+            <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosNiveis.html">Busca de Níveis e
+                Perguntas</a></li>
+
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 ml-64 p-4 sm:p-8">
+    <div class="w-full max-w-5xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
+        <div class="flex justify-between items-center mb-8">
+          <h1 class="text-3xl font-semibold text-gray-900">Escolha Um Nível</h1>
+          <div class="flex space-x-4"> <!-- Adiciona um container flex com espaço entre os botões -->
+            <a href='../PaginaProducao.html'
+              class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition">
+              Ranking
+            </a>
+            <a href='../PaginaProducao.html'
+              class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition">
+              Temporada
+            </a>
+          </div>
+        </div>
+      </div>
+      <div id="niveisContainer" class="space-y-6">
+        <!-- Os blocos de níveis serão renderizados aqui -->
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <script>
+    // Função para mostrar feedback
+    function showFeedback(message, isError = true) {
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${isError ? 'bg-red-500' : 'bg-green-500'} text-white z-50`;
+      feedbackDiv.textContent = message;
+      document.body.appendChild(feedbackDiv);
+      setTimeout(() => feedbackDiv.remove(), 3000);
+    }
+
+    // Verifica autenticação ao carregar a página
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem('token');
+      console.log('Token on load:', token ? 'Presente' : 'Ausente');
+      if (!token) {
+        showFeedback("Você precisa estar logado para acessar esta página.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      // Verifica o token e exibe o menu de administração se for administrador
+      fetch("http://localhost:3000/verifyToken", {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+        .then(res => {
+          console.log('Verify token response:', res.status);
+          return res.json();
+        })
+        .then(data => {
+          console.log('Verify token data:', data);
+          if (!data.auth) {
+            localStorage.removeItem('token');
+            showFeedback("Sessão inválida ou expirada.");
+            window.location.href = "index.html";
+          } else {
+            // Mostra o menu "Administração" apenas para admins
+            if (data.user.tipo === 'admin') {
+              const adminDropdown = document.getElementById('adminDropdown');
+              adminDropdown.classList.remove('hidden');
+
+              // Lógica do dropdown
+              const adminMenuButton = document.getElementById('adminMenuButton');
+              const adminMenuItems = document.getElementById('adminMenuItems');
+
+              adminMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                adminMenuItems.classList.toggle('hidden');
+              });
+
+              document.addEventListener('click', (e) => {
+                if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
+                  adminMenuItems.classList.add('hidden');
+                }
+              });
+            }
+
+            // Busca os níveis ativos após a autenticação
+            fetchNiveisAtivos();
+          }
+        })
+        .catch(error => {
+          console.error("Erro ao verificar token:", error);
+          showFeedback("Erro ao verificar autenticação.");
+          localStorage.removeItem('token');
+          window.location.href = "index.html";
+        });
+    });
+
+    // Função para buscar níveis ativos
+    async function fetchNiveisAtivos() {
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token usado:', token ? 'Presente' : 'Ausente');
+        const response = await fetch("http://localhost:3000/niveis/ativos", {
+          method: "GET",
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        console.log('Resposta do backend:', response.status, response.statusText);
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || `Erro na requisição: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log('Dados recebidos:', data);
+
+        const container = document.getElementById("niveisContainer");
+        container.innerHTML = ""; // Limpa o container
+
+        if (!data.niveis || data.niveis.length === 0) {
+          container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-tasks text-4xl mb-3"></i>
+                        <p>Nenhum nível ativo encontrado.</p>
+                    </div>
+                `;
+          return;
+        }
+
+        data.niveis.forEach(nivel => {
+          // Criação do bloco do nível
+          const nivelBlock = document.createElement("div");
+          nivelBlock.className = "nivel-card bg-white rounded-xl shadow-md p-5 border border-indigo-100 hover:shadow-lg transition cursor-pointer";
+          nivelBlock.setAttribute("onclick", `redirectToNivel(${nivel.id})`);
+
+          // Conteúdo do nível
+          nivelBlock.innerHTML = `
+                    <h2 class="text-xl font-semibold text-indigo-700 mb-2">${nivel.titulo}</h2>
+                    <p class="text-gray-600">${nivel.descricao || 'Sem descrição disponível'}</p>
+                `;
+
+          container.appendChild(nivelBlock);
+        });
+      } catch (error) {
+        console.error("Erro ao buscar níveis ativos:", error);
+        showFeedback("Erro ao carregar níveis: " + error.message);
+      }
+    }
+
+    // Função para redirecionar ao PainelNivel.html com o ID do nível
+    function redirectToNivel(nivelId) {
+      window.location.href = `PainelNivel.html?nivel_id=${nivelId}`;
+    }
+
+    // Função carregarProgresso (mantida, mas não usada diretamente nesta página)
+    async function carregarProgresso() {
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token usado para progresso:', token ? 'Presente' : 'Ausente');
+        const response = await fetch("http://localhost:3000/progresso/detalhado", {
+          method: "GET",
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        console.log('Resposta do progresso:', response.status, response.statusText);
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || "Erro ao buscar progresso");
+        }
+        const data = await response.json();
+        console.log('Progresso recebido:', data);
+
+        // Habilitar/desabilitar botões com base no progresso
+        const botoes = document.querySelectorAll('.nivel-button');
+        botoes.forEach((botao, index) => {
+          const nivelId = botao.dataset.nivelId;
+          const perguntasCompletas = data.niveisCompletos[nivelId] || 0;
+
+          if (perguntasCompletas >= 5) {
+            botao.disabled = false; // Habilita o botão se o nível foi concluído
+          } else {
+            botao.disabled = true; // Desabilita o botão se o nível não foi concluído
+          }
+        });
+      } catch (error) {
+        console.error("Erro ao carregar progresso:", error);
+        showFeedback("Erro ao carregar progresso: " + error.message);
+      }
+    }
+  </script>
+</body>
+
+</html>

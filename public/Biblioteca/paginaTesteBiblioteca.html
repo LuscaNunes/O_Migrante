@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Leda - Livros Online</title>
+      <link rel="stylesheet" href="../Painel.html">
+    <style>
+        :root {
+            --primary-color: #6a4c93;
+            --secondary-color: #8a5cf3;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --header-bg: #ffffff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #9370db;
+            --secondary-color: #b19cd9;
+            --text-color: #f0f0f0;
+            --background-color: #1a1a2e;
+            --card-bg: #2a2a3e;
+            --header-bg: #16213e;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        header {
+            background-color: var(--header-bg);
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            transition: var(--transition);
+        }
+
+        .logo span {
+            font-weight: 300;
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            background-color: white;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-bar button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .books-section {
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .book-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-img {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .book-info {
+            padding: 1.5rem;
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .book-author {
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .book-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .add-to-cart {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: var(--header-bg);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .footer-column p, .footer-column a {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        /* Cart Modal Specific Styles */
+        .cart-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 1rem;
+        }
+        
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        
+        .cart-item-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .cart-item-author {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cart-item-price {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .cart-quantity {
+            width: 30px;
+            text-align: center;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+        }
+        
+        .remove-item:hover {
+            color: #ff4757;
+            text-decoration: underline;
+        }
+        
+        .cart-summary {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+        
+        .cart-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+        
+        .cart-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .cart-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .continue-shopping {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .checkout-btn {
+            flex: 1;
+        }
+        
+        .empty-cart-message {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .empty-cart-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--header-bg);
+                padding: 1rem;
+                box-shadow: var(--shadow);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                border-radius: 10px;
+            }
+
+            .search-bar input {
+                width: 100%;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .search-bar button {
+                width: 100%;
+                padding: 0.8rem;
+                border-radius: 0 0 10px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Biblioteca<span>Leda</span></h1>
+                </div>
+                <nav>
+                    <button class="mobile-menu" id="mobileMenuBtn">☰</button>
+                    <div class="nav-links" id="navLinks">
+                        <a href="#">Início</a>
+                        <a href="#">Catálogo</a>
+                        <a href="#">Lançamentos</a>
+                        <a href="#">Promoções</a>
+                        <a href="#">Contato</a>
+                    </div>
+                </nav>
+                <div class="user-actions">
+                    <button class="theme-toggle" id="themeToggle">🌙</button>
+                    <div class="cart-icon" id="cartIcon">
+                        🛒
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Descubra o Universo Literário de Leda</h2>
+            <p>Explore nossa seleção exclusiva de livros e encontre sua próxima aventura literária.</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar por título, autor ou gênero...">
+                <button>🔍</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="books-section">
+        <div class="container">
+            <h2 class="section-title">📚 Lançamentos</h2>
+            <div class="books-grid" id="newReleasesGrid">
+                <!-- Books will be loaded dynamically -->
+            </div>
+
+            <h2 class="section-title">🔥 Mais Vendidos</h2>
+            <div class="books-grid" id="bestSellersGrid">
+                <!-- Books will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="bookModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">×</button>
+            <div class="modal-header">
+                <h2>Detalhes do Livro</h2>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Book details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeCartModal">×</button>
+            <div class="modal-header">
+                <h2>Seu Carrinho</h2>
+            </div>
+            <div class="modal-body" id="cartModalContent">
+                <!-- Cart items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Biblioteca Leda</h3>
+                    <p>Sua fonte de inspiração literária e conhecimento.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">f</a>
+                        <a href="#" class="social-link">t</a>
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Úteis</h3>
+                    <a href="#">Sobre Nós</a>
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Serviço</a>
+                    <a href="#">FAQ</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <a href="#">Romance</a>
+                    <a href="#">Fantasia</a>
+                    <a href="#">Não-Ficção</a>
+                    <a href="#">Infantil</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <p>contato@bibliotecaleda.com</p>
+                    <p>+55 (11) 91234-5678</p>
+                    <p>Av. Paulista, 1000, São Paulo - SP</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Biblioteca Leda. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample book data
+        const books = [
+            {
+                id: 1,
+                title: "A Jornada Interior",
+                author: "Leda Campos",
+                price: "R$ 49,90",
+                image: "/api/placeholder/400/320",
+                category: "Romance",
+                isNew: true,
+                isBestseller: true,
+                description: "Um romance introspectivo sobre autoconhecimento e transformação pessoal. A protagonista Maria embarca em uma viagem que mudará sua percepção sobre a vida e o amor."
+            },
+            {
+                id: 2,
+                title: "Segredos do Universo",
+                author: "Leda Santos",
+                price: "R$ 54,90",
+                image: "/api/placeholder/400/320",
+                category: "Ficção Científica",
+                isNew: true,
+                isBestseller: false,
+                description: "Uma obra de ficção científica que explora os mistérios do cosmos e as possibilidades da existência humana além das fronteiras conhecidas."
+            },
+            {
+                id: 3,
+                title: "O Último Suspiro",
+                author: "Leda Almeida",
+                price: "R$ 39,90",
+                image: "/api/placeholder/400/320",
+                category: "Suspense",
+                isNew: false,
+                isBestseller: true,
+                description: "Um thriller psicológico envolvente que mantém o leitor preso até a última página. Uma trama cheia de reviravoltas inesperadas."
+            },
+            {
+                id: 4,
+                title: "Memórias de Outono",
+                author: "Leda Oliveira",
+                price: "R$ 45,90",
+                image: "/api/placeholder/400/320",
+                category: "Drama",
+                isNew: true,
+                isBestseller: true,
+                description: "Uma narrativa emocionante sobre família, perdão e recomeços. Ambientada em uma pequena cidade do interior, essa história tocará seu coração."
+            },
+            {
+                id: 5,
+                title: "O Portal dos Sonhos",
+                author: "Leda Pereira",
+                price: "R$ 59,90",
+                image: "/api/placeholder/400/320",
+                category: "Fantasia",
+                isNew: true,
+                isBestseller: false,
+                description: "Uma aventura fantástica em um mundo onde os sonhos se tornam realidade. Acompanhe a jornada de Lucas enquanto ele descobre seus poderes oníricos."
+            },
+            {
+                id: 6,
+                title: "Estrelas Cadentes",
+                author: "Leda Costa",
+                price: "R$ 42,90",
+                image: "/api/placeholder/400/320",
+                category: "Romance",
+                isNew: false,
+                isBestseller: true,
+                description: "Uma história de amor que transcende o tempo e o espaço. Dois jovens separados por circunstâncias, mas unidos pelo destino."
+            }
+        ];
+
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        const newReleasesGrid = document.getElementById('newReleasesGrid');
+        const bestSellersGrid = document.getElementById('bestSellersGrid');
+        const bookModal = document.getElementById('bookModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalContent = document.getElementById('modalContent');
+        const cartCount = document.querySelector('.cart-count');
+        const cartIcon = document.querySelector('.cart-icon');
+        const cartModal = document.getElementById('cartModal');
+        const closeCartModal = document.getElementById('closeCartModal');
+        const cartModalContent = document.getElementById('cartModalContent');
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Check for saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.textContent = '☀️';
+        }
+
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.mobile-menu') && !e.target.closest('.nav-links')) {
+                navLinks.classList.remove('show');
+            }
+        });
+
+        // Create Book Card
+        function createBookCard(book) {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.setAttribute('data-book-id', book.id);
+
+            card.innerHTML = `
+                ${book.isNew ? '<span class="badge">Novo</span>' : ''}
+                <img src="${book.image}" alt="${book.title}" class="book-img">
+                <div class="book-info">
+                    <h3 class="book-title">${book.title}</h3>
+                    <p class="book-author">${book.author}</p>
+                    <p class="book-price">${book.price}</p>
+                    <button class="btn add-to-cart">Adicionar ao Carrinho 🛒</button>
+                </div>
+            `;
+
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('add-to-cart')) {
+                    openBookModal(book);
+                }
+            });
+
+            const addToCartBtn = card.querySelector('.add-to-cart');
+            addToCartBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addToCart(book);
+            });
+
+            return card;
+        }
+
+        // Load Books
+        function loadBooks() {
+            // New Releases
+            const newReleases = books.filter(book => book.isNew);
+            newReleasesGrid.innerHTML = '';
+            newReleases.forEach(book => {
+                newReleasesGrid.appendChild(createBookCard(book));
+            });
+
+            // Best Sellers
+            const bestSellers = books.filter(book => book.isBestseller);
+            bestSellersGrid.innerHTML = '';
+            bestSellers.forEach(book => {
+                bestSellersGrid.appendChild(createBookCard(book));
+            });
+        }
+
+        // Open Book Modal
+        function openBookModal(book) {
+            modalContent.innerHTML = `
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                    <img src="${book.image}" alt="${book.title}" style="width: 200px; border-radius: 8px; object-fit: cover;">
+                    <div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">${book.title}</h3>
+                        <p style="color: var(--secondary-color); margin-bottom: 1rem;">${book.author}</p>
+                        <p style="margin-bottom: 1rem;"><strong>Categoria:</strong> ${book.category}</p>
+                        <p style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 1.5rem;"><strong>${book.price}</strong></p>
+                        <button class="btn add-to-cart" data-book-id="${book.id}">Adicionar ao Carrinho 🛒</button>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--primary-color);">Descrição</h4>
+                    <p>${book.description}</p>
+                </div>
+            `;
+
+            const addToCartBtn = modalContent.querySelector('.add-to-cart');
+            addToCartBtn.addEventListener('click', () => addToCart(book));
+
+            bookModal.style.display = 'flex';
+        }
+
+        // Close Modal
+        closeModal.addEventListener('click', () => {
+            bookModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === bookModal) {
+                bookModal.style.display = 'none';
+            }
+        });
+
+        // Cart functionality
+        let cart = [];
+
+        function addToCart(book) {
+            // Check if book is already in cart
+            const existingBookIndex = cart.findIndex(item => item.book.id === book.id);
+            
+            if (existingBookIndex !== -1) {
+                // If book exists, increase quantity
+                cart[existingBookIndex].quantity += 1;
+            } else {
+                // If book doesn't exist, add it with quantity 1
+                cart.push({
+                    book: book,
+                    quantity: 1
+                });
+            }
+            
+            updateCartCount();
+            saveCartToLocalStorage();
+            showNotification(`"${book.title}" foi adicionado ao carrinho!`);
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+        
+        function removeFromCart(bookId) {
+            cart = cart.filter(item => item.book.id !== bookId);
+            updateCartCount();
+            saveCartToLocalStorage();
+            updateCartModal();
+        }
+        
+        function updateItemQuantity(bookId, newQuantity) {
+            const itemIndex = cart.findIndex(item => item.book.id === bookId);
+            
+            if (itemIndex !== -1) {
+                if (newQuantity <= 0) {
+                    removeFromCart(bookId);
+                } else {
+                    cart[itemIndex].quantity = newQuantity;
+                    updateCartCount();
+                    saveCartToLocalStorage();
+                    updateCartModal();
+                }
+            }
+        }
+        
+        function calculateTotal() {
+            return cart.reduce((total, item) => {
+                const price = parseFloat(item.book.price.replace('R$ ', '').replace(',', '.'));
+                return total + (price * item.quantity);
+            }, 0);
+        }
+        
+        function showNotification(message) {
+            // Remove existing notification if any
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                document.body.removeChild(existingNotification);
+            }
+            
+            // Create new notification
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 500);
+            }, 3000);
+        }
+        
+        function saveCartToLocalStorage() {
+            localStorage.setItem('ledaBookshopCart', JSON.stringify(cart));
+        }
+        
+        function loadCartFromLocalStorage() {
+            const savedCart = localStorage.getItem('ledaBookshopCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartCount();
+            }
+        }
+        
+        function openCartModal() {
+            updateCartModal();
+            cartModal.style.display = 'flex';
+        }
+        
+        function updateCartModal() {
+            if (cart.length === 0) {
+                cartModalContent.innerHTML = `
+                    <div class="empty-cart-message">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h3>Seu carrinho está vazio</h3>
+                        <p>Adicione alguns livros para começar a sua jornada literária!</p>
+                        <button class="btn continue-shopping" id="continueShoppingBtn">Continuar Comprando</button>
+                    </div>
+                `;
+                
+                document.getElementById('continueShoppingBtn').addEventListener('click', () => {
+                    cartModal.style.display = 'none';
+                });
+                
+                return;
+            }
+            
+            let cartHTML = '';
+            
+            // Add cart items
+            cart.forEach(item => {
+                const book = item.book;
+                const itemTotal = parseFloat(book.price.replace('R$ ', '').replace(',', '.')) * item.quantity;
+                
+                cartHTML += `
+                    <div class="cart-item" data-book-id="${book.id}">
+                        <img src="${book.image}" alt="${book.title}" class="cart-item-img">
+                        <div class="cart-item-info">
+                            <h3 class="cart-item-title">${book.title}</h3>
+                            <p class="cart-item-author">${book.author}</p>
+                            <p class="cart-item-price">${book.price}</p>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn decrease-quantity" data-book-id="${book.id}">-</button>
+                                <span class="cart-quantity">${item.quantity}</span>
+                                <button class="quantity-btn increase-quantity" data-book-id="${book.id}">+</button>
+                            </div>
+                            <button class="remove-item" data-book-id="${book.id}">🗑️ Remover</button>
+                        </div>
+                        <div class="cart-item-subtotal">
+                            <strong>R$ ${itemTotal.toFixed(2).replace('.', ',')}</strong>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Calculate totals
+            const subtotal = calculateTotal();
+            const shipping = subtotal > 0 ? 12.90 : 0;
+            const total = subtotal + shipping;
+            
+            // Add summary
+            cartHTML += `
+                <div class="cart-summary">
+                    <div class="cart-summary-row">
+                        <span>Subtotal:</span>
+                        <span>R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <div class="cart-summary-row">
+                        <span>Frete:</span>
+                        <span>R$ ${shipping.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <div class="cart-summary-row cart-total">
+                        <span>Total:</span>
+                        <span>R$ ${total.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                </div>
+                
+                <div class="cart-buttons">
+                    <button class="btn continue-shopping" id="continueShoppingBtn">Continuar Comprando</button>
+                    <button class="btn checkout-btn">Finalizar Compra</button>
+                </div>
+            `;
+            
+            cartModalContent.innerHTML = cartHTML;
+            
+            // Add event listeners to cart buttons
+            document.querySelectorAll('.decrease-quantity').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const bookId = parseInt(btn.getAttribute('data-book-id'));
+                    const currentItem = cart.find(item => item.book.id === bookId);
+                    if (currentItem) {
+                        updateItemQuantity(bookId, currentItem.quantity - 1);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.increase-quantity').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const bookId = parseInt(btn.getAttribute('data-book-id'));
+                    const currentItem = cart.find(item => item.book.id === bookId);
+                    if (currentItem) {
+                        updateItemQuantity(bookId, currentItem.quantity + 1);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const bookId = parseInt(btn.getAttribute('data-book-id'));
+                    removeFromCart(bookId);
+                });
+            });
+            
+            document.getElementById('continueShoppingBtn').addEventListener('click', () => {
+                cartModal.style.display = 'none';
+            });
+        }
+        
+        // Cart icon click event
+        cartIcon.addEventListener('click', openCartModal);
+        
+        // Close cart modal
+        closeCartModal.addEventListener('click', () => {
+            cartModal.style.display = 'none';
+        });
+        
+        // Close cart modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === cartModal) {
+                cartModal.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadBooks);
+    </script>
+</body>
+</html>

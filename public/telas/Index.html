@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login e Cadastro - Ágape</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <!-- Container do Login -->
+    <div id="loginContainer" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+        <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+        <form id="loginForm">
+            <div class="mb-2">
+                <label for="loginEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="loginEmail" placeholder="Email" class="w-full p-2 border rounded" aria-label="Email" required>
+            </div>
+            <div class="mb-2">
+                <label for="loginPassword" class="block text-sm font-medium text-gray-700">Senha</label>
+                <input type="password" id="loginPassword" placeholder="Senha" class="w-full p-2 border rounded" aria-label="Senha" required>
+            </div>
+            <button type="submit" id="loginButton" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 flex justify-center items-center">
+                <span id="loginButtonText">Entrar</span>
+                <svg id="loginSpinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+            </button>
+        </form>
+        <p class="mt-2 text-center">Não tem uma conta? <a href="#" id="showRegister" class="text-blue-500 hover:underline">Cadastre-se</a></p>
+        <p id="loginError" class="text-red-500 text-sm mt-2 hidden"></p>
+    </div>
+
+    <!-- Container do Cadastro (Oculto inicialmente) -->
+    <div id="registerContainer" class="hidden bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+        <h2 class="text-2xl font-bold mb-4 text-center">Cadastro</h2>
+        <form id="registerForm">
+            <div class="mb-2">
+                <label for="registerName" class="block text-sm font-medium text-gray-700">Nome</label>
+                <input type="text" id="registerName" placeholder="Nome" class="w-full p-2 border rounded" aria-label="Nome" required>
+            </div>
+            <div class="mb-2">
+                <label for="registerEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="registerEmail" placeholder="Email" class="w-full p-2 border rounded" aria-label="Email" required>
+            </div>
+            <div class="mb-2">
+                <label for="registerPassword" class="block text-sm font-medium text-gray-700">Senha</label>
+                <input type="password" id="registerPassword" placeholder="Senha" class="w-full p-2 border rounded" aria-label="Senha" required>
+            </div>
+            <button type="submit" id="registerButton" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 flex justify-center items-center">
+                <span id="registerButtonText">Cadastrar</span>
+                <svg id="registerSpinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+            </button>
+        </form>
+        <p class="mt-2 text-center">Já tem uma conta? <a href="#" id="showLogin" class="text-blue-500 hover:underline">Faça login</a></p>
+        <p id="registerError" class="text-red-500 text-sm mt-2 hidden"></p>
+    </div>
+
+    <script>
+        console.log('Script do Index.html carregado');
+
+        // Verificar se os elementos existem
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        console.log('loginForm encontrado:', !!loginForm);
+        console.log('loginButton encontrado:', !!loginButton);
+
+        // Listener para o clique no botão
+        if (loginButton) {
+            loginButton.addEventListener('click', (e) => {
+                console.log('Botão de login clicado');
+            });
+        } else {
+            console.error('Botão de login não encontrado');
+        }
+
+        // Função para mostrar erro
+        function mostrarErro(containerId, mensagem) {
+            console.log(`Exibindo erro em ${containerId}: ${mensagem}`);
+            const erro = document.getElementById(containerId);
+            if (erro) {
+                erro.textContent = mensagem;
+                erro.classList.remove('hidden');
+            } else {
+                console.error(`Elemento de erro ${containerId} não encontrado`);
+            }
+        }
+
+        // Função para alternar loading no botão
+        function toggleLoading(buttonId, spinnerId, textId, isLoading) {
+            console.log(`Alterando estado do botão ${buttonId}: ${isLoading ? 'Carregando' : 'Normal'}`);
+            const button = document.getElementById(buttonId);
+            const spinner = document.getElementById(spinnerId);
+            const text = document.getElementById(textId);
+            if (button && spinner && text) {
+                button.disabled = isLoading;
+                spinner.classList.toggle('hidden', !isLoading);
+                text.textContent = isLoading ? '' : buttonId === 'loginButton' ? 'Entrar' : 'Cadastrar';
+            } else {
+                console.error(`Elementos para toggleLoading não encontrados: ${buttonId}, ${spinnerId}, ${textId}`);
+            }
+        }
+
+        // Validação de email
+        function validarEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isValid = regex.test(email);
+            console.log(`Validando email ${email}: ${isValid}`);
+            return isValid;
+        }
+
+        // Alternar entre Login e Cadastro
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+        if (showRegister) {
+            showRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Clicou em "Cadastre-se"');
+                document.getElementById('loginContainer').classList.add('hidden');
+                document.getElementById('registerContainer').classList.remove('hidden');
+                document.getElementById('loginError').classList.add('hidden');
+            });
+        }
+        if (showLogin) {
+            showLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Clicou em "Faça login"');
+                document.getElementById('registerContainer').classList.add('hidden');
+                document.getElementById('loginContainer').classList.remove('hidden');
+                document.getElementById('registerError').classList.add('hidden');
+            });
+        }
+
+        // Cadastro
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                console.log('Evento submit do formulário de cadastro disparado');
+                const nome = document.getElementById('registerName').value.trim();
+                const email = document.getElementById('registerEmail').value.trim();
+                const senha = document.getElementById('registerPassword').value;
+
+                console.log('Submetendo formulário de cadastro', { nome, email, senha: '****' });
+
+                if (!nome || !email || !senha) {
+                    mostrarErro('registerError', 'Preencha todos os campos.');
+                    return;
+                }
+
+                if (!validarEmail(email)) {
+                    mostrarErro('registerError', 'Email inválido.');
+                    return;
+                }
+
+                if (senha.length < 6) {
+                    mostrarErro('registerError', 'A senha deve ter pelo menos 6 caracteres.');
+                    return;
+                }
+
+                toggleLoading('registerButton', 'registerSpinner', 'registerButtonText', true);
+
+                try {
+                    console.log('Enviando requisição de cadastro para /auth/register');
+                    const response = await fetch('http://localhost:3000/auth/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nome, email, senha })
+                    });
+
+                    console.log(`Resposta recebida: Status ${response.status}`);
+                    let data;
+                    try {
+                        data = await response.json();
+                        console.log('Dados da resposta (JSON):', data);
+                    } catch (jsonError) {
+                        const text = await response.text();
+                        console.error('Resposta não é JSON:', text);
+                        throw new Error('Resposta inválida do servidor');
+                    }
+
+                    if (response.ok) {
+                        alert(data.message || 'Cadastro realizado com sucesso!');
+                        document.getElementById('registerForm').reset();
+                        document.getElementById('registerContainer').classList.add('hidden');
+                        document.getElementById('loginContainer').classList.remove('hidden');
+                    } else {
+                        mostrarErro('registerError', data.message || 'Erro no cadastro.');
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição de cadastro:', error);
+                    mostrarErro('registerError', 'Erro no cadastro. Tente novamente.');
+                } finally {
+                    toggleLoading('registerButton', 'registerSpinner', 'registerButtonText', false);
+                }
+            });
+        }
+
+        // Login
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                console.log('Evento submit do formulário de login disparado');
+                const email = document.getElementById('loginEmail').value.trim();
+                const senha = document.getElementById('loginPassword').value;
+
+                console.log('Submetendo formulário de login', { email, senha: '****' });
+
+                if (!email || !senha) {
+                    mostrarErro('loginError', 'Preencha todos os campos.');
+                    return;
+                }
+
+                if (!validarEmail(email)) {
+                    mostrarErro('loginError', 'Email inválido.');
+                    return;
+                }
+
+                toggleLoading('loginButton', 'loginSpinner', 'loginButtonText', true);
+
+                try {
+                    console.log('Enviando requisição de login para /auth/login');
+                    const response = await fetch('http://localhost:3000/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, senha })
+                    });
+
+                    console.log(`Resposta recebida: Status ${response.status}`);
+                    let data;
+                    try {
+                        data = await response.json();
+                        console.log('Dados da resposta (JSON):', data);
+                    } catch (jsonError) {
+                        const text = await response.text();
+                        console.error('Resposta não é JSON:', text);
+                        throw new Error('Resposta inválida do servidor');
+                    }
+
+                    if (data.auth) {
+                        console.log('Login bem-sucedido, salvando token');
+                        localStorage.setItem('token', data.token);
+                        console.log('Redirecionando para /public/telas/Painel.html');
+                        window.location.href = '/public/telas/Painel.html';
+                    } else {
+                        mostrarErro('loginError', data.message || 'Email ou senha incorretos.');
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição de login:', error);
+                    mostrarErro('loginError', 'Erro ao fazer login. Tente novamente.');
+                } finally {
+                    toggleLoading('loginButton', 'loginSpinner', 'loginButtonText', false);
+                }
+            });
+        } else {
+            console.error('Formulário de login não encontrado');
+        }
+
+        console.log('Listener de login registrado no formulário loginForm');
+    </script>
+</body>
+</html>

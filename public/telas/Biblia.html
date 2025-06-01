@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bíblia Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-link:hover {
+            color: #2563EB;
+            background-color: #EFF6FF;
+            transform: scale(1.05);
+        }
+
+        .versiculo-card {
+            transition: all 0.2s ease;
+        }
+
+        .versiculo-card:hover {
+            background-color: #EFF6FF;
+            transform: translateY(-2px);
+        }
+
+        .versiculo-selecionado {
+            background-color: #EEF2FF;
+            /* bg-indigo-100 */
+            color: #4F46E5;
+            /* text-indigo-700 */
+            border-left: 4px solid #4F46E5;
+            /* Borda índigo para destaque */
+            transition: all 0.2s ease;
+        }
+
+        .action-button {
+            transition: all 0.2s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            background-color: #EFF6FF;
+            color: #2563EB;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <nav class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen flex flex-col items-start justify-start z-20">
+        <h2 class="text-2xl font-bold mb-6">Menu</h2>
+        <ul class="flex flex-col gap-2 w-full justify-start">
+            <li><a href="Painel.html"
+                    class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded"><i
+                        class="fas fa-home mr-3"></i> Início</a></li>
+            <li><a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+                    href="DadoUsuario.html"><i class="fas fa-user mr-3"></i> Perfil</a></li>
+            <li><a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+                    href="Fases.html"><i class="fas fa-tasks mr-3"></i> Missão</a></li>
+            <li><a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+                    href="../Biblioteca/paginaBiblioteca.html"><i class="fas fa-book mr-3"></i> Biblioteca</a></li>
+
+            <li class="mb-4 hidden w-full" id="adminDropdown">
+                <div class="relative w-full">
+                    <button
+                        class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded w-full transition justify-between"
+                        id="adminMenuButton">
+                        <span><i class="fas fa-cog mr-3"></i>Administração</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </button>
+                    <ul class="hidden absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-30"
+                        id="adminMenuItems">
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href='../../admin/telas/PesquisaUsuario.html'>
+                                Usuários
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/CaPerguntas.html">
+                                Cadastrar Níveis e Perguntas
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">
+                                Dados das Fases
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosNiveis.html">
+                                Editar Níveis e Perguntas
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 p-4 sm:p-8">
+        <div class="w-full max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
+                <div class="flex items-center justify-between mb-8">
+                    <h1 class="text-3xl font-semibold text-gray-900">Bíblia</h1>
+                    <a href="DadoUsuario.html"
+                        class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i> Voltar
+                    </a>
+                </div>
+
+                <!-- Seletores -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                    <div class="flex-1">
+                        <label for="versao" class="block text-gray-700 text-sm font-bold mb-2">Versão</label>
+                        <select id="versao"
+                            class="block w-full bg-indigo-50 border border-indigo-200 rounded-lg py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">Selecione uma versão</option>
+                            <option value="acf">Almeida Corrigida Fiel (ACF)</option>
+                            <option value="nvi">Nova Versão Internacional (NVI)</option>
+                            <option value="aa">Almeida Atualizada (AA)</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label for="livro" class="block text-gray-700 text-sm font-bold mb-2">Livro</label>
+                        <select id="livro"
+                            class="block w-full bg-indigo-50 border border-indigo-200 rounded-lg py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            disabled>
+                            <option value="">Selecione um livro</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label for="capitulo" class="block text-gray-700 text-sm font-bold mb-2">Capítulo</label>
+                        <select id="capitulo"
+                            class="block w-full bg-indigo-50 border border-indigo-200 rounded-lg py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            disabled>
+                            <option value="">Selecione um capítulo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Principal -->
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Lista de Versículos -->
+                    <div class="lg:w-2/3">
+                        <div class="bg-white rounded-xl shadow-md p-5 border border-indigo-100">
+                            <h2 id="versiculos-titulo" class="text-xl font-semibold text-indigo-700 mb-4">Selecione uma
+                                versão, livro e capítulo</h2>
+                            <div id="versiculos-container" class="space-y-3 max-h-[60vh] overflow-y-auto">
+                                <!-- Versículos serão renderizados aqui -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campo de Anotações -->
+                    <div class="lg:w-1/3">
+                        <div class="bg-white rounded-xl shadow-md p-5 border border-indigo-100">
+                            <h2 class="text-xl font-semibold text-indigo-700 mb-4">Anotações</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="versiculo-selecionado"
+                                        class="block text-gray-700 text-sm font-bold mb-2">Versículo Selecionado</label>
+                                    <input id="versiculo-selecionado"
+                                        class="block w-full bg-gray-100 border border-gray-300 rounded-lg py-2 px-3 text-gray-700"
+                                        readonly>
+                                </div>
+                                <div>
+                                    <label for="texto-anotacao"
+                                        class="block text-gray-700 text-sm font-bold mb-2">Anotação</label>
+                                    <textarea id="texto-anotacao"
+                                        class="block w-full bg-indigo-50 border border-indigo-200 rounded-lg py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        rows="6" placeholder="Digite sua anotação aqui..."></textarea>
+                                </div>
+                                <button id="salvar-anotacao"
+                                    class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition w-full"
+                                    disabled>
+                                    Salvar Anotação
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Global variable to store Bible data
+        let bibleData = null;
+        let currentVersion = '';
+
+        // Feedback function
+        function showFeedback(message, isError = true) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${isError ? 'bg-red-500' : 'bg-green-500'} text-white z-50`;
+            feedbackDiv.textContent = message;
+            document.body.appendChild(feedbackDiv);
+            setTimeout(() => feedbackDiv.remove(), 3000);
+        }
+
+        // Load Bible XML
+        async function loadBibleXML(version) {
+            console.log(`Attempting to load XML for version: ${version}`);
+            try {
+                const response = await fetch(`http://localhost:3000/biblias/pt_${version}.xml`);
+                console.log(`Fetch response: ${response.status} ${response.statusText}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to load XML file: ${response.status} ${response.statusText}`);
+                }
+                const xmlString = await response.text();
+                console.log(`XML received (first (100 chars): ${xmlString.substring(0, 100)}`);
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+
+                if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                    throw new Error('Failed to parse XML');
+                }
+
+                bibleData = xmlDoc;
+                currentVersion = version;
+                populateBooks();
+                document.getElementById('livro').disabled = false;
+                showFeedback(`Version ${getVersionName(version)} loaded successfully!`, false);
+            } catch (error) {
+                console.error('Error loading Bible:', error);
+                showFeedback(`Failed to load version ${versionName(version)}. Check if the file exists.`, true);
+            }
+        }
+
+        // Get full version name
+        function getVersionName(version) {
+            const versions = {
+                'acf': 'Almeida Corrigida Fiel',
+                'nvi': 'Nova Versão Internacional',
+                'aa': 'Almeida Atualizada'
+            };
+            return versions[version] || version;
+        }
+
+        // Populate book list
+        function populateBooks() {
+            if (!bibleData) return;
+
+            const bookSelect = document.getElementById('livro');
+            bookSelect.innerHTML = '<option value="">Select a book</option>';
+
+            const books = bibleData.querySelectorAll('b');
+            books.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book.getAttribute('id');
+                option.textContent = book.getAttribute('n');
+                bookSelect.appendChild(option);
+            });
+
+            // Clear dependent fields
+            document.getElementById('capitulo').innerHTML = '<option value="">Select a chapter</option>';
+            document.getElementById('capitulo').disabled = true;
+            document.getElementById('versiculos-container').innerHTML = '';
+            document.getElementById('versiculos-titulo').textContent = `Bíblia ${getVersionName(currentVersion)} - Select a book`;
+        }
+
+        // Populate chapters
+        function populateChapters() {
+            const bookId = document.getElementById('livro').value;
+            if (!bookId || !bibleData) return;
+
+            const chapterSelect = document.getElementById('capitulo');
+            chapterSelect.innerHTML = '<option value="">Select a chapter</option>';
+            chapterSelect.disabled = false;
+
+            const book = bibleData.querySelector(`b[id="${bookId}"]`);
+            if (!book) return;
+
+            const chapters = book.querySelectorAll('c');
+            chapters.forEach(chapter => {
+                const option = document.createElement('option');
+                option.value = chapter.getAttribute('n');
+                option.textContent = chapter.getAttribute('n');
+                chapterSelect.appendChild(option);
+            });
+
+            // Clear verses
+            document.getElementById('versiculos-container').innerHTML = '';
+            const bookName = document.getElementById('livro').options[document.getElementById('livro').selectedIndex].text;
+            document.getElementById('versiculos-titulo').textContent = `Biblia ${getVersionName(currentVersion)} - ${bookName}`;
+        }
+
+        // Show verses
+        function showVerses() {
+            const bookId = document.getElementById('livro').value;
+            const bookName = document.getElementById('livro').options[document.getElementById('livro').selectedIndex].textContent;
+            const chapterNum = document.getElementById('capitulo').value;
+
+            if (!bookId || !chapterNum || !chapterNum || !bibleData) return;
+
+            const container = document.getElementById('versiculos-container');
+            container.innerHTML = '';
+            document.getElementById('versiculos-titulo').textContent = `Bíblia ${getVersionName(currentVersion)} - ${bookName} ${chapterNum}`;
+
+            const book = bibleData.querySelector(`b[id="${bookId}"]`);
+            const chapter = book.querySelector(`c[n="${chapterNum}"]`);
+            if (!chapter) return;
+
+            const verses = chapter.querySelectorAll('v');
+            verses.forEach(verse => {
+                const verseDiv = document.createElement('div');
+                verseDiv.className = 'versiculo-card p-3 rounded-lg cursor-pointer';
+                verseDiv.innerHTML = `<strong>${verse.getAttribute('n')}.</strong> ${verse.textContent}`;
+
+                verseDiv.addEventListener('click', () => {
+                    // Remove selection from other verses
+                    document.querySelectorAll('.versiculo-card').forEach(card => {
+                        card.classList.remove('versiculo-selecionado');
+                    });
+                    // Add selection to clicked verse
+                    verseDiv.classList.add('versiculo-selecionado');
+
+                    document.getElementById('versiculo-selecionado').value =
+                        `${getVersionName(currentVersion)} - ${bookName} ${chapterNum}:${verse.getAttribute('n')} - ${verse.textContent}`;
+                    // Enable save button if both fields are filled
+                    const annotationText = document.getElementById('texto-anotacao').value.trim();
+                    document.getElementById('salvar-anotacao').disabled = !(document.getElementById('versiculo-selecionado').value && annotationText);
+                });
+
+                container.appendChild(verseDiv);
+            });
+        }
+
+        // Save annotation
+        async function saveAnnotation() {
+            const selectedVerse = document.getElementById('versiculo-selecionado').value;
+            const annotationText = document.getElementById('texto-anotacao').value.trim();
+
+            console.log('Attempting to save annotation:', { selectedVerse, annotationText });
+
+            if (!selectedVerse || !annotationText) {
+                showFeedback("Fill all fields to save the annotation.", true);
+                return;
+            }
+
+            // Parse selected verse
+            const [versionName, reference, text] = selectedVerse.split(' - ');
+            const [bookChapter, verseNum] = reference.split(':');
+            const [book, chapter] = bookChapter.trim().split(' ');
+
+            const annotationData = {
+                versao: currentVersion,
+                livro: book,
+                capitulo: parseInt(chapter),
+                versiculo: parseInt(verseNum),
+                texto_versiculo: text,
+                texto_anotacao: annotationText
+            };
+
+            console.log('Data sent to backend:', annotationData);
+
+            try {
+                const token = localStorage.getItem('token');
+                console.log('Token used:', token ? 'Present' : 'Missing');
+                const response = await fetch('http://localhost:3000/anotacoes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(annotationData)
+                });
+
+                console.log('Backend response:', response.status, response.statusText);
+                const result = await response.json();
+                console.log('Backend result:', result);
+
+                if (result.success) {
+                    showFeedback("Annotation saved successfully!", false);
+                    document.getElementById('texto-anotacao').value = '';
+                    document.getElementById('versiculo-selecionado').value = '';
+                    document.getElementById('salvar-anotacao').disabled = true;
+                    // Clear verse selection
+                    document.querySelectorAll('.versiculo-card').forEach(card => {
+                        card.classList.remove('versiculo-selecionado');
+                    });
+                } else {
+                    showFeedback(result.message || "Failed to save annotation.", true);
+                }
+            } catch (error) {
+                console.error('Error saving annotation:', error);
+                showFeedback("Error saving annotation. Try again.", true);
+            }
+        }
+
+        // Event Listeners
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token');
+            console.log('Token on load:', token ? 'Present' : 'Missing');
+            if (!token) {
+                showFeedback("You need to be logged in to access this page.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            // Verify token
+            fetch("http://localhost:3000/verifyToken", {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            })
+                .then(res => {
+                    console.log('Verify token response:', res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    console.log('Verify token data:', data);
+                    if (!data.auth) {
+                        localStorage.removeItem('token');
+                        showFeedback("Invalid or expired session.");
+                        window.location.href = "index.html";
+                    } else {
+                        if (data.user.tipo === 'admin') {
+                            const adminDropdown = document.getElementById('adminDropdown');
+                            adminDropdown.classList.remove('hidden');
+
+                            const adminMenuButton = document.getElementById('adminMenuButton');
+                            const adminMenuItems = document.getElementById('adminMenuItems');
+
+                            adminMenuButton.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                adminMenuItems.classList.toggle('hidden');
+                            });
+
+                            document.addEventListener('click', (e) => {
+                                if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
+                                    adminMenuItems.classList.add('hidden');
+                                }
+                            });
+                        }
+
+                        // Setup event listeners
+                        document.getElementById('versao').addEventListener('change', (e) => {
+                            if (e.target.value) {
+                                loadBibleXML(e.target.value);
+                            } else {
+                                document.getElementById('livro').innerHTML = '<option value="">Select a book</option>';
+                                document.getElementById('livro').disabled = true;
+                                document.getElementById('capitulo').innerHTML = '<option value="">Select a chapter</option>';
+                                document.getElementById('capitulo').disabled = true;
+                                document.getElementById('versiculos-container').innerHTML = '';
+                                document.getElementById('versiculos-titulo').textContent = 'Select a version, book, and chapter';
+                            }
+                        });
+
+                        document.getElementById('livro').addEventListener('change', populateChapters);
+                        document.getElementById('capitulo').addEventListener('change', showVerses);
+                        document.getElementById('salvar-anotacao').addEventListener('click', saveAnnotation);
+
+                        // Enable save button on annotation input
+                        document.getElementById('texto-anotacao').addEventListener('input', () => {
+                            const selectedVerse = document.getElementById('versiculo-selecionado').value;
+                            const annotationText = document.getElementById('texto-anotacao').value.trim();
+                            document.getElementById('salvar-anotacao').disabled = !(selectedVerse && annotationText);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error verifying token:", error);
+                    showFeedback("Error verifying authentication.");
+                    localStorage.removeItem('token');
+                    window.location.href = "index.html";
+                });
+        });
+    </script>
+</body>
+
+</html>

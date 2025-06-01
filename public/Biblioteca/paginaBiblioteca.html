@@ -1,0 +1,299 @@
+<html class="scroll-smooth" lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Loja de Livros Modernos
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../Painel.html">
+  <style>
+   body {
+      font-family: 'Inter', sans-serif;
+    }
+   /* Carousel image fade */
+   .carousel-image {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     opacity: 0;
+     transition: opacity 0.5s ease-in-out;
+     border-radius: 0.75rem; /* match rounded-xl */
+   }
+   .carousel-image.active {
+     opacity: 1;
+     position: relative;
+   }
+   .book-card {
+     position: relative;
+     overflow: hidden;
+     cursor: pointer;
+     transition: transform 0.3s ease;
+   }
+   .book-card:hover {
+     transform: scale(1.05);
+     z-index: 10;
+   }
+   .carousel-wrapper {
+     position: relative;
+     width: 100%;
+     height: 18rem; /* h-72 */
+   }
+  </style>
+ </head>
+ <body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-white shadow-md sticky top-0 z-50">
+   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a class="text-2xl font-semibold text-gray-900 select-none" href="#">
+     BookStore
+    </a>
+    <form aria-label="Busca de livros" class="flex w-full max-w-md ml-6" role="search">
+     <label class="sr-only" for="search">
+      Buscar livros
+     </label>
+     <input class="w-full rounded-l-md border border-gray-300 px-4 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" id="search" name="search" placeholder="Buscar livros..." type="search"/>
+     <button aria-label="Buscar" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 rounded-r-md flex items-center justify-center transition" type="submit">
+      <i class="fas fa-search">
+      </i>
+     </button>
+    </form>
+   </div>
+  </header>
+  <main class="flex-grow max-w-7xl mx-auto px-6 py-10">
+   <h1 class="text-4xl font-extrabold text-gray-900 mb-10 text-center">
+    Livros em Destaque
+   </h1>
+   <section aria-label="Lista de livros à venda" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro moderno com ilustração abstrata em tons de azul e branco" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/5af6358a-993c-41e4-e0cc-9366c7e0991f.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro O Silêncio das Palavras com ilustração abstrata azul e branco" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/b2834e87-be4f-437d-5e0b-a58359a33432.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro O Silêncio das Palavras com design minimalista azul" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/80f31f98-3ecb-41a2-46bf-a72ef632b94d.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       O Silêncio das Palavras
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Um romance contemporâneo que explora a profundidade das emoções humanas e o poder do silêncio.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 39,90
+       </span>
+       <button aria-label="Adicionar O Silêncio das Palavras ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro com design minimalista, fundo branco e título em preto" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/926828f8-e2a8-43a3-d733-f7d9a73e2191.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Minimalismo Essencial com fundo cinza claro e texto preto" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/7389f7c3-9ce5-41f9-dcbb-83bae953e976.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Minimalismo Essencial com fundo branco e texto cinza escuro" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/0d9e333b-2994-419c-558f-701ee882876d.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       Minimalismo Essencial
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Guia prático para simplificar sua vida e focar no que realmente importa.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 29,90
+       </span>
+       <button aria-label="Adicionar Minimalismo Essencial ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro com ilustração de floresta estilizada em tons verdes e amarelos" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/29c91da3-f0e9-42c1-bb54-376ad16474c1.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro A Jornada Verde com floresta estilizada verde escuro" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/04bf0ea0-60c4-42a9-64aa-c74df7efff0c.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro A Jornada Verde com folhas e natureza em tons verdes" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/49439a96-9084-4936-64ee-570d3062327a.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       A Jornada Verde
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Histórias inspiradoras sobre a conexão do ser humano com a natureza.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 44,90
+       </span>
+       <button aria-label="Adicionar A Jornada Verde ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro com design geométrico em tons de cinza e vermelho" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/b6ac83e1-b42c-4fb3-ba14-9aad3c87287c.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Geometria da Vida com formas geométricas cinza e vermelho" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/09279c2c-ca2c-4886-8dca-853f53431c6f.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Geometria da Vida com design abstrato vermelho e cinza" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/07609f22-1dbd-4210-dc0e-cb960580b633.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       Geometria da Vida
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Reflexões filosóficas sobre padrões e formas que moldam nosso cotidiano.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 34,90
+       </span>
+       <button aria-label="Adicionar Geometria da Vida ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro com ilustração de cidade futurista em tons de azul e roxo" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/d5d5cd6a-1749-47f5-8adf-c924eada38ef.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Futuro Infinito com cidade futurista azul e roxo" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/bd83ebc5-490f-4e1b-4a76-f88756d8e7e2.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Futuro Infinito com design futurista azul escuro" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/236b0cb9-c8a7-4810-6670-05eee318116c.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       Futuro Infinito
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Uma viagem pela ficção científica que explora possibilidades do amanhã.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 49,90
+       </span>
+       <button aria-label="Adicionar Futuro Infinito ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro com design minimalista, fundo bege e título em marrom escuro" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/990d0968-993b-4b76-e55b-0f5ff93aff4d.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Sabedoria Ancestral com fundo bege claro e texto marrom" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/99bb0ebe-6801-4da4-9c87-9103d4c64d03.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Sabedoria Ancestral com design minimalista bege e marrom" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/c3b0faae-346a-4147-fd6d-475e0eff0af2.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       Sabedoria Ancestral
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Coletânea de ensinamentos antigos para a vida moderna.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 27,90
+       </span>
+       <button aria-label="Adicionar Sabedoria Ancestral ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro com ilustração de mar e céu ao entardecer em tons laranja e azul" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/7a062177-fe53-4f3c-5f0b-218f70897e36.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Horizontes Distantes com mar e céu ao entardecer laranja" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/dd967bfc-aa77-4f26-dd1a-da2570ae3c7c.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Horizontes Distantes com céu azul e laranja ao entardecer" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/76d2b56e-30af-4006-90bf-8e809b31edbf.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       Horizontes Distantes
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Contos que exploram viagens e descobertas pessoais.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 38,90
+       </span>
+       <button aria-label="Adicionar Horizontes Distantes ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+    <article class="bg-white rounded-xl shadow-md book-card flex flex-col">
+     <div class="carousel-wrapper">
+      <img alt="Capa do livro com design abstrato em tons de vermelho e preto" class="carousel-image active" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/251d0abb-3e68-47c8-7feb-5143ba1fc52a.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Paixão e Contraste com design abstrato vermelho e preto" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/34922782-e1ff-456c-8107-441bf64b8dd1.jpg" width="400"/>
+      <img alt="Imagem alternativa do livro Paixão e Contraste com design abstrato vermelho escuro e preto" class="carousel-image" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/8f1284fc-2325-41c9-f399-1eeb0e0110e5.jpg" width="400"/>
+     </div>
+     <div class="p-5 flex flex-col flex-grow">
+      <h2 class="text-lg font-semibold text-gray-900 mb-2">
+       Paixão e Contraste
+      </h2>
+      <p class="text-gray-600 flex-grow">
+       Narrativas intensas que exploram os extremos das emoções humanas.
+      </p>
+      <div class="mt-4 flex items-center justify-between">
+       <span class="text-indigo-600 font-bold text-xl">
+        R$ 42,90
+       </span>
+       <button aria-label="Adicionar Paixão e Contraste ao carrinho" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-indigo-700 transition">
+        Comprar
+       </button>
+      </div>
+     </div>
+    </article>
+   </section>
+  </main>
+  <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+   <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm select-none">
+    © 2024 BookStore. Todos os direitos reservados.
+   </div>
+  </footer>
+  <script>
+   // For each book card, cycle through images on hover
+   document.querySelectorAll('.book-card').forEach(card => {
+     const images = card.querySelectorAll('.carousel-image');
+     let currentIndex = 0;
+     let intervalId = null;
+
+     function showImage(index) {
+       images.forEach((img, i) => {
+         if(i === index) {
+           img.classList.add('active');
+           img.style.position = 'relative';
+         } else {
+           img.classList.remove('active');
+           img.style.position = 'absolute';
+         }
+       });
+     }
+
+     card.addEventListener('mouseenter', () => {
+       if(images.length <= 1) return;
+       intervalId = setInterval(() => {
+         currentIndex = (currentIndex + 1) % images.length;
+         showImage(currentIndex);
+       }, 1500);
+     });
+
+     card.addEventListener('mouseleave', () => {
+       clearInterval(intervalId);
+       currentIndex = 0;
+       showImage(currentIndex);
+     });
+   });
+  </script>
+ </body>
+</html>
