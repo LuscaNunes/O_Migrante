@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Animação Lottie</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.4/dist/lottie-player.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #1e3a8a, #bfdbfe);
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .animation-container {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 1rem;
+      border: 1px dashed #ccc;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      margin: 0 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: bold;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    #start-btn {
+      background-color: #22c55e;
+      color: white;
+    }
+    #stop-btn {
+      background-color: #ef4444;
+      color: white;
+    }
+    #error-message {
+      color: red;
+      display: none;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="animation-container">
+      <lottie-player id="animation" src="robox.json" background="transparent" speed="1"></lottie-player>
+    </div>
+    <button id="start-btn" class="btn">Start</button>
+    <button id="stop-btn" class="btn">Stop</button>
+    <div id="error-message"></div>
+  </div>
+
+  <script>
+    const animationPlayer = document.getElementById('animation');
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const errorMessage = document.getElementById('error-message');
+
+    // Verificar se os elementos existem
+    if (!animationPlayer || !startBtn || !stopBtn || !errorMessage) {
+      console.error('Erro: Elementos HTML não encontrados.');
+      errorMessage.style.display = 'block';
+      errorMessage.textContent = 'Erro: Falha ao carregar os componentes da página.';
+    } else {
+      // Listener para erro de carregamento
+      animationPlayer.addEventListener('error', (e) => {
+        console.error('Erro ao carregar robox.json:', e);
+        errorMessage.style.display = 'block';
+        errorMessage.textContent = 'Erro: Não foi possível carregar a animação robox.json. Verifique o arquivo.';
+      });
+
+      // Listener para confirmar carregamento
+      animationPlayer.addEventListener('load', () => {
+        console.log('Animação robox.json carregada com sucesso.');
+        errorMessage.style.display = 'none';
+        errorMessage.textContent = '';
+      });
+
+      // Listener para estado de reprodução
+      animationPlayer.addEventListener('play', () => {
+        console.log('Animação iniciada.');
+      });
+      animationPlayer.addEventListener('stop', () => {
+        console.log('Animação parada.');
+      });
+
+      // Iniciar animação com loop
+      startBtn.addEventListener('click', () => {
+        try {
+          animationPlayer.loop = true; // Corrigido: usar propriedade loop
+          animationPlayer.play();
+        } catch (err) {
+          console.error('Erro ao iniciar animação:', err);
+          errorMessage.style.display = 'block';
+          errorMessage.textContent = 'Erro ao iniciar a animação.';
+        }
+      });
+
+      // Parar animação
+      stopBtn.addEventListener('click', () => {
+        try {
+          animationPlayer.stop();
+          animationPlayer.loop = false; // Corrigido: usar propriedade loop
+        } catch (err) {
+          console.error('Erro ao parar animação:', err);
+          errorMessage.style.display = 'block';
+          errorMessage.textContent = 'Erro ao parar a animação.';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

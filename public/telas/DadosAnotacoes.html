@@ -1,109 +1,69 @@
-<!DOCTYPE html>
-<html class="scroll-smooth" lang="pt-BR">
-
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Minhas Anotações - Bíblia Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-
         .sidebar-link:hover {
             color: #2563EB;
             background-color: #EFF6FF;
             transform: scale(1.05);
         }
-
         .anotacao-card {
             transition: all 0.2s ease;
         }
-
         .anotacao-card:hover {
             background-color: #EFF6FF;
             transform: translateY(-2px);
         }
-
         .action-button {
             transition: all 0.2s ease;
         }
-
         .action-button:hover {
             transform: scale(1.05);
             background-color: #EFF6FF;
             color: #2563EB;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(10px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
         .animate-fadeIn {
             animation: fadeIn 0.5s ease forwards;
         }
     </style>
 </head>
-
 <body class="bg-gray-50 min-h-screen flex">
-
     <!-- Sidebar -->
     <nav class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen flex flex-col items-start justify-start z-20">
         <h2 class="text-2xl font-bold mb-6">Menu</h2>
         <ul class="flex flex-col gap-2 w-full justify-start">
-            <li>
-                <a href="Painel.html"
-                    class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded">
-                    <i class="fas fa-home mr-3"></i> Início
-                </a>
-            </li>
-            <li>
-                <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
-                    href="DadoUsuario.html">
-                    <i class="fas fa-user mr-3"></i> Perfil
-                </a>
-            </li>
-            <li>
-                <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
-                    href="Fases.html">
-                    <i class="fas fa-tasks mr-3"></i> Missão
-                </a>
-            </li>
-
-            <li>
-                <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
-                    href="../Biblioteca/paginaBiblioteca.html">
-                    <i class="fas fa-book mr-3"></i> Biblioteca
-                </a>
-            </li>
+            <li><a href="Painel.html" class="flex items-center text-gray-700 hover:text-blue-500 hover:bg-blue-100 py-2 px-3 rounded"><i class="fas fa-home mr-3"></i> Início</a></li>
+            <li><a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start" href="DadoUsuario.html"><i class="fas fa-user mr-3"></i> Perfil</a></li>
+            <li><a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start" href="Fases.html"><i class="fas fa-tasks mr-3"></i> Missão</a></li>
+            <li><a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start" href="../Biblioteca/paginaBiblioteca.html"><i class="fas fa-book mr-3"></i> Biblioteca</a></li>
             <li class="mb-4 hidden w-full" id="adminDropdown">
                 <div class="relative w-full">
-                    <button
-                        class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded w-full transition justify-between"
-                        id="adminMenuButton">
+                    <button class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded w-full transition justify-between" id="adminMenuButton">
                         <span><i class="fas fa-cog mr-3"></i>Administração</span>
                         <i class="fas fa-chevron-down ml-2"></i>
                     </button>
-                    <ul class="hidden absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-30"
-                        id="adminMenuItems">
-                        <li><a class="block px-4 py-2 hover:bg-blue-100"
-                                href="../../admin/telas/PesquisaUsuario.html">Usuários</a></li>
-                        <li><a class="block px-4 py-2 hover:bg-blue-100"
-                                href="../../admin/telas/CaPerguntas.html">Cadastrar Níveis e Perguntas</a></li>
-                        <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">Dados
-                                das Fases</a></li>
-                        <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosNiveis.html">Busca
-                                de Níveis e Perguntas</a></li>
+                    <ul class="hidden absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-30" id="adminMenuItems">
+                        <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/PesquisaUsuario.html">Usuários</a></li>
+                        <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/CaPerguntas.html">Cadastrar Níveis e Perguntas</a></li>
+                        <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">Dados das Fases</a></li>
+                        <li><a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosNiveis.html">Busca de Níveis e Perguntas</a></li>
                     </ul>
                 </div>
             </li>
@@ -114,17 +74,19 @@
     <main class="flex-1 ml-64 p-4 sm:p-8">
         <div class="w-full max-w-5xl mx-auto">
             <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                     <h1 class="text-3xl font-semibold text-gray-900">Minhas Anotações</h1>
-                    <a href="DadoUsuario.html"
-                        class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition flex items-center">
-                        <i class="fas fa-arrow-left mr-2"></i> Voltar
-                    </a>
+                    <div class="flex items-center gap-4 w-full sm:w-auto">
+                        <label for="filtro-visibilidade" class="font-semibold text-indigo-700 whitespace-nowrap">Filtrar por:</label>
+                        <select id="filtro-visibilidade" class="border border-indigo-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-auto">
+                            <option value="todos" selected>Todos</option>
+                            <option value="publico">Público</option>
+                            <option value="privado">Privado</option>
+                        </select>
+                        <a href="DadoUsuario.html" class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition flex items-center whitespace-nowrap"><i class="fas fa-arrow-left mr-2"></i> Voltar</a>
+                    </div>
                 </div>
-
-                <div id="anotacoes-container" class="space-y-4">
-                    <!-- Anotações serão renderizadas aqui -->
-                </div>
+                <div id="anotacoes-container" class="space-y-4"></div>
             </div>
         </div>
     </main>
@@ -139,34 +101,65 @@
             setTimeout(() => feedbackDiv.remove(), 3000);
         }
 
-        // Função para carregar anotações
-        async function loadAnnotations() {
-            try {
-                const token = localStorage.getItem('token');
-                console.log('Token usado:', token ? 'Presente' : 'Ausente');
-                const response = await fetch('http://localhost:3000/anotacoes', {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${token}` }
+        // Função para criar modal de confirmação
+        function showConfirmation(message) {
+            return new Promise((resolve) => {
+                const overlay = document.createElement('div');
+                overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                const modal = document.createElement('div');
+                modal.className = 'bg-white rounded-lg p-6 max-w-sm w-full shadow-lg text-center';
+                const msg = document.createElement('p');
+                msg.className = 'mb-6 text-gray-800 text-lg';
+                msg.textContent = message;
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'flex justify-center gap-6';
+                const btnYes = document.createElement('button');
+                btnYes.className = 'bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded transition';
+                btnYes.textContent = 'Sim';
+                const btnNo = document.createElement('button');
+                btnNo.className = 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded transition';
+                btnNo.textContent = 'Não';
+                buttonsDiv.appendChild(btnYes);
+                buttonsDiv.appendChild(btnNo);
+                modal.appendChild(msg);
+                modal.appendChild(buttonsDiv);
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+                btnYes.focus();
+                btnYes.addEventListener('click', () => {
+                    document.body.removeChild(overlay);
+                    resolve(true);
                 });
-                console.log('Resposta do backend:', response.status, response.statusText);
-                const data = await response.json();
-                console.log('Dados recebidos:', data);
+                btnNo.addEventListener('click', () => {
+                    document.body.removeChild(overlay);
+                    resolve(false);
+                });
+            });
+        }
 
-                if (!response.ok) {
-                    throw new Error(data.message || 'Erro ao carregar anotações');
-                }
+        let anotacoesData = [];
 
-                const container = document.getElementById('anotacoes-container');
-                container.innerHTML = '';
-                if (!data.anotacoes || data.anotacoes.length === 0) {
-                    container.innerHTML = '<p class="text-gray-500">Nenhuma anotação encontrada.</p>';
-                    return;
-                }
+        // Função para renderizar anotações com filtro
+        function renderAnnotations(filter = 'todos') {
+            const container = document.getElementById('anotacoes-container');
+            container.innerHTML = '';
 
-                data.anotacoes.forEach(anotacao => {
-                    const div = document.createElement('div');
-                    div.className = 'anotacao-card p-4 bg-indigo-50 rounded-lg border border-indigo-100';
-                    div.innerHTML = `
+            let filtered = anotacoesData;
+            if (filter === 'publico') {
+                filtered = anotacoesData.filter(a => a.visibilidade === 'publico');
+            } else if (filter === 'privado') {
+                filtered = anotacoesData.filter(a => a.visibilidade === 'privado');
+            }
+
+            if (!filtered || filtered.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">Nenhuma anotação encontrada.</p>';
+                return;
+            }
+
+            filtered.forEach(anotacao => {
+                const div = document.createElement('div');
+                div.className = 'anotacao-card p-4 bg-indigo-50 rounded-lg border border-indigo-100';
+                div.innerHTML = `
                     <p class="font-semibold text-indigo-700">
                         ${anotacao.versao.toUpperCase()} - ${anotacao.livro} ${anotacao.capitulo}:${anotacao.versiculo}
                     </p>
@@ -174,8 +167,99 @@
                     <p class="text-gray-700 mt-1"><strong>Anotação:</strong> ${anotacao.texto_anotacao}</p>
                     <p class="text-sm text-gray-500 mt-2">Criado em: ${new Date(anotacao.criado_em).toLocaleString()}</p>
                 `;
-                    container.appendChild(div);
+
+                const editContainer = document.createElement('div');
+                editContainer.className = 'mt-4 flex flex-col sm:flex-row sm:items-center sm:gap-4';
+
+                const label = document.createElement('label');
+                label.className = 'text-indigo-700 font-semibold mb-1 sm:mb-0';
+                label.setAttribute('for', `visibilidade-select-${anotacao.id}`);
+                label.textContent = 'Visibilidade:';
+
+                const select = document.createElement('select');
+                select.id = `visibilidade-select-${anotacao.id}`;
+                select.className = 'border border-indigo-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500';
+                select.innerHTML = `
+                    <option value="publico" ${anotacao.visibilidade === 'publico' ? 'selected' : ''}>Público</option>
+                    <option value="privado" ${anotacao.visibilidade === 'privado' ? 'selected' : ''}>Privado</option>
+                `;
+
+                const btnSave = document.createElement('button');
+                btnSave.className = 'ml-0 mt-3 sm:mt-0 sm:ml-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded transition disabled:opacity-50 disabled:cursor-not-allowed';
+                btnSave.textContent = 'Salvar';
+                btnSave.disabled = true;
+
+                select.addEventListener('change', () => {
+                    btnSave.disabled = select.value === anotacao.visibilidade;
                 });
+
+                btnSave.addEventListener('click', async () => {
+                    const novaVisibilidade = select.value;
+                    const confirm = await showConfirmation(`Deseja realmente alterar a visibilidade para "${novaVisibilidade === 'publico' ? 'Público' : 'Privado'}"?`);
+                    if (!confirm) {
+                        select.value = anotacao.visibilidade;
+                        btnSave.disabled = true;
+                        return;
+                    }
+
+                    try {
+                        const token = localStorage.getItem('token');
+                        console.log('Enviando PATCH:', { id: anotacao.id, visibilidade: novaVisibilidade }); // Log para depuração
+                        const res = await fetch(`http://localhost:3000/anotacoes/${anotacao.id}/visibilidade`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ visibilidade: novaVisibilidade })
+                        });
+
+                        const resData = await res.json();
+                        console.log('Resposta do PATCH:', resData); // Log para depuração
+
+                        if (!res.ok) {
+                            throw new Error(resData.message || 'Erro ao atualizar visibilidade');
+                        }
+
+                        anotacao.visibilidade = novaVisibilidade;
+                        btnSave.disabled = true;
+                        showFeedback('Visibilidade atualizada com sucesso!', false);
+                        renderAnnotations(document.getElementById('filtro-visibilidade').value);
+                    } catch (error) {
+                        console.error('Erro ao atualizar visibilidade:', error);
+                        showFeedback('Erro ao atualizar visibilidade: ' + error.message, true);
+                        select.value = anotacao.visibilidade;
+                        btnSave.disabled = true;
+                    }
+                });
+
+                editContainer.appendChild(label);
+                editContainer.appendChild(select);
+                editContainer.appendChild(btnSave);
+                div.appendChild(editContainer);
+                container.appendChild(div);
+            });
+        }
+
+        // Função para carregar anotações
+        async function loadAnnotations() {
+            try {
+                const token = localStorage.getItem('token');
+                const filtro = document.getElementById('filtro-visibilidade').value;
+                console.log('Carregando anotações com filtro:', filtro); // Log para depuração
+                const response = await fetch(`http://localhost:3000/anotacoes?visibilidade=${filtro}`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                console.log('Dados recebidos do backend:', data); // Log para depuração
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Erro ao carregar anotações');
+                }
+
+                anotacoesData = data.anotacoes || [];
+                renderAnnotations(filtro);
             } catch (error) {
                 console.error('Erro ao carregar anotações:', error);
                 showFeedback('Erro ao carregar anotações: ' + error.message, true);
@@ -192,44 +276,38 @@
                 return;
             }
 
-            // Verificar token e permissões
             fetch('http://localhost:3000/verifyToken', {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             })
                 .then(res => {
-                    console.log('Verify token response:', res.status);
+                    console.log('Verify token response:', res.status); // Log para depuração
                     return res.json();
                 })
                 .then(data => {
-                    console.log('Verify token data:', data);
+                    console.log('Verify token data:', data); // Log para depuração
                     if (!data.auth) {
                         localStorage.removeItem('token');
                         showFeedback('Sessão inválida ou expirada.', true);
                         window.location.href = 'index.html';
                     } else {
-                        // Mostrar menu admin se for administrador
                         if (data.user.tipo === 'admin') {
                             const adminDropdown = document.getElementById('adminDropdown');
                             adminDropdown.classList.remove('hidden');
-
                             const adminMenuButton = document.getElementById('adminMenuButton');
                             const adminMenuItems = document.getElementById('adminMenuItems');
-
                             adminMenuButton.addEventListener('click', (e) => {
                                 e.stopPropagation();
                                 adminMenuItems.classList.toggle('hidden');
                             });
-
                             document.addEventListener('click', (e) => {
                                 if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
                                     adminMenuItems.classList.add('hidden');
                                 }
                             });
                         }
-
-                        // Carregar anotações
                         loadAnnotations();
+                        document.getElementById('filtro-visibilidade').addEventListener('change', loadAnnotations);
                     }
                 })
                 .catch(error => {
@@ -241,5 +319,4 @@
         });
     </script>
 </body>
-
 </html>

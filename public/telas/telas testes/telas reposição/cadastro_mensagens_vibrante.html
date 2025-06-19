@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Mensagens Diárias</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- CSS Vibrante Personalizado -->
+    <style>
+        /* ============================
+           CSS Vibrante para a Página
+           ============================ */
+
+        /* Fundo Geral */
+        body {
+          /* Gradiente suave com tom levemente amarelado e rosado */
+          background: linear-gradient(135deg, #FFF1E0 0%, #FFE5F7 100%);
+          min-height: 100vh;
+          font-family: 'Inter', sans-serif;
+          margin: 0;
+          padding: 0;
+          overflow-x: hidden;
+        }
+
+        /* ============================
+           Sidebar
+           ============================ */
+        nav {
+          /* Fundo em tom roxo-escuro */
+          background: #5B21B6;
+          width: 16rem;
+          padding: 1.5rem;
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 100vh;
+          box-shadow: 0 4px 12px rgba(91, 33, 182, 0.4);
+          border-top-right-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          z-index: 20;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+          color: #E5E7EB;
+        }
+
+        /* Título do Menu */
+        nav h2 {
+          color: #F3F4F6;
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin-bottom: 1.5rem;
+        }
+
+        /* Lista de Links */
+        nav ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        /* Link Padrão */
+        nav ul li a {
+          display: flex;
+          align-items: center;
+          color: #E5E7EB;
+          text-decoration: none;
+          padding: 0.5rem 0.75rem;
+          border-radius: 0.75rem;
+          font-family: sans-serif;
+          font-weight: 500;
+          text-transform: uppercase;
+          font-size: 0.875rem;
+          transition: transform 0.2s, background-color 0.2s, color 0.2s;
+        }
+
+        /* Ícones do Font Awesome */
+        nav ul li a i {
+          margin-right: 0.75rem;
+          color: #E5E7EB;
+          transition: color 0.2s;
+        }
+
+        /* Hover nos Links */
+        nav ul li a:hover {
+          background-color: #7C3AED;
+          color: #F3F4F6;
+          transform: scale(1.05);
+        }
+
+        nav ul li a:hover i {
+          color: #22D3EE;
+        }
+
+        /* Dropdown Administração */
+        #adminDropdown {
+          margin-bottom: 1rem;
+          width: 100%;
+        }
+
+        #adminMenuButton {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          background: transparent;
+          border: none;
+          color: #E5E7EB;
+          padding: 0.5rem 0.75rem;
+          border-radius: 0.75rem;
+          font-family: sans-serif;
+          font-weight: 500;
+          text-transform: uppercase;
+          font-size: 0.875rem;
+          cursor: pointer;
+          transition: transform 0.2s, background-color 0.2s, color 0.2s;
+        }
+
+        #adminMenuButton i.fa-chevron-down {
+          margin-left: 0.5rem;
+          transition: transform 0.2s;
+        }
+
+        #adminMenuButton:hover {
+          background-color: #7C3AED;
+          color: #F3F4F6;
+          transform: scale(1.05);
+        }
+
+        #adminMenuItems {
+          margin-top: 0.5rem;
+          width: 100%;
+          background: #EDE9FE;
+          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+          border-radius: 1rem;
+          z-index: 30;
+        }
+
+        #adminMenuItems li a {
+          display: block;
+          padding: 0.5rem 1rem;
+          color: #1F2937;
+          font-size: 0.875rem;
+          text-decoration: none;
+          transition: background-color 0.2s;
+        }
+
+        #adminMenuItems li a:hover {
+          background-color: #DDD6FE;
+        }
+
+        /* ============================
+           Main Content Container
+           ============================ */
+        main {
+          margin-left: 16rem;
+          padding: 1rem;
+        }
+
+        @media (min-width: 640px) {
+          main {
+            padding: 2rem;
+          }
+        }
+
+        main .max-w-5xl {
+          max-width: 80rem;
+          margin: 0 auto;
+        }
+
+        /* Box Branco Principal */
+        main .bg-white {
+          background: #EDE9FE;
+          border-radius: 1.5rem;
+          box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
+          padding: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+          main .sm\:p-10 {
+            padding: 2.5rem;
+          }
+        }
+
+        /* Título e Botão de Logout */
+        main h1 {
+          font-size: 1.875rem;
+          font-weight: 600;
+          color: #1F2937;
+        }
+
+        #logoutButton {
+          background: #7C3AED;
+          color: #FFFFFF;
+          font-size: 1rem;
+          font-weight: 500;
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: 1rem;
+          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+          transition: transform 0.2s, background-color 0.2s;
+        }
+
+        #logoutButton:hover {
+          background: #5B21B6;
+          transform: scale(1.05);
+        }
+
+        /* ============================
+           Seletores de Versão, Livro e Capítulo
+           ============================ */
+        label {
+          color: #1F2937;
+          font-size: 0.875rem;
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+          display: block;
+        }
+
+        select {
+          width: 100%;
+          background: #EEF2FF;
+          border: 2px solid #22D3EE;
+          border-radius: 1rem;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.875rem;
+          color: #1F2937;
+          appearance: none;
+          background-image: url("data:image/svg+xml;utf8,<svg fill='%231F2937' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548l4.484 4.484 4.484-4.484L16 9.516 10 15.516 4 9.516z'/></svg>");
+          background-repeat: no-repeat;
+          background-position: right 0.75rem center;
+          transition: all 0.2s;
+        }
+
+        select:focus {
+          outline: none;
+          box-shadow: 0 0 4px 2px rgba(16, 185, 129, 0.5);
+          border-color: #10B981;
+        }
+
+        select[disabled] {
+          opacity: 0.5;
+          background: #F3F4F6;
+          cursor: not-allowed;
+        }
+
+        .main-selectors {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 2rem;
+        }
+
+        @media (min-width: 640px) {
+          .main-selectors {
+            flex-direction: row;
+          }
+        }
+
+        .main-selectors > div {
+          flex: 1;
+        }
+
+        /* ============================
+           Lista de Versículos (Cards)
+           ============================ */
+        #versiculos-container {
+          max-height: 60vh;
+          overflow-y: auto;
+          margin-top: 1rem;
+        }
+
+        .versiculo-card {
+          background: #FFFFFF;
+          border-radius: 1rem;
+          padding: 0.75rem;
+          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .versiculo-card strong {
+          color: #7C3AED;
+        }
+
+        .versiculo-card:hover {
+          background: linear-gradient(135deg, #EDE9FE 0%, #EEF2FF 100%);
+          transform: translateY(-2px) scale(1.01);
+          box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
+        }
+
+        .versiculo-selecionado {
+          border-left: 4px solid #7C3AED;
+          background: linear-gradient(135deg, #F3EFFB 0%, #FFFFFF 100%);
+          transition: all 0.2s ease;
+        }
+
+        .versiculo-selecionado:hover {
+          background: linear-gradient(135deg, #EDE9FE 0%, #EEF2FF 100%);
+        }
+
+        /* ============================
+           Formulário de Mensagem Diária
+           ============================ */
+        #versiculo-selecionado,
+        #titulo-mensagem,
+        #texto-mensagem {
+          width: 100%;
+          border-radius: 1rem;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.875rem;
+          color: #1F2937;
+          transition: all 0.2s;
+        }
+
+        #versiculo-selecionado {
+          background: #F9FAFB;
+          border: 2px solid #22D3EE;
+          cursor: default;
+        }
+
+        #versiculo-selecionado:focus {
+          outline: none;
+          box-shadow: 0 0 4px 2px rgba(16, 185, 129, 0.5);
+          border-color: #10B981;
+        }
+
+        #titulo-mensagem {
+          background: linear-gradient(135deg, #EFFAF2 0%, #E0F7ED 100%);
+          border: 2px solid #22D3EE;
+        }
+
+        #titulo-mensagem:focus {
+          outline: none;
+          box-shadow: 0 0 4px 2px rgba(16, 185, 129, 0.5);
+          border-color: #10B981;
+        }
+
+        #texto-mensagem {
+          background: linear-gradient(135deg, #EFFAF2 0%, #E0F7ED 100%);
+          border: 2px solid #22D3EE;
+          resize: vertical;
+        }
+
+        #texto-mensagem:focus {
+          outline: none;
+          box-shadow: 0 0 4px 2px rgba(16, 185, 129, 0.5);
+          border-color: #10B981;
+        }
+
+        #salvar-mensagem {
+          background: #7C3AED;
+          color: #FFFFFF;
+          font-weight: 500;
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: 1rem;
+          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+          transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
+          cursor: pointer;
+        }
+
+        #salvar-mensagem:disabled {
+          opacity: 0.5;
+          background: #D1D5DB;
+          color: #9CA3AF;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        #salvar-mensagem:not(:disabled):hover {
+          background: #5B21B6;
+          transform: scale(1.05);
+        }
+
+        main .bg-white #versiculo-selecionado,
+        main .bg-white #titulo-mensagem,
+        main .bg-white #texto-mensagem,
+        main .bg-white #salvar-mensagem {
+          margin-top: 0.5rem;
+        }
+
+        /* ============================
+           Cartões e Containers Brancos Internos
+           ============================ */
+        main .bg-white.rounded-xl.shadow-md {
+          background: #EDE9FE;
+          border-radius: 1rem;
+          padding: 1.25rem;
+          box-shadow: 0 6px 18px rgba(124, 58, 237, 0.1);
+          border: 2px solid #EDE9FE;
+        }
+
+        main .bg-white.rounded-xl.shadow-md h2 {
+          color: #7C3AED;
+          font-size: 1.25rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+        }
+
+        /* ============================
+           Feedback de Mensagem (Sucesso/Erro)
+           ============================ */
+        @keyframes feedbackFade {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .feedback {
+          position: fixed;
+          bottom: 1rem;
+          right: 1rem;
+          padding: 1rem;
+          border-radius: 1rem;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          color: #FFFFFF;
+          animation: feedbackFade 0.4s ease forwards;
+          z-index: 50;
+        }
+
+        .feedback.success {
+          background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+          border: 2px solid #10B981;
+        }
+
+        .feedback.error {
+          background: linear-gradient(135deg, #EF4444 0%, #F87171 100%);
+          border: 2px solid #DC2626;
+        }
+
+        /* ============================
+           Animações e Transições Gerais
+           ============================ */
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease forwards;
+        }
+
+        a,
+        button,
+        select,
+        input,
+        textarea,
+        .versiculo-card {
+          transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+
+        /* ============================
+           Estilo de Tooltip / Versículo Selecionado
+           ============================ */
+        .tooltip-versiculo {
+          border-left: 4px solid #7C3AED;
+          background: linear-gradient(135deg, #F3EFFB 0%, #FFFFFF 100%);
+          padding: 0.75rem;
+          border-radius: 1rem;
+          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+          position: relative;
+        }
+
+        .tooltip-versiculo::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -0.5rem;
+          transform: translateY(-50%);
+          border-width: 0.5rem;
+          border-style: solid;
+          border-color: transparent #7C3AED transparent transparent;
+        }
+
+        /* ============================
+           Responsividade Fina
+           ============================ */
+        @media (max-width: 1024px) {
+          nav {
+            width: 14rem;
+          }
+          main {
+            margin-left: 14rem;
+          }
+        }
+
+        @media (max-width: 768px) {
+          nav {
+            width: 100%;
+            height: auto;
+            position: relative;
+            border-radius: 0;
+          }
+          main {
+            margin-left: 0;
+            padding: 1rem;
+          }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav>
+        <h2 class="text-2xl font-bold mb-6">Menu</h2>
+        <ul>
+            <li><a href="/public/telas/Painel.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="/public/telas/DadoUsuario.html"><i class="fas fa-user"></i> Perfil</a></li>
+            <li><a href="/public/telas/Fases.html"><i class="fas fa-tasks"></i> Missão</a></li>
+            <li><a href="/public/Biblioteca/paginaBiblioteca.html"><i class="fas fa-book"></i> Biblioteca</a></li>
+            <li id="adminDropdown" class="mb-4 hidden">
+                <div class="relative w-full">
+                    <button id="adminMenuButton">
+                        <span><i class="fas fa-cog"></i> Administração</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <ul id="adminMenuItems" class="hidden">
+                        <li><a href="PesquisaUsuario.html">Usuários</a></li>
+                        <li><a href="CaPerguntas.html">Cadastrar Níveis e Perguntas</a></li>
+                        <li><a href="DadosFases.html">Dados das Fases</a></li>
+                        <li><a href="DadosNiveis.html">Editar Níveis e Perguntas</a></li>
+                        <li><a href="MensagensDiarias.html">Mensagens Diárias</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
+                <div class="flex items-center justify-between mb-8">
+                    <h1 class="text-3xl font-semibold text-gray-900">Cadastro de Mensagens Diárias</h1>
+                    <button id="logoutButton">Sair</button>
+                </div>
+
+                <!-- Seletores -->
+                <div class="main-selectors mb-8">
+                    <div>
+                        <label for="versao">Versão</label>
+                        <select id="versao">
+                            <option value="">Selecione uma versão</option>
+                            <option value="acf">Almeida Corrigida Fiel (ACF)</option>
+                            <option value="nvi">Nova Versão Internacional (NVI)</option>
+                            <option value="aa">Almeida Atualizada (AA)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="livro">Livro</label>
+                        <select id="livro" disabled>
+                            <option value="">Selecione um livro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="capitulo">Capítulo</label>
+                        <select id="capitulo" disabled>
+                            <option value="">Selecione um capítulo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Principal -->
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Lista de Versículos -->
+                    <div class="lg:w-2/3">
+                        <div class="bg-white rounded-xl shadow-md p-5 border border-indigo-100">
+                            <h2 id="versiculos-titulo" class="text-xl font-semibold mb-4">Selecione uma versão, livro e capítulo</h2>
+                            <div id="versiculos-container" class="space-y-3 max-h-[60vh] overflow-y-auto"></div>
+                        </div>
+                    </div>
+
+                    <!-- Formulário de Mensagem -->
+                    <div class="lg:w-1/3">
+                        <div class="bg-white rounded-xl shadow-md p-5 border border-indigo-100">
+                            <h2 class="text-xl font-semibold mb-4">Mensagem Diária</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="versiculo-selecionado" class="text-sm font-bold mb-2">Versículo Selecionado</label>
+                                    <input id="versiculo-selecionado" readonly>
+                                </div>
+                                <div>
+                                    <label for="titulo-mensagem" class="text-sm font-bold mb-2">Título</label>
+                                    <input id="titulo-mensagem" placeholder="Digite o título">
+                                </div>
+                                <div>
+                                    <label for="texto-mensagem" class="text-sm font-bold mb-2">Mensagem</label>
+                                    <textarea id="texto-mensagem" rows="6" placeholder="Digite a mensagem aqui..."></textarea>
+                                </div>
+                                <button id="salvar-mensagem" disabled>Salvar Mensagem</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let bibleData = null;
+        let currentVersion = '';
+
+        function showFeedback(message, isError = true) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${isError ? 'bg-red-500' : 'bg-green-500'} text-white z-50`;
+            feedbackDiv.textContent = message;
+            document.body.appendChild(feedbackDiv);
+            setTimeout(() => feedbackDiv.remove(), 3000);
+        }
+
+        async function loadBibleXML(version) {
+            try {
+                const response = await fetch(`http://localhost:3000/biblias/pt_${version}.xml`);
+                if (!response.ok) throw new Error(`Failed to load XML: ${response.status}`);
+                const xmlString = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+                if (xmlDoc.getElementsByTagName('parsererror').length > 0) throw new Error('Failed to parse XML');
+                bibleData = xmlDoc;
+                currentVersion = version;
+                populateBooks();
+                document.getElementById('livro').disabled = false;
+                showFeedback(`Versão ${getVersionName(version)} carregada!`, false);
+            } catch (error) {
+                console.error('Erro ao carregar Bíblia:', error);
+                showFeedback(`Erro ao carregar versão ${getVersionName(version)}.`, true);
+            }
+        }
+
+        function getVersionName(version) {
+            const versions = { 'acf': 'Almeida Corrigida Fiel', 'nvi': 'Nova Versão Internacional', 'aa': 'Almeida Atualizada' };
+            return versions[version] || version;
+        }
+
+        function populateBooks() {
+            if (!bibleData) return;
+            const bookSelect = document.getElementById('livro');
+            bookSelect.innerHTML = '<option value="">Selecione um livro</option>';
+            const books = bibleData.querySelectorAll('b');
+            books.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book.getAttribute('id');
+                option.textContent = book.getAttribute('n');
+                bookSelect.appendChild(option);
+            });
+            document.getElementById('capitulo').innerHTML = '<option value="">Selecione um capítulo</option>';
+            document.getElementById('capitulo').disabled = true;
+            document.getElementById('versiculos-container').innerHTML = '';
+            document.getElementById('versiculos-titulo').textContent = `Bíblia ${getVersionName(currentVersion)} - Selecione um livro`;
+        }
+
+        function populateChapters() {
+            const bookId = document.getElementById('livro').value;
+            if (!bookId || !bibleData) return;
+            const chapterSelect = document.getElementById('capitulo');
+            chapterSelect.innerHTML = '<option value="">Selecione um capítulo</option>';
+            chapterSelect.disabled = false;
+            const book = bibleData.querySelector(`b[id="${bookId}"]`);
+            if (!book) return;
+            const chapters = book.querySelectorAll('c');
+            chapters.forEach(chapter => {
+                const option = document.createElement('option');
+                option.value = chapter.getAttribute('n');
+                option.textContent = chapter.getAttribute('n');
+                chapterSelect.appendChild(option);
+            });
+            document.getElementById('versiculos-container').innerHTML = '';
+            const bookName = document.getElementById('livro').options[document.getElementById('livro').selectedIndex].text;
+            document.getElementById('versiculos-titulo').textContent = `Bíblia ${getVersionName(currentVersion)} - ${bookName}`;
+        }
+
+        function showVerses() {
+            const bookId = document.getElementById('livro').value;
+            const bookName = document.getElementById('livro').options[document.getElementById('livro').selectedIndex].text;
+            const chapterNum = document.getElementById('capitulo').value;
+            if (!bookId || !chapterNum || !bibleData) return;
+            const container = document.getElementById('versiculos-container');
+            container.innerHTML = '';
+            document.getElementById('versiculos-titulo').textContent = `Bíblia ${getVersionName(currentVersion)} - ${bookName} ${chapterNum}`;
+            const book = bibleData.querySelector(`b[id="${bookId}"]`);
+            const chapter = book.querySelector(`c[n="${chapterNum}"]`);
+            if (!chapter) return;
+            const verses = chapter.querySelectorAll('v');
+            verses.forEach(verse => {
+                const verseDiv = document.createElement('div');
+                verseDiv.className = 'versiculo-card';
+                verseDiv.innerHTML = `<strong>${verse.getAttribute('n')}.</strong> ${verse.textContent}`;
+                verseDiv.addEventListener('click', () => {
+                    document.querySelectorAll('.versiculo-card').forEach(card => card.classList.remove('versiculo-selecionado'));
+                    verseDiv.classList.add('versiculo-selecionado');
+                    document.getElementById('versiculo-selecionado').value = `${getVersionName(currentVersion)} - ${bookName} ${chapterNum}:${verse.getAttribute('n')} - ${verse.textContent}`;
+                    updateSaveButton();
+                });
+                container.appendChild(verseDiv);
+            });
+        }
+
+        function updateSaveButton() {
+            const versiculo = document.getElementById('versiculo-selecionado').value;
+            const titulo = document.getElementById('titulo-mensagem').value.trim();
+            const mensagem = document.getElementById('texto-mensagem').value.trim();
+            document.getElementById('salvar-mensagem').disabled = !(versiculo && titulo && mensagem);
+        }
+
+        async function saveMensagem() {
+            const selectedVerse = document.getElementById('versiculo-selecionado').value;
+            const titulo = document.getElementById('titulo-mensagem').value.trim();
+            const descricao = document.getElementById('texto-mensagem').value.trim();
+            if (!selectedVerse || !titulo || !descricao) {
+                showFeedback("Preencha todos os campos.", true);
+                return;
+            }
+            const [versionName, reference, text] = selectedVerse.split(' - ');
+            const [bookChapter, verseNum] = reference.split(':');
+            const [book, chapter] = bookChapter.trim().split(' ');
+            const mensagemData = {
+                versao: currentVersion,
+                livro: book,
+                capitulo: parseInt(chapter),
+                versiculo: parseInt(verseNum),
+                texto_versiculo: text,
+                titulo,
+                descricao
+            };
+            try {
+                const token = localStorage.getItem('token');
+                console.log('Token:', token);
+                const response = await fetch('http://localhost:3000/mensagens', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(mensagemData)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showFeedback("Mensagem salva com sucesso!", false);
+                    document.getElementById('texto-mensagem').value = '';
+                    document.getElementById('titulo-mensagem').value = '';
+                    document.getElementById('versiculo-selecionado').value = '';
+                    document.getElementById('salvar-mensagem').disabled = true;
+                    document.querySelectorAll('.versiculo-card').forEach(card => card.classList.remove('versiculo-selecionado'));
+                } else {
+                    showFeedback(result.message || "Erro ao salvar mensagem.", true);
+                }
+            } catch (error) {
+                console.error('Erro ao salvar mensagem:', error);
+                showFeedback("Erro ao salvar mensagem.", true);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showFeedback("Você precisa estar logado.");
+                window.location.href = "/public/telas/index.html";
+                return;
+            }
+            fetch("http://localhost:3000/verifyToken", {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.auth || data.user.tipo !== 'admin') {
+                        localStorage.removeItem('token');
+                        showFeedback("Acesso restrito a administradores.");
+                        window.location.href = '/public/telas/index.html';
+                    } else {
+                        const adminDropdown = document.getElementById('adminDropdown');
+                        adminDropdown.classList.remove('hidden');
+                        const adminMenuButton = document.getElementById('adminMenuButton');
+                        const adminMenuItems = document.getElementById('adminMenuItems');
+                        adminMenuButton.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            adminMenuItems.classList.toggle('hidden');
+                        });
+                        document.addEventListener('click', (e) => {
+                            if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
+                                adminMenuItems.classList.add('hidden');
+                            }
+                        });
+                        document.getElementById('versao').addEventListener('change', (e) => {
+                            if (e.target.value) loadBibleXML(e.target.value);
+                            else {
+                                document.getElementById('livro').innerHTML = '<option value="">Selecione um livro</option>';
+                                document.getElementById('livro').disabled = true;
+                                document.getElementById('capitulo').innerHTML = '<option value="">Selecione um capítulo</option>';
+                                document.getElementById('capitulo').disabled = true;
+                                document.getElementById('versiculos-container').innerHTML = '';
+                                document.getElementById('versiculos-titulo').textContent = 'Selecione uma versão, livro e capítulo';
+                            }
+                        });
+                        document.getElementById('livro').addEventListener('change', populateChapters);
+                        document.getElementById('capitulo').addEventListener('change', showVerses);
+                        document.getElementById('salvar-mensagem').addEventListener('click', saveMensagem);
+                        document.getElementById('titulo-mensagem').addEventListener('input', updateSaveButton);
+                        document.getElementById('texto-mensagem').addEventListener('input', updateSaveButton);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao verificar token:", error);
+                    showFeedback("Erro ao verificar autenticação.");
+                    localStorage.removeItem('token');
+                    window.location.href = "/public/telas/index.html";
+                });
+            document.getElementById('logoutButton').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                window.location.href = "/public/telas/index.html";
+            });
+        });
+    </script>
+</body>
+</html>

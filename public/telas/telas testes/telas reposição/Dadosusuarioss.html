@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Perfil do Usuário</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-link:hover {
+            color: #2563EB;
+            background-color: #EFF6FF;
+            transform: scale(1.05);
+        }
+
+        .profile-card {
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
+        }
+
+        .edit-button {
+            transition: all 0.2s ease;
+        }
+
+        .edit-button:hover {
+            background-color: #EFF6FF;
+        }
+
+        .action-button {
+            transition: all 0.2s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            background-color: #EFF6FF;
+            color: #2563EB;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes progress-bar-fill {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: var(--progress);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex">
+    <!-- Sidebar -->
+    <nav class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen flex flex-col items-start justify-start z-20">
+        <h2 class="text-2xl font-bold mb-6">
+            Menu
+        </h2>
+        <ul class="flex flex-col gap-2 w-full justify-start">
+            <li>
+                <a href="Painel.html"
+                    class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start">
+                    <i class="fas fa-home mr-3"></i> Inicio
+                </a>
+            </li>
+            <li>
+                <a href=""
+                    class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start">
+                    <i class="fas fa-user mr-3"></i> Perfil
+                </a>
+            </li>
+            <li>
+                <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+                    href="Fases.html">
+                    <i class="fas fa-tasks mr-3"></i>
+                    Missão
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
+                    href="../Biblioteca/paginaBiblioteca.html">
+                    <i class="fas fa-book mr-3"></i>
+                    Biblioteca
+                </a>
+            </li>
+            <li class="mb-4 hidden w-full" id="adminDropdown">
+                <div class="relative w-full">
+                    <button
+                        class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded w-full transition justify-between"
+                        id="adminMenuButton">
+                        <span>
+                            <i class="fas fa-cog mr-3"></i>
+                            Administração
+                        </span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </button>
+                    <ul class="hidden absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-30"
+                        id="adminMenuItems">
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href='../../admin/telas/PesquisaUsuario.html'>
+                                Usuários
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/CaPerguntas.html">
+                                Cadastrar Níveis e Perguntas
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">
+                                Dados das Fases
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosNiveis.html">
+                                Editar Níveis e Perguntas
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 p-4 sm:p-8">
+        <div class="w-full max-w-5xl mx-auto">
+            <!-- Perfil do Usuário -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-b pb-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <img id="userAvatar" alt="Foto do perfil"
+                                class="w-24 h-24 rounded-full border-4 border-indigo-500 object-cover"
+                                src="/api/placeholder/100/100" />
+                            <button
+                                class="absolute bottom-0 right-0 bg-indigo-500 text-white rounded-full p-2 shadow-lg edit-button">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-semibold text-gray-900" id="userName">Carregando...</h1>
+                            <p class="text-indigo-600 font-medium" id="userEmail">Carregando...</p>
+                            <p class="text-gray-500 text-sm mt-1" id="userJoined">Membro desde: Carregando...</p>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-4 sm:mt-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center"
+                        id="editProfileBtn">
+                        <i class="fas fa-user-edit mr-2"></i>
+                        Editar Perfil
+                    </button>
+                </div>
+
+                <!-- Estatísticas do Usuário -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                    <div
+                        class="profile-card bg-gradient-to-r from-indigo-500 to-blue-600 rounded-xl p-6 text-white text-center">
+                        <i class="fas fa-star text-4xl mb-3 text-yellow-300"></i>
+                        <h3 class="text-lg font-semibold mb-1">XP Total</h3>
+                        <p class="text-3xl font-bold" id="xpTotal">0</p>
+                    </div>
+                    <div
+                        class="profile-card bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl p-6 text-white text-center">
+                        <i class="fas fa-medal text-4xl mb-3 text-yellow-300"></i>
+                        <h3 class="text-lg font-semibold mb-1">Níveis Iniciados</h3>
+                        <p class="text-3xl font-bold" id="niveisCompletos">0</p>
+                    </div>
+                </div>
+
+                <!-- Progresso por Nível -->
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Progresso por Nível</h2>
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm space-y-6" id="progressoNiveis">
+                        <p class="text-gray-600">Carregando níveis...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Informações Pessoais -->
+    <div class="mb-10">
+        <br>
+        <br>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Informações Pessoais</h2>
+        <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-gray-500 text-sm">Nome Completo</h3>
+                    <p class="text-gray-900 font-medium" id="fullName">Carregando...</p>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Email</h3>
+                    <p class="text-gray-900 font-medium" id="emailInfo">Carregando...</p>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Tipo de Conta</h3>
+                    <p class="text-gray-900 font-medium" id="accountType">Carregando...</p>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Data de Cadastro</h3>
+                    <p class="text-gray-900 font-medium" id="registerDate">Carregando...</p>
+                </div>
+            </div>
+            <!-- Botões de Ação -->
+            <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                <a href="Biblia.html"
+                    class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition text-center">
+                    Bíblia
+                </a>
+                <a href='../PaginaProducao.html'
+                    class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition text-center">
+                    Pergaminhos
+                </a>
+                <a href="DadosAnotacoes.html"
+                    class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition text-center">
+                    Anotações
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-8 w-full max-w-md">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold">Editar Perfil</h2>
+                <button class="text-gray-500 hover:text-gray-700" id="closeModalBtn">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="editProfileForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editName">
+                        Nome Completo
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="editName" type="text" placeholder="Seu nome">
+                    <p class="text-red-500 text-xs italic hidden" id="editNameError">O nome é obrigatório.</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editEmail">
+                        Email
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="editEmail" type="email" placeholder="Seu email">
+                    <p class="text-red-500 text-xs italic hidden" id="editEmailError">Por favor, insira um email válido.
+                    </p>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="editPassword">
+                        Nova Senha (deixe em branco para manter a atual)
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="editPassword" type="password" placeholder="Nova senha">
+                    <p class="text-red-500 text-xs italic hidden" id="editPasswordError">A senha deve ter pelo menos 6
+                        caracteres.</p>
+                </div>
+                <div class="flex items-center justify-end">
+                    <button
+                        class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+                        type="button" id="cancelEditBtn">
+                        Cancelar
+                    </button>
+                    <button
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar feedback
+        function showFeedback(message, isError = true) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${isError ? 'bg-red-500' : 'bg-green-500'} text-white z-50`;
+            feedbackDiv.textContent = message;
+            document.body.appendChild(feedbackDiv);
+            setTimeout(() => feedbackDiv.remove(), 3000);
+        }
+
+        // Verificar autenticação e carregar dados do usuário
+        document.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showFeedback("Você precisa estar logado para acessar esta página.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:3000/verifyToken", {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Erro HTTP: ${res.status} ${res.statusText}`);
+                }
+
+                const data = await res.json();
+
+                if (!data.auth) {
+                    localStorage.removeItem('token');
+                    showFeedback("Sessão inválida ou expirada.");
+                    window.location.href = "index.html";
+                    return;
+                }
+
+                // Update user information
+                document.getElementById('userName').textContent = data.user.nome || 'Usuário';
+                document.getElementById('userEmail').textContent = data.user.email || 'Sem email';
+                document.getElementById('fullName').textContent = data.user.nome || 'Usuário';
+                document.getElementById('emailInfo').textContent = data.user.email || 'Sem email';
+                document.getElementById('accountType').textContent = data.user.tipo === 'admin' ? 'Administrador' : 'Usuário';
+                document.getElementById('xpTotal').textContent = data.user.xp_total != null ? data.user.xp_total : 0;
+
+                // Handle criado_em
+                let registerDate = 'Data não disponível';
+                if (data.user.criado_em) {
+                    const date = new Date(data.user.criado_em);
+                    if (!isNaN(date.getTime())) {
+                        registerDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                    }
+                }
+                document.getElementById('registerDate').textContent = registerDate;
+                document.getElementById('userJoined').textContent = `Membro desde: ${registerDate}`;
+
+                // Admin menu
+                if (data.user.tipo === 'admin') {
+                    document.getElementById('adminDropdown').classList.remove('hidden');
+                    const adminMenuButton = document.getElementById('adminMenuButton');
+                    const adminMenuItems = document.getElementById('adminMenuItems');
+                    adminMenuButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        adminMenuItems.classList.toggle('hidden');
+                    });
+                    document.addEventListener('click', (e) => {
+                        if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
+                            adminMenuItems.classList.add('hidden');
+                        }
+                    });
+                }
+
+                // Fetch progress data
+                const progressRes = await fetch("http://localhost:3000/progresso/detalhado", {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (progressRes.ok) {
+                    const progressData = await progressRes.json();
+                    const niveisCompletos = Object.keys(progressData.niveisCompletos || {}).length;
+                    document.getElementById('niveisCompletos').textContent = niveisCompletos;
+                    await carregarProgressoNiveis(data.user.id_usuario, token);
+                } else {
+                    console.error(`Erro ao buscar progresso detalhado: ${progressRes.status} ${progressRes.statusText}`);
+                    document.getElementById('niveisCompletos').textContent = '0';
+                }
+            } catch (error) {
+                console.error("Erro ao carregar dados do usuário:", error);
+                showFeedback("Erro ao carregar dados do usuário: " + error.message);
+                localStorage.removeItem('token');
+                window.location.href = "index.html";
+            }
+        });
+
+        // Função carregarProgressoNiveis
+        async function carregarProgressoNiveis(userId, token) {
+            try {
+                const progressoNiveis = document.getElementById('progressoNiveis');
+                progressoNiveis.innerHTML = '';
+
+                const niveisRes = await fetch("http://localhost:3000/niveis/ativos", {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!niveisRes.ok) {
+                    const errorData = await niveisRes.json().catch(() => ({}));
+                    console.error('Erro na resposta de /niveis/ativos:', errorData);
+                    throw new Error(`Erro ao buscar níveis ativos: ${niveisRes.status} ${niveisRes.statusText} - ${errorData.message || 'Sem detalhes'}`);
+                }
+
+                const { niveis } = await niveisRes.json();
+                if (!niveis || niveis.length === 0) {
+                    progressoNiveis.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-tasks text-4xl mb-3"></i>
+                        <p>Nenhum nível ativo encontrado.</p>
+                    </div>
+                `;
+                    return;
+                }
+
+                for (const nivel of niveis) {
+                    const botoesRes = await fetch(`http://localhost:3000/progresso/botoes/${nivel.id}`, {
+                        method: "GET",
+                        headers: { "Authorization": `Bearer ${token}` }
+                    });
+
+                    let botaoAtual = 0;
+                    if (botoesRes.ok) {
+                        const { botoesCompletos } = await botoesRes.json();
+                        const ordens = Object.keys(botoesCompletos)
+                            .map(Number)
+                            .sort((a, b) => b - a);
+                        for (const ordem of ordens) {
+                            if (botoesCompletos[ordem].concluido || botoesCompletos[ordem].xp_ganho > 0) {
+                                botaoAtual = ordem;
+                                break;
+                            }
+                        }
+                    }
+
+                    const totalBotoes = 12;
+                    const porcentagem = Math.round((botaoAtual / totalBotoes) * 100);
+
+                    const nivelElement = document.createElement('div');
+                    nivelElement.className = 'bg-white rounded-xl shadow-md p-5 border border-indigo-100 hover:shadow-lg transition cursor-default';
+                    nivelElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-indigo-700 font-semibold text-lg">Nível ${nivel.id}: ${nivel.titulo}</h3>
+                        <span class="text-indigo-600 font-semibold text-sm">Nível ${botaoAtual} de ${totalBotoes}</span>
+                    </div>
+                    <p class="text-gray-600 mb-3">${nivel.descricao || 'Sem descrição disponível'}</p>
+                    <div class="w-full bg-indigo-100 rounded-full h-4 overflow-hidden">
+                        <div class="bg-indigo-500 h-4 rounded-full" style="--progress: ${porcentagem}%; animation: progress-bar-fill 1.5s ease forwards"></div>
+                    </div>
+                `;
+                    progressoNiveis.appendChild(nivelElement);
+                }
+            } catch (error) {
+                console.error("Erro ao carregar progresso por nível:", error);
+                document.getElementById('progressoNiveis').innerHTML = `
+                <div class="text-center py-4 text-red-500">
+                    <p>Erro ao carregar progresso por nível: ${error.message}</p>
+                </div>
+            `;
+                showFeedback("Erro ao carregar progresso por nível.");
+            }
+        }
+
+        // Gerenciar modal de edição
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const editModal = document.getElementById('editModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const editNameError = document.getElementById('editNameError');
+        const editEmailError = document.getElementById('editEmailError');
+        const editPasswordError = document.getElementById('editPasswordError');
+
+        // Abrir modal
+        editProfileBtn.addEventListener('click', () => {
+            document.getElementById('editName').value = document.getElementById('fullName').textContent;
+            document.getElementById('editEmail').value = document.getElementById('emailInfo').textContent;
+            document.getElementById('editPassword').value = '';
+            editNameError.classList.add('hidden');
+            editEmailError.classList.add('hidden');
+            editPasswordError.classList.add('hidden');
+            editModal.classList.remove('hidden');
+        });
+
+        // Fechar modal
+        function closeModal() {
+            editModal.classList.add('hidden');
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelEditBtn.addEventListener('click', closeModal);
+
+        // Validar e enviar formulário de edição
+        editProfileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nome = document.getElementById('editName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const senha = document.getElementById('editPassword').value.trim();
+            let isValid = true;
+
+            // Resetar mensagens de erro
+            editNameError.classList.add('hidden');
+            editEmailError.classList.add('hidden');
+            editPasswordError.classList.add('hidden');
+
+            // Validar nome
+            if (!nome) {
+                editNameError.textContent = 'O nome é obrigatório.';
+                editNameError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Validar email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailRegex.test(email)) {
+                editEmailError.textContent = 'Por favor, insira um email válido.';
+                editEmailError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Validar senha
+            if (senha && senha.length < 6) {
+                editPasswordError.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+                editPasswordError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Check for no changes
+            const currentName = document.getElementById('fullName').textContent;
+            const currentEmail = document.getElementById('emailInfo').textContent;
+            if (nome === currentName && (!email || email === currentEmail) && !senha) {
+                showFeedback("Nenhuma alteração foi feita.", true);
+                return;
+            }
+
+            if (!isValid) return;
+
+            // Prepare data for update
+            const userData = { nome };
+            if (email && email !== currentEmail) userData.email = email;
+            if (senha) userData.senha = senha;
+
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch("http://localhost:3000/usuarios/atualizar", {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // Update UI
+                    document.getElementById('userName').textContent = nome;
+                    document.getElementById('fullName').textContent = nome;
+                    if (email && email !== currentEmail) {
+                        document.getElementById('userEmail').textContent = email;
+                        document.getElementById('emailInfo').textContent = email;
+                    }
+
+                    showFeedback("Perfil atualizado com sucesso!", false);
+                    closeModal();
+
+                    // Refresh user data
+                    try {
+                        const verifyRes = await fetch("http://localhost:3000/verifyToken", {
+                            method: "GET",
+                            headers: { "Authorization": `Bearer ${token}` }
+                        });
+                        const verifyData = await verifyRes.json();
+                        if (verifyData.auth) {
+                            document.getElementById('userName').textContent = verifyData.user.nome || 'Usuário';
+                            document.getElementById('userEmail').textContent = verifyData.user.email || 'Sem email';
+                            document.getElementById('fullName').textContent = verifyData.user.nome || 'Usuário';
+                            document.getElementById('emailInfo').textContent = verifyData.user.email || 'Sem email';
+                            document.getElementById('xpTotal').textContent = verifyData.user.xp_total != null ? verifyData.user.xp_total : 0;
+                            document.getElementById('accountType').textContent = verifyData.user.tipo === 'admin' ? 'Administrador' : 'Usuário';
+                            let registerDate = 'Data não disponível';
+                            if (verifyData.user.criado_em) {
+                                const date = new Date(verifyData.user.criado_em);
+                                if (!isNaN(date.getTime())) {
+                                    registerDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                                }
+                            }
+                            document.getElementById('registerDate').textContent = registerDate;
+                            document.getElementById('userJoined').textContent = `Membro desde: ${registerDate}`;
+                        }
+                    } catch (error) {
+                        console.error("Erro ao buscar dados atualizados:", error);
+                    }
+                } else {
+                    showFeedback(data.message || "Erro ao atualizar perfil.", true);
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar perfil:", error);
+                showFeedback("Erro ao atualizar perfil: " + error.message, true);
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutButton')?.addEventListener('click', () => {
+            console.log('Logout solicitado');
+            localStorage.removeItem('token');
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+
+</html>

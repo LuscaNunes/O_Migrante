@@ -1,168 +1,474 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
+<html class="scroll-smooth" lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: "Roboto", -apple-system, BlinkMacSystemFont, "San Francisco",
+        "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #111827;
+    }
+    nav::-webkit-scrollbar {
+      width: 6px;
+    }
+    nav::-webkit-scrollbar-thumb {
+      background-color: #93c5fd;
+      border-radius: 10px;
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fadeInUp {
+      animation: fadeInUp 0.5s ease forwards;
+      opacity: 0;
+    }
+    .fadeInUp.delay-100 {
+      animation-delay: 0.1s;
+    }
+    .fadeInUp.delay-200 {
+      animation-delay: 0.2s;
+    }
+    .fadeInUp.delay-300 {
+      animation-delay: 0.3s;
+    }
+    .fadeInUp.delay-400 {
+      animation-delay: 0.4s;
+    }
+    .fadeInUp.delay-500 {
+      animation-delay: 0.5s;
+    }
+  </style>
 </head>
-
-<body class="bg-gray-100">
-    <div class="min-h-screen flex">
-        <!-- Sidebar -->
-        <nav
-            class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen flex flex-col items-start justify-start z-20">
-            <h2 class="text-2xl font-bold mb-6">
-                Menu
-            </h2>
-            <ul class="flex flex-col gap-2 w-full justify-start">
-
-                <li>
-                    <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
-                        href="">
-                        <i class="fas fa-home mr-3"></i>
-                        Início
-                    </a>
-                </li>
-                <li>
-                    <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
-                        href="DadoUsuario.html">
-                        <i class="fas fa-user mr-3"></i>
-                        Perfil
-                    </a>
-                </li>
-                <li>
-                    <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
-                        href="Fases.html">
-                        <i class="fas fa-tasks mr-3"></i>
-                        Missão
-                    </a>
-                </li>
-
-                <li>
-                    <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
-                        href="../Biblioteca/paginaBiblioteca.html">
-                        <i class="fas fa-book mr-3"></i>
-                        Biblioteca
-                    </a>
-                </li>
-                <li class="mb-4 hidden w-full" id="adminDropdown">
-                    <div class="relative w-full">
-                        <button
-                            class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded w-full transition justify-between"
-                            id="adminMenuButton">
-                            <span>
-                                <i class="fas fa-cog mr-3"></i>
-                                Administração
-                            </span>
-                            <i class="fas fa-chevron-down ml-2"></i>
-                        </button>
-                        <ul class="hidden absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-30"
-                            id="adminMenuItems">
-                             <li>
-                            <a class="block px-4 py-2 hover:bg-blue-100" href='../../admin/telas/PesquisaUsuario.html'>
-                                Usuários
-                            </a>
-                        </li>
-                        <li>
-                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/CaPerguntas.html">
-                                Cadastrar Níveis e Perguntas
-                            </a>
-                        </li>
-                        <li>
-                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">
-                                Dados das Fases
-                            </a>
-                        </li>
-                        <li>
-                            <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosNiveis.html">
-                                Editar Níveis e Perguntas
-                            </a>
-                        </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="flex-1 p-8 ml-64">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Bem-vindo <span id="userName"></span>!</h2>
-                <button id="logoutButton" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Sair</button>
-            </div>
-            <p class="text-gray-700">Você está logado com sucesso.</p>
+<body class="min-h-screen flex overflow-hidden">
+  <!-- Sidebar -->
+  <nav
+    class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen flex flex-col items-start justify-start z-30 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto"
+    id="sidebar"
+  >
+    <h2
+      class="text-2xl font-bold mb-6 select-none text-[#2563eb] flex items-center space-x-2"
+    >
+      <img
+        alt="Logo minimalista azul com letra A estilizada para sistema web"
+        class="w-8 h-8 rounded-full"
+        height="32"
+        loading="lazy"
+        src="https://storage.googleapis.com/a1aa/image/c564a5f6-93d6-4de8-e1b9-7405cfa7024a.jpg"
+        width="32"
+      />
+      <span>O Migrante</span>
+    </h2>
+    <ul class="flex flex-col gap-2 w-full justify-start">
+      <li>
+        <a
+          class="sidebar-link flex items-center text-[#111827] py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-[#dbeafe] hover:text-[#2563eb] w-full justify-start"
+          href=""
+          ><i class="fas fa-home mr-3"></i>Início</a
+        >
+      </li>
+      <li>
+        <a
+          class="sidebar-link flex items-center text-[#111827] py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-[#dbeafe] hover:text-[#2563eb] w-full justify-start"
+          href="DadoUsuario.html"
+          ><i class="fas fa-user mr-3"></i>Perfil</a
+        >
+      </li>
+      <li>
+        <a
+          class="sidebar-link flex items-center text-[#111827] py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-[#dbeafe] hover:text-[#2563eb] w-full justify-start"
+          href="Fases.html"
+          ><i class="fas fa-tasks mr-3"></i>Missão</a
+        >
+      </li>
+      <li>
+        <a
+          class="sidebar-link flex items-center text-[#111827] py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-[#dbeafe] hover:text-[#2563eb] w-full justify-start"
+          href="../Biblioteca/paginaBiblioteca.html"
+          ><i class="fas fa-book mr-3"></i>Biblioteca</a
+        >
+      </li>
+      <li>
+        <a
+          class="sidebar-link flex items-center text-[#111827] py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-[#dbeafe] hover:text-[#2563eb] w-full justify-start"
+          href="../telas/telas testes/testestestes.html"
+          ><i class="fas fa-book mr-3"></i>The Good Friends</a
+        >
+      </li>
+      <li class="mb-4 hidden w-full" id="adminDropdown">
+        <div class="relative w-full">
+          <button
+            aria-controls="adminMenuItems"
+            aria-expanded="false"
+            class="sidebar-link flex items-center text-[#111827] py-2 px-3 rounded-lg w-full transition-colors duration-200 hover:bg-[#dbeafe] hover:text-[#2563eb] justify-between"
+            id="adminMenuButton"
+          >
+            <span>
+              <i class="fas fa-cog mr-3"></i>Administração
+            </span>
+            <i class="fas fa-chevron-down ml-2"></i>
+          </button>
+          <ul
+            aria-label="Submenu Administração"
+            class="hidden absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg z-40"
+            id="adminMenuItems"
+            role="menu"
+          >
+            <li role="none">
+              <a
+                class="block px-4 py-2 hover:bg-blue-100 text-[#111827]"
+                href="../../admin/telas/PesquisaUsuario.html"
+                role="menuitem"
+                >Usuários</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-4 py-2 hover:bg-blue-100 text-[#111827]"
+                href="../../admin/telas/CaPerguntas.html"
+                role="menuitem"
+                >Cadastrar Níveis e Perguntas</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-4 py-2 hover:bg-blue-100 text-[#111827]"
+                href="../../admin/telas/DadosFases.html"
+                role="menuitem"
+                >Dados das Fases</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-4 py-2 hover:bg-blue-100 text-[#111827]"
+                href="../../admin/telas/DadosNiveis.html"
+                role="menuitem"
+                >Editar Níveis e Perguntas</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-4 py-2 hover:bg-blue-100 text-[#111827]"
+                href="../../admin/telas/MensagemDiaria.html"
+                role="menuitem"
+                >Cadastrar Mensagem do dia</a
+              >
+            </li>
+          </ul>
         </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Mobile hamburger & overlay -->
+  <div
+    aria-hidden="true"
+    class="fixed inset-0 bg-black bg-opacity-30 hidden z-20 md:hidden"
+    id="overlay"
+  ></div>
+  <header
+    class="fixed top-0 left-0 right-0 h-16 bg-white shadow-md flex items-center justify-between px-4 md:hidden z-30"
+  >
+    <button
+      aria-label="Abrir menu"
+      class="text-[#2563eb] focus:outline-none focus:ring-2 focus:ring-[#2563eb] rounded-md"
+      id="btnSidebarOpen"
+    >
+      <i class="fas fa-bars fa-lg"></i>
+    </button>
+    <div class="flex items-center space-x-2 select-none">
+      <img
+        alt="Logo minimalista azul com letra A estilizada para sistema web"
+        class="w-8 h-8 rounded-full"
+        height="32"
+        loading="lazy"
+        src="https://storage.googleapis.com/a1aa/image/c564a5f6-93d6-4de8-e1b9-7405cfa7024a.jpg"
+        width="32"
+      />
+      <span class="text-xl font-semibold text-[#2563eb]">Sistema</span>
     </div>
+    <button
+      aria-label="Logout"
+      class="text-[#2563eb] hover:text-red-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 rounded-md"
+      id="logoutButtonMobile"
+    >
+      <i class="fas fa-sign-out-alt fa-lg"></i>
+    </button>
+  </header>
 
-    <script>
-        console.log('Script do Painel.html carregado');
+  <!-- Main Content -->
+  <main
+    class="flex-1 p-6 md:p-8 md:ml-64 overflow-y-auto max-h-screen bg-[#f9fafb]"
+    id="mainContent"
+  >
+    <section class="max-w-5xl mx-auto space-y-8">
+      <div
+        class="flex flex-col md:flex-row md:justify-between md:items-center bg-white rounded-2xl shadow-sm p-8 fadeInUp delay-100"
+      >
+        <div>
+          <h1
+            class="text-3xl font-semibold text-[#111827] mb-1 select-none"
+          >
+            Bem-vindo,
+            <span id="userName">Usuário</span>!
+          </h1>
+          <p class="text-gray-600 select-none">Você está logado com sucesso.</p>
+        </div>
+        <button
+          class="mt-6 md:mt-0 bg-[#2563eb] hover:bg-[#1e40af] text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1e40af] flex items-center select-none"
+          id="logoutButton"
+        >
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </button>
+      </div>
 
-        const token = localStorage.getItem('token');
+      <!-- Quick Access Cards -->
+      <section
+        aria-label="Acesso rápido"
+        class="grid grid-cols-1 gap-6 fadeInUp delay-200 max-w-6xl mx-auto"
+      >
+        <div
+          id="mensagemDiaria"
+          class="bg-white rounded-2xl shadow-sm p-6 flex flex-col text-left hover:shadow-md transition-shadow duration-300 focus:outline-none focus:ring-2 focus:ring-[#2563eb] cursor-pointer select-none"
+          tabindex="0"
+        >
+          <div class="flex items-center mb-2">
+            <span class="font-semibold text-[#2563eb] text-lg"
+              >Mensagem Diária</span
+            >
+          </div>
+          <h3 id="mensagemTitulo" class="font-semibold text-[#111827] text-xl mb-2"></h3>
+          <p id="mensagemTextoBase" class="text-sm text-gray-600 mb-2"></p>
+          <p id="mensagemDescricao" class="text-gray-700"></p>
+          <p id="mensagemErro" class="text-gray-500 hidden">
+            Nenhuma mensagem disponível hoje.
+          </p>
+        </div>
+      </section>
 
-        if (!token) {
-            console.log('Nenhum token encontrado, redirecionando para index.html');
-            window.location.href = "index.html";
-        } else {
-            fetch("http://localhost:3000/verifyToken", {
-                method: "GET",
-                headers: { "Authorization": `Bearer ${token}` }
-            })
-                .then(res => {
-                    console.log('Resposta recebida:', res.status);
-                    return res.json();
-                })
-                .then(data => {
-                    console.log('Dados recebidos:', data);
-                    if (!data.auth || (data.user.tipo !== 'admin' && data.user.tipo !== 'user')) {
-                        console.log('Autenticação falhou ou tipo inválido:', data);
-                        localStorage.removeItem('token');
-                        window.location.href = "index.html";
-                    } else {
-                        document.getElementById('userName').textContent = data.user.nome;
+      <!-- Recent Activities Feed -->
+      <section
+        aria-label="Atividades recentes do usuário"
+        class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm p-8 fadeInUp delay-400"
+      >
+        <h2 class="text-xl font-semibold text-[#111827] mb-6 select-none">
+          notificações
+        </h2>
+        <ul class="space-y-4 text-gray-700">
+          <li class="flex items-center space-x-3">
+            <i aria-hidden="true" class="fas fa-check-circle text-[#2563eb]"></i>
+            <span>
+              Você completou a missão
+              <strong class="text-[#111827]">"Descobrir o Novo Testamento"</strong>.
+            </span>
+          </li>
+          <li class="flex items-center space-x-3">
+            <i aria-hidden="true" class="fas fa-save text-[#2563eb]"></i>
+            <span>
+              Você salvou uma anotação na
+              <strong class="text-[#111827]">Biblioteca Bíblica</strong>.
+            </span>
+          </li>
+          <li class="flex items-center space-x-3">
+            <i aria-hidden="true" class="fas fa-comment-alt text-[#2563eb]"></i>
+            <span>Você enviou uma mensagem diária para o grupo.</span>
+          </li>
+          <li class="flex items-center space-x-3">
+            <i aria-hidden="true" class="fas fa-cog text-[#2563eb]"></i>
+            <span>Você atualizou suas configurações de perfil.</span>
+          </li>
+          <li class="flex items-center space-x-3">
+            <i aria-hidden="true" class="fas fa-flag-checkered text-[#2563eb]"></i>
+            <span>
+              Você iniciou a missão
+              <strong class="text-[#111827]">"Estudo do Antigo Testamento"</strong>.
+            </span>
+          </li>
+        </ul>
+      </section>
+    </section>
+  </main>
 
-                        if (data.user.tipo === 'admin') {
-                            const adminDropdown = document.getElementById('adminDropdown');
-                            adminDropdown.classList.remove('hidden');
+  <script>
+    console.log("Script do Painel.html carregado");
 
-                            const adminMenuButton = document.getElementById('adminMenuButton');
-                            const adminMenuItems = document.getElementById('adminMenuItems');
+    function showFeedback(message, isError = true) {
+      const feedbackDiv = document.createElement("div");
+      feedbackDiv.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg ${
+        isError ? "bg-red-500" : "bg-green-500"
+      } text-white z-50`;
+      feedbackDiv.textContent = message;
+      document.body.appendChild(feedbackDiv);
+      setTimeout(() => feedbackDiv.remove(), 3000);
+    }
 
-                            adminMenuButton.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                adminMenuItems.classList.toggle('hidden');
-                            });
+    function getVersionName(version) {
+      const versions = {
+        acf: "Almeida Corrigida Fiel",
+        nvi: "Nova Versão Internacional",
+        aa: "Almeida Atualizada",
+      };
+      return versions[version] || version;
+    }
 
-                            document.addEventListener('click', (e) => {
-                                if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
-                                    adminMenuItems.classList.add('hidden');
-                                }
-                            });
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro na requisição:', error);
-                    localStorage.removeItem('token');
-                    window.location.href = "index.html";
-                });
-        }
-
-        document.getElementById('logoutButton').addEventListener('click', () => {
-            console.log('Logout solicitado');
-            localStorage.removeItem('token');
-            window.location.href = "index.html";
+    async function loadMensagemDiaria() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("http://localhost:3000/mensagens/diaria", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
         });
-    </script>
-</body>
+        console.log("Resposta de /mensagens/diaria:", response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Dados de /mensagens/diaria:", data);
+        if (!data.success) {
+          document.getElementById("mensagemErro").classList.remove("hidden");
+          return;
+        }
+        const {
+          versao,
+          livro,
+          capitulo,
+          versiculo,
+          texto_versiculo,
+          titulo,
+          descricao,
+        } = data.mensagem;
+        document.getElementById("mensagemTitulo").textContent = titulo;
+        document.getElementById(
+          "mensagemTextoBase"
+        ).textContent = `${livro} ${capitulo}:${versiculo} (${getVersionName(
+          versao
+        )})`;
+        document.getElementById("mensagemDescricao").textContent = descricao;
 
+        document
+          .getElementById("mensagemDiaria")
+          .addEventListener("click", () => {
+            window.location.href = `/public/telas/biblia.html?versao=${versao}&livro=${encodeURIComponent(
+              livro
+            )}&capitulo=${capitulo}&versiculo=${versiculo}`;
+          });
+      } catch (error) {
+        console.error("Erro ao carregar mensagem:", error);
+        document.getElementById("mensagemErro").classList.remove("hidden");
+      }
+    }
+
+    const token = localStorage.getItem("token");
+    console.log("Token encontrado:", token ? "Presente" : "Ausente");
+
+    if (!token) {
+      console.log("Nenhum token encontrado, redirecionando para index.html");
+      showFeedback("Você precisa estar logado.");
+      window.location.href = "/public/telas/index.html";
+    } else {
+      fetch("http://localhost:3000/verifyToken", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => {
+          console.log("Resposta de /verifyToken:", res.status, res.statusText);
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Dados de /verifyToken:", data);
+          if (!data.auth) {
+            console.log("Autenticação falhou:", data);
+            localStorage.removeItem("token");
+            showFeedback("Sessão inválida ou expirada.");
+            window.location.href = "/public/telas/index.html";
+            return;
+          }
+          console.log("Usuário autenticado:", data.user);
+          document.getElementById("userName").textContent = data.user.nome;
+
+          if (data.user.tipo === "admin") {
+            console.log("Usuário é admin, exibindo menu de administração");
+            const adminDropdown = document.getElementById("adminDropdown");
+            adminDropdown.classList.remove("hidden");
+
+            const adminMenuButton = document.getElementById("adminMenuButton");
+            const adminMenuItems = document.getElementById("adminMenuItems");
+
+            adminMenuButton.addEventListener("click", (e) => {
+              e.stopPropagation();
+              const expanded = adminMenuButton.getAttribute("aria-expanded") === "true";
+              adminMenuButton.setAttribute("aria-expanded", !expanded);
+              adminMenuItems.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (e) => {
+              if (
+                !adminMenuButton.contains(e.target) &&
+                !adminMenuItems.contains(e.target)
+              ) {
+                adminMenuItems.classList.add("hidden");
+                adminMenuButton.setAttribute("aria-expanded", "false");
+              }
+            });
+          }
+
+          loadMensagemDiaria();
+        })
+        .catch((error) => {
+          console.error("Erro na requisição /verifyToken:", error);
+          localStorage.removeItem("token");
+          showFeedback(`Erro ao verificar autenticação: ${error.message}`);
+          window.location.href = "/public/telas/index.html";
+        });
+    }
+
+    const logoutButton = document.getElementById("logoutButton");
+    const logoutButtonMobile = document.getElementById("logoutButtonMobile");
+
+    function logout() {
+      console.log("Logout solicitado");
+      localStorage.removeItem("token");
+      window.location.href = "/public/telas/index.html";
+    }
+
+    logoutButton.addEventListener("click", logout);
+    logoutButtonMobile.addEventListener("click", logout);
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const btnSidebarOpen = document.getElementById("btnSidebarOpen");
+
+    btnSidebarOpen.addEventListener("click", () => {
+      sidebar.classList.remove("-translate-x-full");
+      overlay.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.classList.add("-translate-x-full");
+      overlay.classList.add("hidden");
+      document.body.style.overflow = "";
+    });
+  </script>
+</body>
 </html>

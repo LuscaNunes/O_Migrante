@@ -1,0 +1,911 @@
+<html class="scroll-smooth dark" lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Minimalist Social - Notificações, Mensagens, Pesquisa, Post e Perfil
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+        sans-serif;
+      background-color: #111827;
+      color: #f9fafb;
+    }
+    /* Scrollbar for desktop */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #4b5563;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    /* Navbar */
+    nav {
+      background-color: #1f2937;
+      border-bottom-color: #374151;
+    }
+    nav a, nav button, nav i, nav span {
+      color: #f9fafb;
+    }
+    nav a:hover, nav button:hover, nav i:hover, nav span:hover {
+      color: #2563eb;
+    }
+    /* Search input */
+    #searchInput {
+      background-color: #374151;
+      border-color: #4b5563;
+      color: #f9fafb;
+    }
+    #searchInput::placeholder {
+      color: #9ca3af;
+    }
+    /* Search results */
+    #searchResults {
+      background-color: #1f2937;
+      border-color: #374151;
+      color: #f9fafb;
+    }
+    #searchResults div:hover {
+      background-color: #2563eb;
+      color: #f9fafb;
+    }
+    /* Posts */
+    #postsList article, #profilePostsList article {
+      background-color: #1f2937;
+      border-color: #374151;
+      color: #f9fafb;
+    }
+    #postsList article header p, #profilePostsList article header p,
+    #postsList article header time, #profilePostsList article header time,
+    #postsList article p, #profilePostsList article p,
+    #postsList article section[aria-label^="Seção de comentários"], #profilePostsList article section[aria-label^="Seção de comentários"] {
+      color: #f9fafb;
+    }
+    #postsList article footer button, #profilePostsList article footer button {
+      color: #9ca3af;
+    }
+    #postsList article footer button:hover, #profilePostsList article footer button:hover {
+      color: #2563eb;
+    }
+    /* Comments section */
+    #postsList article section[aria-label^="Seção de comentários"] div p,
+    #profilePostsList article section[aria-label^="Seção de comentários"] div p {
+      color: #f9fafb;
+    }
+    /* Profile section */
+    #profileSection {
+      background-color: #1f2937;
+      border-color: #374151;
+      color: #f9fafb;
+    }
+    #profileSection h1, #profileSection h2 {
+      color: #f9fafb;
+    }
+    /* Modal backgrounds */
+    #modalNotifications, #modalMessages {
+      background-color: rgba(17, 24, 39, 0.8);
+    }
+    #modalNotifications > div, #modalMessages > div {
+      background-color: #1f2937;
+      border-color: #374151;
+      color: #f9fafb;
+    }
+    #modalNotifications ul li p span, #modalMessages nav ul li p {
+      color: #f9fafb;
+    }
+    #modalNotifications ul li time, #modalMessages nav ul li time {
+      color: #9ca3af;
+    }
+    /* Scrollbar for modals */
+    #modalNotifications ul, #modalMessages nav {
+      scrollbar-width: thin;
+      scrollbar-color: #4b5563 transparent;
+    }
+    #modalNotifications ul::-webkit-scrollbar, #modalMessages nav::-webkit-scrollbar {
+      width: 6px;
+    }
+    #modalNotifications ul::-webkit-scrollbar-thumb, #modalMessages nav::-webkit-scrollbar-thumb {
+      background-color: #4b5563;
+      border-radius: 3px;
+    }
+    /* Toast */
+    #toast {
+      background-color: #2563eb;
+      color: #f9fafb;
+    }
+    /* Inputs and buttons */
+    input, textarea {
+      background-color: #374151;
+      border-color: #4b5563;
+      color: #f9fafb;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #9ca3af;
+    }
+    input:focus, textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px #2563eb;
+      outline: none;
+      background-color: #374151;
+      color: #f9fafb;
+    }
+    button {
+      transition: color 0.3s ease;
+    }
+  </style>
+ </head>
+ <body class="relative min-h-screen flex flex-col bg-[#111827] text-[#f9fafb]">
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 border-b shadow-sm backdrop-blur-sm backdrop-filter">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <!-- Left: Logo -->
+    <a aria-label="Minimalist Social Home" class="flex items-center space-x-2 hover:text-[#2563eb] transition-colors duration-300" href="#" id="navHomeLink">
+     <img alt="Minimalist Social logo, a simple blue apple icon" class="w-8 h-8" draggable="false" height="32" src="https://storage.googleapis.com/a1aa/image/2c61f51d-de53-42d8-08b4-2137de62f8d7.jpg" width="32"/>
+     <span class="font-semibold text-xl select-none tracking-tight">
+      The Good Friend
+     </span>
+    </a>
+    <!-- Center: Search -->
+    <div class="relative w-64 hidden md:block">
+     <input aria-label="Buscar usuários por nome ou ID" autocomplete="off" class="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-[#2563eb] transition" id="searchInput" placeholder="Buscar usuários por nome ou ID..." type="search"/>
+     <i aria-hidden="true" class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+     <div aria-label="Resultados da busca" class="absolute top-full left-0 right-0 rounded-b-lg shadow-lg max-h-60 overflow-y-auto mt-1 z-50 hidden border" id="searchResults" role="listbox"></div>
+    </div>
+    <!-- Right: Icons -->
+    <div class="flex items-center space-x-4">
+     <button aria-label="Notificações" class="relative p-2 rounded-full hover:bg-[#374151] transition" id="btnNotifications" type="button">
+      <i class="fas fa-bell text-lg"></i>
+      <span class="absolute -top-1 -right-1 bg-[#2563eb] text-white text-xs font-semibold rounded-full px-1.5 select-none" id="notifBadge">3</span>
+     </button>
+     <button aria-label="Mensagens" class="relative p-2 rounded-full hover:bg-[#374151] transition" id="btnMessages" type="button">
+      <i class="fas fa-envelope text-lg"></i>
+      <span class="absolute -top-1 -right-1 bg-[#2563eb] text-white text-xs font-semibold rounded-full px-1.5 select-none" id="msgBadge">5</span>
+     </button>
+     <button aria-label="Perfil do usuário" class="relative p-2 rounded-full hover:bg-[#374151] transition" id="btnProfile" type="button">
+      <img alt="Foto do perfil do usuário, avatar azul com letra U branca" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/340797ff-a74c-4a8a-fad2-90356af08397.jpg" width="40"/>
+     </button>
+    </div>
+   </div>
+  </nav>
+  <!-- Main content wrapper -->
+  <main class="flex flex-1 pt-16 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-4rem)]">
+   <!-- Feed and Profile container -->
+   <section class="flex-1 max-w-3xl mx-auto w-full min-h-[calc(100vh-4rem)] pb-24 sm:pb-32 space-y-8" id="feedSection">
+    <!-- Criar nova publicação -->
+    <article aria-label="Criar nova publicação" class="bg-[#1f2937] rounded-xl shadow-sm border border-[#374151] p-5">
+     <form class="space-y-4" id="formCreatePost" novalidate="">
+      <textarea aria-label="Texto da nova publicação" class="w-full resize-none rounded-lg border border-[#4b5563] p-3 text-[#f9fafb] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-[#2563eb] transition" id="postText" maxlength="500" name="postText" placeholder="No que você está pensando?" required="" rows="3"></textarea>
+      <div class="flex justify-end">
+       <button class="bg-[#2563eb] hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[#2563eb]" type="submit">
+        Publicar
+       </button>
+      </div>
+     </form>
+    </article>
+    <!-- Lista de posts -->
+    <div aria-live="polite" aria-relevant="additions" class="space-y-8" id="postsList" tabindex="0"></div>
+   </section>
+   <!-- Perfil do usuário -->
+   <section class="hidden max-w-3xl mx-auto w-full min-h-[calc(100vh-4rem)] pb-24 sm:pb-32 bg-[#1f2937] rounded-xl shadow-sm border border-[#374151] p-6 space-y-6" id="profileSection">
+    <header class="flex items-center space-x-6">
+     <img alt="Foto do perfil do usuário, avatar azul com letra U branca" class="w-24 h-24 rounded-full object-cover border border-[#4b5563]" draggable="false" height="96" src="https://storage.googleapis.com/a1aa/image/340797ff-a74c-4a8a-fad2-90356af08397.jpg" width="96" id="profileAvatar"/>
+     <div>
+      <h1 class="text-2xl font-semibold select-text" id="profileName">Usuário</h1>
+      <p class="text-[#f9fafb] select-text opacity-80" id="profileEmail">usuario@email.com</p>
+     </div>
+    </header>
+    <section>
+     <h2 class="text-xl font-semibold mb-4 select-none text-[#2563eb]">Minhas Publicações</h2>
+     <div class="space-y-6" id="profilePostsList" tabindex="0"></div>
+    </section>
+   </section>
+  </main>
+  <!-- Modal Notificações -->
+  <div aria-labelledby="modalNotificationsLabel" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden" id="modalNotifications" role="dialog">
+   <div class="bg-[#1f2937] rounded-xl w-full max-w-md shadow-lg p-6 max-h-[80vh] overflow-y-auto border border-[#374151]" tabindex="-1">
+    <div class="flex items-center justify-between mb-4">
+     <h2 class="text-xl font-semibold select-none text-[#f9fafb]" id="modalNotificationsLabel">Notificações</h2>
+     <button aria-label="Fechar modal de notificações" class="text-[#9ca3af] hover:text-[#2563eb] transition" id="btnCloseNotificationsModal" type="button">
+      <i class="fas fa-times text-2xl"></i>
+     </button>
+    </div>
+    <ul class="divide-y divide-[#374151] text-[#f9fafb]" id="notificationsList">
+     <li class="py-3 flex items-start space-x-3">
+      <i aria-hidden="true" class="fas fa-heart text-[#2563eb] text-xl mt-1 flex-shrink-0"></i>
+      <div>
+       <p><span class="font-semibold">Alice Lima</span> curtiu sua publicação.</p>
+       <time class="text-[#9ca3af] text-xs select-text" datetime="2024-06-10T16:00:00">10 de junho de 2024 às 16h00</time>
+      </div>
+     </li>
+     <li class="py-3 flex items-start space-x-3">
+      <i aria-hidden="true" class="fas fa-comment text-[#2563eb] text-xl mt-1 flex-shrink-0"></i>
+      <div>
+       <p><span class="font-semibold">Bruno Reis</span> comentou sua publicação.</p>
+       <time class="text-[#9ca3af] text-xs select-text" datetime="2024-06-10T16:30:00">10 de junho de 2024 às 16h30</time>
+      </div>
+     </li>
+     <li class="py-3 flex items-start space-x-3">
+      <i aria-hidden="true" class="fas fa-user-plus text-[#2563eb] text-xl mt-1 flex-shrink-0"></i>
+      <div>
+       <p><span class="font-semibold">Camila Martins</span> começou a seguir você.</p>
+       <time class="text-[#9ca3af] text-xs select-text" datetime="2024-06-10T17:00:00">10 de junho de 2024 às 17h00</time>
+      </div>
+     </li>
+    </ul>
+   </div>
+  </div>
+  <!-- Modal Mensagens -->
+  <div aria-labelledby="modalMessagesLabel" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden" id="modalMessages" role="dialog">
+   <div class="bg-[#1f2937] rounded-xl w-full max-w-3xl shadow-lg p-6 max-h-[90vh] flex flex-col border border-[#374151]" tabindex="-1">
+    <div class="flex items-center justify-between mb-4">
+     <h2 class="text-xl font-semibold select-none text-[#f9fafb]" id="modalMessagesLabel">Mensagens</h2>
+     <button aria-label="Fechar modal de mensagens" class="text-[#9ca3af] hover:text-[#2563eb] transition" id="btnCloseMessagesModal" type="button">
+      <i class="fas fa-times text-2xl"></i>
+     </button>
+    </div>
+    <div class="flex flex-1 overflow-hidden rounded-lg border border-[#374151]">
+     <!-- Lista de conversas -->
+     <nav aria-label="Lista de conversas recentes" class="w-1/3 border-r border-[#374151] overflow-y-auto bg-[#111827]">
+      <ul class="divide-y divide-[#374151]" id="conversationsList">
+       <li aria-current="true" class="flex items-center space-x-3 p-3 cursor-pointer hover:bg-[#2563eb] transition" data-userid="alice123" tabindex="0">
+        <img alt="Avatar azul com letras AL, conversa com Alice Lima" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/a3434ec3-f337-48ef-370b-9a2f8ea4bf31.jpg" width="40"/>
+        <div class="flex-1 min-w-0">
+         <p class="font-semibold truncate select-text text-[#f9fafb]">Alice Lima</p>
+         <p class="text-sm truncate select-text text-[#9ca3af]">Oi, tudo bem? Você viu o evento?</p>
+        </div>
+        <time class="text-xs select-text text-[#9ca3af]" datetime="2024-06-10T18:00:00">18:00</time>
+       </li>
+       <li class="flex items-center space-x-3 p-3 cursor-pointer hover:bg-[#2563eb] transition" data-userid="bruno456" tabindex="0">
+        <img alt="Avatar azul com letras BR, conversa com Bruno Reis" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/7c949f76-930e-4793-f588-989843e628f3.jpg" width="40"/>
+        <div class="flex-1 min-w-0">
+         <p class="font-semibold truncate select-text text-[#f9fafb]">Bruno Reis</p>
+         <p class="text-sm truncate select-text text-[#9ca3af]">Vamos marcar algo para o fim de semana?</p>
+        </div>
+        <time class="text-xs select-text text-[#9ca3af]" datetime="2024-06-10T17:45:00">17:45</time>
+       </li>
+       <li class="flex items-center space-x-3 p-3 cursor-pointer hover:bg-[#2563eb] transition" data-userid="camila789" tabindex="0">
+        <img alt="Avatar azul com letras CM, conversa com Camila Martins" class="w-10 h-10 rounded-full object-cover" draggable="false" height="40" src="https://storage.googleapis.com/a1aa/image/0a737017-8ac8-4143-66d4-8f4025bef8b8.jpg" width="40"/>
+        <div class="flex-1 min-w-0">
+         <p class="font-semibold truncate select-text text-[#f9fafb]">Camila Martins</p>
+         <p class="text-sm truncate select-text text-[#9ca3af]">Obrigada pela ajuda no projeto!</p>
+        </div>
+        <time class="text-xs select-text text-[#9ca3af]" datetime="2024-06-10T16:30:00">16:30</time>
+       </li>
+      </ul>
+     </nav>
+     <!-- Visualização da conversa -->
+     <section aria-label="Visualização da conversa" class="flex-1 flex flex-col bg-[#1f2937] rounded-r-lg">
+      <div class="flex-1 overflow-y-auto p-4 space-y-4" id="messagesContainer" tabindex="0">
+       <!-- Mensagens serão inseridas aqui -->
+      </div>
+      <form aria-label="Enviar mensagem" class="flex border-t border-[#374151] p-3 space-x-3" id="formSendMessage">
+       <input aria-label="Campo para escrever mensagem" autocomplete="off" class="flex-1 rounded-lg border border-[#4b5563] p-2 text-[#f9fafb] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-[#2563eb] transition" id="inputMessage" placeholder="Escreva uma mensagem..." required="" type="text"/>
+       <button class="bg-[#2563eb] hover:bg-blue-700 text-white font-semibold px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[#2563eb]" type="submit">
+        Enviar
+       </button>
+      </form>
+     </section>
+    </div>
+   </div>
+  </div>
+  <!-- Toast notification -->
+  <div aria-live="assertive" class="fixed bottom-20 right-5 bg-[#2563eb] text-[#f9fafb] px-5 py-3 rounded-lg shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 select-none" id="toast" role="alert">
+   Ação realizada com sucesso!
+  </div>
+  <script>
+   // Mock users data for search and messages
+    const users = [
+      { id: 'alice123', name: 'Alice Lima', email: 'alice@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=AL' },
+      { id: 'bruno456', name: 'Bruno Reis', email: 'bruno@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=BR' },
+      { id: 'camila789', name: 'Camila Martins', email: 'camila@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=CM' },
+      { id: 'daniel321', name: 'Daniel Pereira', email: 'daniel@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=DP' },
+      { id: 'elisa654', name: 'Elisa Lopes', email: 'elisa@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=EL' },
+      { id: 'felipe987', name: 'Felipe Santos', email: 'felipe@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=FS' },
+      { id: 'gabriela111', name: 'Gabriela Rocha', email: 'gabriela@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=GR' },
+      { id: 'joaosilva', name: 'João Silva', email: 'joao@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=JS' },
+      { id: 'marianasouza', name: 'Mariana Souza', email: 'mariana@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=MS' },
+      { id: 'pedroalmeida', name: 'Pedro Almeida', email: 'pedro@email.com', avatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=PA' },
+    ];
+
+    // Posts data mock with more posts
+    let postsData = [
+      {
+        id: 1,
+        authorId: 'joaosilva',
+        authorName: 'João Silva',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=JS',
+        datetime: '2024-06-10T14:30:00Z',
+        text: 'Olá, pessoal! Estou muito animado para compartilhar essa novidade com vocês.',
+        likes: 24,
+        comments: [
+          { id: 1, authorName: 'Maria Costa', text: 'Que notícia boa, João!' },
+          { id: 2, authorName: 'Rafael Lima', text: 'Parabéns, sucesso!' }
+        ]
+      },
+      {
+        id: 2,
+        authorId: 'marianasouza',
+        authorName: 'Mariana Souza',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=MS',
+        datetime: '2024-06-09T19:45:00Z',
+        text: 'Acabei de terminar um projeto incrível, muito feliz com o resultado!',
+        likes: 38,
+        comments: [
+          { id: 1, authorName: 'Lucas Pereira', text: 'Parabéns, Mariana!' },
+          { id: 2, authorName: 'Fernanda Costa', text: 'Incrível, quero ver mais!' }
+        ]
+      },
+      {
+        id: 3,
+        authorId: 'pedroalmeida',
+        authorName: 'Pedro Almeida',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=PA',
+        datetime: '2024-06-08T11:20:00Z',
+        text: 'Compartilhando um pouco do meu dia com essa foto do café da manhã ☕️🥐',
+        likes: 15,
+        comments: [
+          { id: 1, authorName: 'Ana Silva', text: 'Que delícia! Bom dia para você também.' }
+        ]
+      },
+      {
+        id: 4,
+        authorId: 'felipe987',
+        authorName: 'Felipe Santos',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=FS',
+        datetime: '2024-06-07T09:00:00Z',
+        text: 'Começando a semana com foco e determinação! Vamos com tudo.',
+        likes: 18,
+        comments: [
+          { id: 1, authorName: 'Gabriela Rocha', text: 'Boa sorte, Felipe!' }
+        ]
+      },
+      {
+        id: 5,
+        authorId: 'camila789',
+        authorName: 'Camila Martins',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=CM',
+        datetime: '2024-06-06T20:15:00Z',
+        text: 'Alguém tem dicas de livros para desenvolvimento pessoal?',
+        likes: 22,
+        comments: [
+          { id: 1, authorName: 'Daniel Pereira', text: 'Recomendo "O Poder do Hábito".' },
+          { id: 2, authorName: 'Elisa Lopes', text: 'Também gostei muito de "Mindset".' }
+        ]
+      },
+      {
+        id: 6,
+        authorId: 'gabriela111',
+        authorName: 'Gabriela Rocha',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=GR',
+        datetime: '2024-06-05T14:50:00Z',
+        text: 'Finalizei meu curso de fotografia, muito feliz com essa conquista!',
+        likes: 30,
+        comments: [
+          { id: 1, authorName: 'Felipe Santos', text: 'Parabéns, Gabriela!' },
+          { id: 2, authorName: 'Camila Martins', text: 'Show, quero ver suas fotos!' }
+        ]
+      },
+      {
+        id: 7,
+        authorId: 'daniel321',
+        authorName: 'Daniel Pereira',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=DP',
+        datetime: '2024-06-04T18:30:00Z',
+        text: 'Curtindo um final de semana tranquilo com a família.',
+        likes: 12,
+        comments: [
+          { id: 1, authorName: 'Elisa Lopes', text: 'Aproveite bastante!' }
+        ]
+      },
+      {
+        id: 8,
+        authorId: 'elisa654',
+        authorName: 'Elisa Lopes',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=EL',
+        datetime: '2024-06-03T10:10:00Z',
+        text: 'Dica do dia: meditação ajuda muito a manter o foco e a calma.',
+        likes: 25,
+        comments: [
+          { id: 1, authorName: 'Daniel Pereira', text: 'Concordo totalmente!' },
+          { id: 2, authorName: 'Gabriela Rocha', text: 'Vou tentar começar também.' }
+        ]
+      },
+      {
+        id: 9,
+        authorId: 'lucaspereira',
+        authorName: 'Lucas Pereira',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=LP',
+        datetime: '2024-06-02T15:00:00Z',
+        text: 'Alguém recomenda séries boas para maratonar?',
+        likes: 20,
+        comments: [
+          { id: 1, authorName: 'Mariana Souza', text: 'Recomendo "Stranger Things".' },
+          { id: 2, authorName: 'Pedro Almeida', text: 'Gosto muito de "The Crown".' }
+        ]
+      },
+      {
+        id: 10,
+        authorId: 'marianasouza',
+        authorName: 'Mariana Souza',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=MS',
+        datetime: '2024-06-01T12:00:00Z',
+        text: 'Gratidão por mais um dia produtivo e cheio de aprendizados.',
+        likes: 40,
+        comments: [
+          { id: 1, authorName: 'João Silva', text: 'Sempre inspiradora, Mariana!' }
+        ]
+      }
+    ];
+
+    // Utility: format date/time to relative time (e.g. "há 2 horas")
+    function timeAgo(dateString) {
+      const now = new Date();
+      const date = new Date(dateString);
+      const seconds = Math.floor((now - date) / 1000);
+      const intervals = [
+        { label: 'ano', seconds: 31536000 },
+        { label: 'mês', seconds: 2592000 },
+        { label: 'dia', seconds: 86400 },
+        { label: 'hora', seconds: 3600 },
+        { label: 'minuto', seconds: 60 },
+        { label: 'segundo', seconds: 1 }
+      ];
+      for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+          return count === 1 ? `há 1 ${interval.label}` : `há ${count} ${interval.label}s`;
+        }
+      }
+      return 'agora mesmo';
+    }
+
+    // Render search results
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    function renderSearchResults(container, query) {
+      if (!query.trim()) {
+        container.innerHTML = '';
+        container.classList.add('hidden');
+        return;
+      }
+      const filtered = users.filter(
+        u => u.name.toLowerCase().includes(query.toLowerCase()) || u.id.toLowerCase().includes(query.toLowerCase())
+      );
+      if (filtered.length === 0) {
+        container.innerHTML = '<p class="p-3 select-none">Nenhum usuário encontrado.</p>';
+        container.classList.remove('hidden');
+        return;
+      }
+      container.innerHTML = filtered.map(u => `
+        <div
+          class="flex items-center space-x-3 p-3 hover:bg-[#2563eb] cursor-pointer transition rounded"
+          role="option"
+          tabindex="0"
+          aria-label="Usuário ${u.name}, email ${u.email}"
+          data-userid="${u.id}"
+        >
+          <img src="${u.avatar}" alt="Avatar azul com letras iniciais do usuário ${u.name}" class="w-10 h-10 rounded-full object-cover" draggable="false"/>
+          <div>
+            <p class="font-semibold select-text">${u.name}</p>
+            <p class="text-sm select-text">${u.email}</p>
+          </div>
+        </div>
+      `).join('');
+      container.classList.remove('hidden');
+    }
+
+    searchInput.addEventListener('input', e => {
+      renderSearchResults(searchResults, e.target.value);
+    });
+
+    // Click on search result to open profile
+    searchResults.addEventListener('click', e => {
+      const target = e.target.closest('[data-userid]');
+      if (!target) return;
+      const userId = target.getAttribute('data-userid');
+      openProfile(userId);
+      searchResults.classList.add('hidden');
+      searchInput.value = '';
+    });
+
+    // Close search results on click outside
+    document.addEventListener('click', e => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.classList.add('hidden');
+      }
+    });
+
+    // Create post form
+    const formCreatePost = document.getElementById('formCreatePost');
+    const postsList = document.getElementById('postsList');
+
+    function createPostElement(post) {
+      const article = document.createElement('article');
+      article.className = 'bg-[#1f2937] rounded-xl shadow-sm border border-[#374151] p-5';
+      article.setAttribute('tabindex', '0');
+      article.setAttribute('aria-label', `Publicação de ${post.authorName} feita ${timeAgo(post.datetime)}`);
+
+      // Header
+      const header = document.createElement('header');
+      header.className = 'flex items-center space-x-4 mb-4';
+
+      const avatar = document.createElement('img');
+      avatar.src = post.authorAvatar;
+      avatar.alt = `Foto de perfil de ${post.authorName}`;
+      avatar.className = 'w-12 h-12 rounded-full object-cover';
+      avatar.draggable = false;
+      avatar.height = 48;
+      avatar.width = 48;
+
+      const authorDiv = document.createElement('div');
+      const authorName = document.createElement('p');
+      authorName.className = 'font-semibold cursor-pointer text-[#2563eb] hover:underline';
+      authorName.textContent = post.authorName;
+      authorName.style.userSelect = 'text';
+      authorName.tabIndex = 0;
+      authorName.setAttribute('role', 'button');
+      authorName.setAttribute('aria-label', `Abrir perfil de ${post.authorName}`);
+      authorName.addEventListener('click', () => openProfile(post.authorId));
+      authorName.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openProfile(post.authorId);
+        }
+      });
+
+      const postTime = document.createElement('time');
+      postTime.className = 'text-sm select-text text-[#9ca3af]';
+      postTime.dateTime = post.datetime;
+      postTime.textContent = timeAgo(post.datetime);
+
+      authorDiv.appendChild(authorName);
+      authorDiv.appendChild(postTime);
+
+      header.appendChild(avatar);
+      header.appendChild(authorDiv);
+
+      // Text content
+      const textP = document.createElement('p');
+      textP.className = 'whitespace-pre-line mb-4';
+      textP.textContent = post.text;
+
+      // Footer with likes and comments
+      const footer = document.createElement('footer');
+      footer.className = 'flex items-center justify-between text-[#9ca3af] text-sm select-none';
+
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'flex items-center space-x-6';
+
+      // Like button
+      const likeBtn = document.createElement('button');
+      likeBtn.className = 'flex items-center space-x-1 hover:text-[#2563eb] transition focus:outline-none';
+      likeBtn.type = 'button';
+      likeBtn.setAttribute('aria-pressed', 'false');
+      likeBtn.innerHTML = `<i class="fas fa-heart"></i><span>${post.likes}</span>`;
+      likeBtn.addEventListener('click', () => {
+        const pressed = likeBtn.getAttribute('aria-pressed') === 'true';
+        if (pressed) {
+          post.likes--;
+          likeBtn.setAttribute('aria-pressed', 'false');
+          likeBtn.classList.remove('text-[#2563eb]');
+        } else {
+          post.likes++;
+          likeBtn.setAttribute('aria-pressed', 'true');
+          likeBtn.classList.add('text-[#2563eb]');
+        }
+        likeBtn.querySelector('span').textContent = post.likes;
+      });
+
+      // Comment toggle button
+      const commentBtn = document.createElement('button');
+      commentBtn.className = 'flex items-center space-x-1 hover:text-[#2563eb] transition focus:outline-none';
+      commentBtn.type = 'button';
+      commentBtn.setAttribute('aria-expanded', 'false');
+      commentBtn.textContent = '';
+      commentBtn.innerHTML = `<i class="fas fa-comment"></i><span>${post.comments.length}</span>`;
+
+      // Comments section
+      const commentsSection = document.createElement('section');
+      commentsSection.className = 'mt-4 hidden border-t border-[#374151] pt-4 space-y-4';
+      commentsSection.setAttribute('aria-label', `Seção de comentários da publicação de ${post.authorName}`);
+
+      // Comments list container
+      const commentsList = document.createElement('div');
+      commentsList.className = 'space-y-3 max-h-48 overflow-y-auto pr-2';
+
+      post.comments.forEach(comment => {
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'flex items-start space-x-3';
+
+        const commentAvatar = document.createElement('div');
+        commentAvatar.className = 'w-8 h-8 rounded-full bg-[#2563eb] text-[#f9fafb] flex items-center justify-center font-semibold select-none';
+        commentAvatar.textContent = comment.authorName.split(' ').map(n => n[0]).join('').toUpperCase();
+
+        const commentContent = document.createElement('div');
+        const commentAuthor = document.createElement('p');
+        commentAuthor.className = 'font-semibold';
+        commentAuthor.textContent = comment.authorName;
+
+        const commentText = document.createElement('p');
+        commentText.className = 'whitespace-pre-line';
+        commentText.textContent = comment.text;
+
+        commentContent.appendChild(commentAuthor);
+        commentContent.appendChild(commentText);
+
+        commentDiv.appendChild(commentAvatar);
+        commentDiv.appendChild(commentContent);
+
+        commentsList.appendChild(commentDiv);
+      });
+
+      // Comment form
+      const commentForm = document.createElement('form');
+      commentForm.className = 'mt-3 flex space-x-3';
+      commentForm.setAttribute('aria-label', 'Adicionar comentário');
+
+      const commentInput = document.createElement('input');
+      commentInput.className = 'flex-1 rounded-lg border border-[#4b5563] p-2 text-[#f9fafb] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-[#2563eb] transition';
+      commentInput.placeholder = 'Escreva um comentário...';
+      commentInput.type = 'text';
+      commentInput.required = true;
+
+      const commentSubmit = document.createElement('button');
+      commentSubmit.className = 'bg-[#2563eb] hover:bg-blue-700 text-[#f9fafb] font-semibold px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-[#2563eb]';
+      commentSubmit.type = 'submit';
+      commentSubmit.textContent = 'Enviar';
+
+      commentForm.appendChild(commentInput);
+      commentForm.appendChild(commentSubmit);
+
+      commentForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const val = commentInput.value.trim();
+        if (!val) return;
+        // Add comment to post data
+        const newComment = { id: Date.now(), authorName: 'Você', text: val };
+        post.comments.push(newComment);
+        // Add comment to UI
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'flex items-start space-x-3';
+
+        const commentAvatar = document.createElement('div');
+        commentAvatar.className = 'w-8 h-8 rounded-full bg-[#2563eb] text-[#f9fafb] flex items-center justify-center font-semibold select-none';
+        commentAvatar.textContent = 'V';
+
+        const commentContent = document.createElement('div');
+        const commentAuthor = document.createElement('p');
+        commentAuthor.className = 'font-semibold';
+        commentAuthor.textContent = 'Você';
+
+        const commentText = document.createElement('p');
+        commentText.className = 'whitespace-pre-line';
+        commentText.textContent = val;
+
+        commentContent.appendChild(commentAuthor);
+        commentContent.appendChild(commentText);
+
+        commentDiv.appendChild(commentAvatar);
+        commentDiv.appendChild(commentContent);
+
+        commentsList.appendChild(commentDiv);
+        commentInput.value = '';
+        // Update comment count
+        commentBtn.querySelector('span').textContent = post.comments.length;
+      });
+
+      commentsSection.appendChild(commentsList);
+      commentsSection.appendChild(commentForm);
+
+      commentBtn.addEventListener('click', () => {
+        const expanded = commentBtn.getAttribute('aria-expanded') === 'true';
+        commentBtn.setAttribute('aria-expanded', !expanded);
+        commentsSection.classList.toggle('hidden');
+      });
+
+      // Share button (no functionality)
+      const shareBtn = document.createElement('button');
+      shareBtn.className = 'flex items-center space-x-1 hover:text-[#2563eb] transition focus:outline-none';
+      shareBtn.type = 'button';
+      shareBtn.innerHTML = '<i class="fas fa-share"></i><span>Compartilhar</span>';
+
+      actionsDiv.appendChild(likeBtn);
+      actionsDiv.appendChild(commentBtn);
+      actionsDiv.appendChild(shareBtn);
+
+      footer.appendChild(actionsDiv);
+
+      article.appendChild(header);
+      article.appendChild(textP);
+      article.appendChild(footer);
+      article.appendChild(commentsSection);
+
+      return article;
+    }
+
+    function renderPosts() {
+      postsList.innerHTML = '';
+      postsData.forEach(post => {
+        postsList.appendChild(createPostElement(post));
+      });
+    }
+
+    formCreatePost.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = e.target.postText.value.trim();
+      if (!text) {
+        alert('Por favor, escreva algo para publicar.');
+        return;
+      }
+      // Add new post to postsData
+      const newPost = {
+        id: Date.now(),
+        authorId: 'usuarioAtual',
+        authorName: 'Você',
+        authorAvatar: 'https://placehold.co/40x40/0071e3/ffffff/png?text=V',
+        datetime: new Date().toISOString(),
+        text,
+        likes: 0,
+        comments: []
+      };
+      postsData.unshift(newPost);
+      renderPosts();
+      e.target.reset();
+      showToast('Publicação realizada com sucesso!');
+    });
+
+    // Profile section logic
+    const profileSection = document.getElementById('profileSection');
+    const feedSection = document.getElementById('feedSection');
+    const profileName = document.getElementById('profileName');
+    const profileEmail = document.getElementById('profileEmail');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profilePostsList = document.getElementById('profilePostsList');
+
+    // Current user mock
+    const currentUser = {
+      id: 'usuarioAtual',
+      name: 'Você',
+      email: 'voce@email.com',
+      avatar: 'https://placehold.co/96x96/0071e3/ffffff/png?text=V'
+    };
+
+    function openProfile(userId) {
+      // Find user
+      const user = users.find(u => u.id === userId) || currentUser;
+      profileName.textContent = user.name;
+      profileEmail.textContent = user.email || 'email não disponível';
+      profileAvatar.src = user.avatar || 'https://placehold.co/96x96/0071e3/ffffff/png?text=U';
+      profileAvatar.alt = `Foto do perfil do usuário ${user.name}`;
+      // Filter posts by user
+      const userPosts = postsData.filter(p => p.authorId === user.id);
+      profilePostsList.innerHTML = '';
+      if (userPosts.length === 0) {
+        const p = document.createElement('p');
+        p.className = 'text-[#9ca3af] select-none';
+        p.textContent = 'Nenhuma publicação ainda.';
+        profilePostsList.appendChild(p);
+      } else {
+        userPosts.forEach(post => {
+          profilePostsList.appendChild(createPostElement(post));
+        });
+      }
+      // Show profile, hide feed
+      profileSection.classList.remove('hidden');
+      feedSection.classList.add('hidden');
+      // Scroll top
+      profileSection.scrollTop = 0;
+    }
+
+    // Show feed and hide profile
+    function showFeed() {
+      profileSection.classList.add('hidden');
+      feedSection.classList.remove('hidden');
+      feedSection.scrollTop = 0;
+    }
+
+    // Navbar profile button opens current user profile
+    const btnProfile = document.getElementById('btnProfile');
+    btnProfile.addEventListener('click', () => {
+      openProfile(currentUser.id);
+    });
+
+    // Navbar home link shows feed
+    const navHomeLink = document.getElementById('navHomeLink');
+    navHomeLink.addEventListener('click', e => {
+      e.preventDefault();
+      showFeed();
+    });
+
+    // Toast notification
+    const toast = document.getElementById('toast');
+    let toastTimeout;
+    function showToast(message) {
+      clearTimeout(toastTimeout);
+      toast.textContent = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Modal Notifications open/close
+    const btnNotifications = document.getElementById('btnNotifications');
+    const modalNotifications = document.getElementById('modalNotifications');
+    const btnCloseNotificationsModal = document.getElementById('btnCloseNotificationsModal');
+
+    function openModalNotifications() {
+      modalNotifications.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModalNotifications() {
+      modalNotifications.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    btnNotifications.addEventListener('click', openModalNotifications);
+    btnCloseNotificationsModal.addEventListener('click', closeModalNotifications);
+
+    // Modal Messages open/close
+    const btnMessages = document.getElementById('btnMessages');
+    const modalMessages = document.getElementById('modalMessages');
+    const btnCloseMessagesModal = document.getElementById('btnCloseMessagesModal');
+
+    function openModalMessages() {
+      modalMessages.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('inputMessage').focus();
+    }
+    function closeModalMessages() {
+      modalMessages.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    btnMessages.addEventListener('click', openModalMessages);
+    btnCloseMessagesModal.addEventListener('click', closeModalMessages);
+
+    // Handle send message form (mock)
+    const formSendMessage = document.getElementById('formSendMessage');
+    const messagesContainer = document.getElementById('messagesContainer');
+    formSendMessage.addEventListener('submit', e => {
+      e.preventDefault();
+      const input = e.target.inputMessage;
+      const message = input.value.trim();
+      if (!message) return;
+      // Append message to container
+      const div = document.createElement('div');
+      div.className = 'flex justify-end';
+      div.innerHTML = `<div class="bg-[#2563eb] text-[#f9fafb] rounded-xl px-4 py-2 max-w-xs break-words">${message}</div>`;
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      input.value = '';
+    });
+
+    // Close modals on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (!modalNotifications.classList.contains('hidden')) {
+          closeModalNotifications();
+        }
+        if (!modalMessages.classList.contains('hidden')) {
+          closeModalMessages();
+        }
+      }
+    });
+
+    // Initial render
+    renderPosts();
+  </script>
+ </body>
+</html>

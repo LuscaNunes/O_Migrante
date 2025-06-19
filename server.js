@@ -12,10 +12,16 @@ const nivelRoutes = require('./routes/nivelRoutes');
 const perguntaRoutes = require('./routes/perguntaRoutes');
 const progressoRoutes = require('./routes/progressoRoutes');
 const anotacaoRoutes = require('./routes/anotacaoRoutes');
+const mensagemRoutes = require('./routes/mensagemRoutes');
+const amizadeRoutes = require('./routes/amizadeRoutes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: '*', // Ou especifique a origem do frontend, ex: 'http://localhost:3000'
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 app.use('/public', authenticateToken, express.static(path.join(__dirname, 'public')));
@@ -30,6 +36,8 @@ app.use('/niveis', nivelRoutes);
 app.use('/perguntas', perguntaRoutes);
 app.use('/progresso', progressoRoutes);
 app.use('/anotacoes', anotacaoRoutes);
+app.use('/mensagens', mensagemRoutes);
+app.use('/amizades', amizadeRoutes);
 
 
 app.get('/', (req, res) => {

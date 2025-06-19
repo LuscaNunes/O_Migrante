@@ -1,0 +1,760 @@
+<html class="scroll-smooth" lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Feed Minimalista - Inspired by Apple Design
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <style>
+   html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  /* Smooth transitions for interactive elements */
+  .transition-smooth {
+    transition: all 0.3s ease;
+  }
+  /* Scrollbar for sidebar friends list */
+  .sidebar-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .sidebar-scroll::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 3px;
+  }
+  .sidebar-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+  </style>
+ </head>
+ <body class="bg-[#f9fafb] text-[#111827] min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 shadow-sm z-50">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+     <!-- Logo -->
+     <a class="flex items-center space-x-2" href="#">
+      <img alt="Logo da rede social, letra A estilizada em azul discreto" class="w-8 h-8 rounded-md" height="32" src="https://storage.googleapis.com/a1aa/image/79643e31-68f1-4229-2279-aff3ef23cfae.jpg" width="32"/>
+      <span class="font-semibold text-xl text-[#2563eb] select-none">
+       Aether
+      </span>
+     </a>
+     <!-- Search -->
+     <div class="hidden sm:flex flex-1 max-w-xs relative ml-6">
+      <input aria-label="Pesquisar" class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 bg-white text-sm text-[#111827] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-[#2563eb] transition-smooth" placeholder="Pesquisar" type="search"/>
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+       <i class="fas fa-search">
+       </i>
+      </span>
+     </div>
+     <!-- Icons and profile -->
+     <nav class="flex items-center space-x-6">
+      <button aria-label="Notificações" class="text-gray-500 hover:text-[#2563eb] transition-smooth relative focus:outline-none">
+       <i class="fas fa-bell fa-lg">
+       </i>
+       <span class="absolute -top-1 -right-1 bg-[#2563eb] text-white text-xs rounded-full px-1.5 leading-none font-semibold select-none">
+        3
+       </span>
+      </button>
+      <button aria-label="Mensagens" class="text-gray-500 hover:text-[#2563eb] transition-smooth relative focus:outline-none">
+       <i class="fas fa-envelope fa-lg">
+       </i>
+       <span class="absolute -top-1 -right-1 bg-[#2563eb] text-white text-xs rounded-full px-1.5 leading-none font-semibold select-none">
+        5
+       </span>
+      </button>
+      <button aria-label="Modo claro/escuro" class="text-gray-500 hover:text-[#2563eb] transition-smooth focus:outline-none" id="toggleDarkMode">
+       <i class="fas fa-moon fa-lg">
+       </i>
+      </button>
+      <button aria-label="Perfil do usuário" class="focus:outline-none">
+       <img alt="Foto de perfil do usuário logado, círculo azul com letra U branca" class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm" height="40" src="https://storage.googleapis.com/a1aa/image/8d566f4b-7429-4055-480f-bf64e8ee4966.jpg" width="40"/>
+      </button>
+     </nav>
+    </div>
+   </div>
+  </header>
+  <!-- Main content wrapper -->
+  <main class="flex flex-1 pt-16 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+   <!-- Feed -->
+   <section class="flex-1 max-w-3xl mx-auto space-y-8" id="feed">
+    <!-- Posts will be appended here by JS -->
+   </section>
+   <!-- Sidebar (hidden on small screens) -->
+   <aside class="hidden lg:flex flex-col w-80 ml-8 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto sidebar-scroll rounded-lg border border-gray-200 bg-white shadow-sm p-6 space-y-8">
+    <!-- Amigos Online -->
+    <div>
+     <h2 class="text-lg font-semibold text-[#2563eb] mb-4 select-none">
+      Amigos Online
+     </h2>
+     <ul class="space-y-3">
+      <li class="flex items-center space-x-3">
+       <div class="relative">
+        <img alt="Foto de perfil do amigo online, círculo azul com letras AL brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/b590a95b-e526-4285-284b-bd89fb8b5db1.jpg" width="40"/>
+        <span class="absolute bottom-0 right-0 block w-3 h-3 bg-green-500 rounded-full ring-2 ring-white">
+        </span>
+       </div>
+       <span class="text-sm font-medium text-[#111827] select-text">
+        Ana Lopes
+       </span>
+      </li>
+      <li class="flex items-center space-x-3">
+       <div class="relative">
+        <img alt="Foto de perfil do amigo online, círculo azul com letras BR brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/401e304d-bee4-4b39-105c-166c35f806e0.jpg" width="40"/>
+        <span class="absolute bottom-0 right-0 block w-3 h-3 bg-green-500 rounded-full ring-2 ring-white">
+        </span>
+       </div>
+       <span class="text-sm font-medium text-[#111827] select-text">
+        Bruno Reis
+       </span>
+      </li>
+      <li class="flex items-center space-x-3">
+       <div class="relative">
+        <img alt="Foto de perfil do amigo online, círculo azul com letras CS brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/1405c255-5843-46f1-207a-c807a773f426.jpg" width="40"/>
+        <span class="absolute bottom-0 right-0 block w-3 h-3 bg-green-500 rounded-full ring-2 ring-white">
+        </span>
+       </div>
+       <span class="text-sm font-medium text-[#111827] select-text">
+        Carla Silva
+       </span>
+      </li>
+      <li class="flex items-center space-x-3">
+       <div class="relative">
+        <img alt="Foto de perfil do amigo online, círculo azul com letras DM brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/8b48983f-4665-41de-5497-9f1f671fc10d.jpg" width="40"/>
+        <span class="absolute bottom-0 right-0 block w-3 h-3 bg-green-500 rounded-full ring-2 ring-white">
+        </span>
+       </div>
+       <span class="text-sm font-medium text-[#111827] select-text">
+        Diego Martins
+       </span>
+      </li>
+      <li class="flex items-center space-x-3">
+       <div class="relative">
+        <img alt="Foto de perfil do amigo online, círculo azul com letras EL brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/54e84cde-445f-4608-398a-6928c1788ec2.jpg" width="40"/>
+        <span class="absolute bottom-0 right-0 block w-3 h-3 bg-green-500 rounded-full ring-2 ring-white">
+        </span>
+       </div>
+       <span class="text-sm font-medium text-[#111827] select-text">
+        Elisa Lima
+       </span>
+      </li>
+     </ul>
+    </div>
+    <!-- Anúncios / Destaques -->
+    <div>
+     <h2 class="text-lg font-semibold text-[#2563eb] mb-4 select-none">
+      Destaques
+     </h2>
+     <div class="space-y-4">
+      <div class="rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-smooth cursor-pointer">
+       <img alt="Imagem promocional de verão com fundo azul discreto e texto branco" class="w-full object-cover" height="180" src="https://storage.googleapis.com/a1aa/image/a8172b1d-909d-43cb-ec57-023468102d5d.jpg" width="320"/>
+       <div class="p-3 bg-white">
+        <h3 class="text-sm font-semibold text-[#111827] mb-1">
+         Promoção de Verão
+        </h3>
+        <p class="text-xs text-gray-600">
+         Descontos exclusivos para você aproveitar.
+        </p>
+       </div>
+      </div>
+      <div class="rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-smooth cursor-pointer">
+       <img alt="Imagem de novidades tecnológicas com fundo azul discreto e texto branco" class="w-full object-cover" height="180" src="https://storage.googleapis.com/a1aa/image/b52ac279-d23c-4b72-241e-b0a841583b39.jpg" width="320"/>
+       <div class="p-3 bg-white">
+        <h3 class="text-sm font-semibold text-[#111827] mb-1">
+         Novidades Tech
+        </h3>
+        <p class="text-xs text-gray-600">
+         Fique por dentro das últimas tendências.
+        </p>
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- Sugestões de conexão -->
+    <div>
+     <h2 class="text-lg font-semibold text-[#2563eb] mb-4 select-none">
+      Sugestões para você
+     </h2>
+     <ul class="space-y-4">
+      <li class="flex items-center justify-between">
+       <div class="flex items-center space-x-3">
+        <img alt="Foto de perfil do usuário sugerido, círculo azul com letras FM brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/2e8e26c1-c00a-4e77-ff4c-a25c0c986087.jpg" width="40"/>
+        <div>
+         <p class="text-sm font-medium text-[#111827]">
+          Felipe Moura
+         </p>
+         <p class="text-xs text-gray-500">
+          5 conexões em comum
+         </p>
+        </div>
+       </div>
+       <button class="text-[#2563eb] text-sm font-semibold hover:underline transition-smooth focus:outline-none">
+        Conectar
+       </button>
+      </li>
+      <li class="flex items-center justify-between">
+       <div class="flex items-center space-x-3">
+        <img alt="Foto de perfil do usuário sugerido, círculo azul com letras LR brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/472a58c4-174a-42d1-f3f6-401b5b3cbfce.jpg" width="40"/>
+        <div>
+         <p class="text-sm font-medium text-[#111827]">
+          Larissa Rocha
+         </p>
+         <p class="text-xs text-gray-500">
+          3 conexões em comum
+         </p>
+        </div>
+       </div>
+       <button class="text-[#2563eb] text-sm font-semibold hover:underline transition-smooth focus:outline-none">
+        Conectar
+       </button>
+      </li>
+      <li class="flex items-center justify-between">
+       <div class="flex items-center space-x-3">
+        <img alt="Foto de perfil do usuário sugerido, círculo azul com letras JP brancas" class="w-10 h-10 rounded-full object-cover border border-gray-200" height="40" src="https://storage.googleapis.com/a1aa/image/73c06163-2635-469d-b294-12c1acd1aa84.jpg" width="40"/>
+        <div>
+         <p class="text-sm font-medium text-[#111827]">
+          João Pedro
+         </p>
+         <p class="text-xs text-gray-500">
+          2 conexões em comum
+         </p>
+        </div>
+       </div>
+       <button class="text-[#2563eb] text-sm font-semibold hover:underline transition-smooth focus:outline-none">
+        Conectar
+       </button>
+      </li>
+     </ul>
+    </div>
+   </aside>
+  </main>
+  <!-- Toast container -->
+  <div class="fixed bottom-6 right-6 space-y-3 z-50" id="toast-container">
+  </div>
+  <script>
+   // Posts data mock
+  const postsData = [
+    {
+      id: 1,
+      author: {
+        name: "Mariana Costa",
+        profilePic: "https://placehold.co/48x48?text=MC&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Mariana Costa, círculo azul com letras MC brancas"
+      },
+      datetime: "2024-06-10T14:30:00Z",
+      text: `Hoje foi um dia incrível! \nConsegui terminar meu projeto antes do prazo e estou muito feliz com o resultado.`,
+      media: {
+        type: "image",
+        src: "https://placehold.co/600x350?text=Projeto+Finalizado&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Imagem do projeto finalizado mostrando uma interface moderna com tons azuis e brancos"
+      },
+      likes: 34,
+      comments: 5,
+      shares: 2,
+    },
+    {
+      id: 2,
+      author: {
+        name: "Lucas Almeida",
+        profilePic: "https://placehold.co/48x48?text=LA&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Lucas Almeida, círculo azul com letras LA brancas"
+      },
+      datetime: "2024-06-09T18:15:00Z",
+      text: `Alguém mais está animado para o lançamento do novo produto? \nParece que vai revolucionar o mercado!`,
+      media: {
+        type: "video",
+        src: "https://placehold.co/600x350?text=Vídeo+teaser+do+produto&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Thumbnail de vídeo teaser do novo produto com fundo azul discreto e texto branco"
+      },
+      likes: 58,
+      comments: 12,
+      shares: 7,
+    },
+    {
+      id: 3,
+      author: {
+        name: "Sofia Martins",
+        profilePic: "https://placehold.co/48x48?text=SM&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Sofia Martins, círculo azul com letras SM brancas"
+      },
+      datetime: "2024-06-08T09:45:00Z",
+      text: `Nada como uma caminhada matinal para clarear a mente e começar o dia com energia positiva.`,
+      media: null,
+      likes: 21,
+      comments: 3,
+      shares: 1,
+    },
+    {
+      id: 4,
+      author: {
+        name: "Pedro Henrique",
+        profilePic: "https://placehold.co/48x48?text=PH&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Pedro Henrique, círculo azul com letras PH brancas"
+      },
+      datetime: "2024-06-07T20:00:00Z",
+      text: `Compartilhando um pouco da minha viagem para as montanhas. \nA natureza é realmente inspiradora!`,
+      media: {
+        type: "image",
+        src: "https://placehold.co/600x350?text=Viagem+nas+montanhas&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Foto de uma paisagem montanhosa com céu azul e vegetação verde exuberante"
+      },
+      likes: 45,
+      comments: 8,
+      shares: 4,
+    },
+    {
+      id: 5,
+      author: {
+        name: "Isabela Fernandes",
+        profilePic: "https://placehold.co/48x48?text=IF&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Isabela Fernandes, círculo azul com letras IF brancas"
+      },
+      datetime: "2024-06-06T11:20:00Z",
+      text: `Dica do dia: mantenha sempre a curiosidade viva e nunca pare de aprender.`,
+      media: null,
+      likes: 29,
+      comments: 4,
+      shares: 3,
+    },
+    {
+      id: 6,
+      author: {
+        name: "Rafael Souza",
+        profilePic: "https://placehold.co/48x48?text=RS&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Rafael Souza, círculo azul com letras RS brancas"
+      },
+      datetime: "2024-06-05T15:50:00Z",
+      text: `Novo artigo no blog sobre design minimalista. \nConfira e deixe seu feedback!`,
+      media: {
+        type: "image",
+        src: "https://placehold.co/600x350?text=Design+Minimalista&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Imagem ilustrativa de design minimalista com formas geométricas azuis e brancas"
+      },
+      likes: 38,
+      comments: 6,
+      shares: 2,
+    },
+    {
+      id: 7,
+      author: {
+        name: "Camila Ribeiro",
+        profilePic: "https://placehold.co/48x48?text=CR&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Camila Ribeiro, círculo azul com letras CR brancas"
+      },
+      datetime: "2024-06-04T08:10:00Z",
+      text: `Começando a semana com muita energia e foco nos objetivos!`,
+      media: null,
+      likes: 26,
+      comments: 2,
+      shares: 1,
+    },
+    {
+      id: 8,
+      author: {
+        name: "Thiago Lima",
+        profilePic: "https://placehold.co/48x48?text=TL&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Thiago Lima, círculo azul com letras TL brancas"
+      },
+      datetime: "2024-06-03T19:30:00Z",
+      text: `Confira esse tutorial incrível sobre fotografia noturna!`,
+      media: {
+        type: "video",
+        src: "https://placehold.co/600x350?text=Tutorial+Fotografia+Noturna&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Thumbnail de vídeo tutorial de fotografia noturna com fundo azul e texto branco"
+      },
+      likes: 47,
+      comments: 9,
+      shares: 5,
+    },
+    {
+      id: 9,
+      author: {
+        name: "Fernanda Gomes",
+        profilePic: "https://placehold.co/48x48?text=FG&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Fernanda Gomes, círculo azul com letras FG brancas"
+      },
+      datetime: "2024-06-02T13:00:00Z",
+      text: `Gratidão por mais um dia produtivo e cheio de aprendizados.`,
+      media: null,
+      likes: 33,
+      comments: 4,
+      shares: 2,
+    },
+    {
+      id: 10,
+      author: {
+        name: "Gabriel Santos",
+        profilePic: "https://placehold.co/48x48?text=GS&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Gabriel Santos, círculo azul com letras GS brancas"
+      },
+      datetime: "2024-06-01T17:45:00Z",
+      text: `Participando de um workshop incrível sobre inovação e criatividade.`,
+      media: {
+        type: "image",
+        src: "https://placehold.co/600x350?text=Workshop+Inovação&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Foto de workshop com pessoas interagindo em ambiente moderno com tons azuis e brancos"
+      },
+      likes: 40,
+      comments: 7,
+      shares: 3,
+    },
+    {
+      id: 11,
+      author: {
+        name: "Juliana Pereira",
+        profilePic: "https://placehold.co/48x48?text=JP&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Juliana Pereira, círculo azul com letras JP brancas"
+      },
+      datetime: "2024-05-31T10:25:00Z",
+      text: `Amo começar o dia com uma boa leitura e um café quentinho.`,
+      media: null,
+      likes: 22,
+      comments: 3,
+      shares: 1,
+    },
+    {
+      id: 12,
+      author: {
+        name: "Mateus Oliveira",
+        profilePic: "https://placehold.co/48x48?text=MO&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Mateus Oliveira, círculo azul com letras MO brancas"
+      },
+      datetime: "2024-05-30T21:10:00Z",
+      text: `Explorando novas técnicas de meditação para melhorar o foco e a concentração.`,
+      media: null,
+      likes: 27,
+      comments: 5,
+      shares: 2,
+    },
+    {
+      id: 13,
+      author: {
+        name: "Patrícia Lima",
+        profilePic: "https://placehold.co/48x48?text=PL&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Patrícia Lima, círculo azul com letras PL brancas"
+      },
+      datetime: "2024-05-29T16:40:00Z",
+      text: `Compartilhando minha receita favorita de bolo de chocolate vegano!`,
+      media: {
+        type: "image",
+        src: "https://placehold.co/600x350?text=Bolo+de+Chocolate+Vegano&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Foto de bolo de chocolate vegano decorado com frutas vermelhas e folhas verdes"
+      },
+      likes: 36,
+      comments: 6,
+      shares: 4,
+    },
+    {
+      id: 14,
+      author: {
+        name: "Ricardo Fernandes",
+        profilePic: "https://placehold.co/48x48?text=RF&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Ricardo Fernandes, círculo azul com letras RF brancas"
+      },
+      datetime: "2024-05-28T12:55:00Z",
+      text: `Finalizando um projeto de arquitetura sustentável. Orgulho do resultado!`,
+      media: {
+        type: "image",
+        src: "https://placehold.co/600x350?text=Projeto+Arquitetura+Sustentável&font=Inter&bg=2563eb&fg=ffffff",
+        alt: "Imagem de projeto arquitetônico sustentável com plantas e design moderno"
+      },
+      likes: 42,
+      comments: 8,
+      shares: 3,
+    },
+    {
+      id: 15,
+      author: {
+        name: "Vanessa Souza",
+        profilePic: "https://placehold.co/48x48?text=VS&font=Inter&bg=2563eb&fg=ffffff",
+        altProfile: "Foto de perfil de Vanessa Souza, círculo azul com letras VS brancas"
+      },
+      datetime: "2024-05-27T07:30:00Z",
+      text: `Bom dia! Que hoje seja um dia cheio de realizações e sorrisos.`,
+      media: null,
+      likes: 30,
+      comments: 4,
+      shares: 2,
+    }
+  ];
+
+  // Format date/time to relative time (e.g. "2 horas atrás")
+  function timeAgo(dateString) {
+    const now = new Date();
+    const date = new Date(dateString);
+    const seconds = Math.floor((now - date) / 1000);
+
+    const intervals = [
+      { label: 'ano', seconds: 31536000 },
+      { label: 'mês', seconds: 2592000 },
+      { label: 'dia', seconds: 86400 },
+      { label: 'hora', seconds: 3600 },
+      { label: 'minuto', seconds: 60 },
+      { label: 'segundo', seconds: 1 }
+    ];
+
+    for (const interval of intervals) {
+      const count = Math.floor(seconds / interval.seconds);
+      if (count >= 1) {
+        return count === 1 ? `há 1 ${interval.label}` : `há ${count} ${interval.label}s`;
+      }
+    }
+    return 'agora mesmo';
+  }
+
+  // Create post element
+  function createPost(post) {
+    const postEl = document.createElement('article');
+    postEl.className = "bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4 transition-smooth hover:shadow-md";
+
+    // Header: profile pic, name, datetime
+    const header = document.createElement('header');
+    header.className = "flex items-center space-x-4";
+
+    const profileImg = document.createElement('img');
+    profileImg.src = post.author.profilePic;
+    profileImg.alt = post.author.altProfile;
+    profileImg.className = "w-12 h-12 rounded-full object-cover border border-gray-200";
+
+    const authorInfo = document.createElement('div');
+    authorInfo.className = "flex flex-col";
+
+    const authorName = document.createElement('span');
+    authorName.className = "font-semibold text-[#111827] text-base select-text";
+    authorName.textContent = post.author.name;
+
+    const postTime = document.createElement('time');
+    postTime.className = "text-xs text-gray-500 select-none";
+    postTime.dateTime = post.datetime;
+    postTime.textContent = timeAgo(post.datetime);
+
+    authorInfo.appendChild(authorName);
+    authorInfo.appendChild(postTime);
+
+    header.appendChild(profileImg);
+    header.appendChild(authorInfo);
+
+    // Text content with line breaks
+    const textContent = document.createElement('p');
+    textContent.className = "whitespace-pre-line text-[#111827] text-sm leading-relaxed select-text";
+    textContent.textContent = post.text;
+
+    // Media container
+    let mediaEl = null;
+    if (post.media) {
+      if (post.media.type === "image") {
+        mediaEl = document.createElement('img');
+        mediaEl.src = post.media.src;
+        mediaEl.alt = post.media.alt;
+        mediaEl.className = "w-full max-h-[350px] object-cover rounded-lg border border-gray-200 shadow-sm";
+        mediaEl.loading = "lazy";
+      } else if (post.media.type === "video") {
+        // For mock, use an image thumbnail with a play icon overlay
+        const videoWrapper = document.createElement('div');
+        videoWrapper.className = "relative w-full max-h-[350px] rounded-lg border border-gray-200 shadow-sm overflow-hidden cursor-pointer";
+
+        const thumbnail = document.createElement('img');
+        thumbnail.src = post.media.src;
+        thumbnail.alt = post.media.alt;
+        thumbnail.className = "w-full object-cover";
+
+        const playIcon = document.createElement('span');
+        playIcon.className = "absolute inset-0 flex items-center justify-center text-white text-5xl opacity-80";
+        playIcon.innerHTML = '<i class="fas fa-play-circle"></i>';
+
+        videoWrapper.appendChild(thumbnail);
+        videoWrapper.appendChild(playIcon);
+
+        mediaEl = videoWrapper;
+      }
+    }
+
+    // Actions container (likes, comments, shares)
+    const actions = document.createElement('nav');
+    actions.className = "flex items-center justify-between text-gray-500 text-sm select-none";
+
+    // Like button
+    const likeBtn = document.createElement('button');
+    likeBtn.className = "flex items-center space-x-2 hover:text-[#2563eb] transition-smooth focus:outline-none";
+    likeBtn.setAttribute('aria-label', 'Curtir post');
+    likeBtn.innerHTML = `<i class="fas fa-heart"></i><span>${post.likes}</span>`;
+
+    // Comment button
+    const commentBtn = document.createElement('button');
+    commentBtn.className = "flex items-center space-x-2 hover:text-[#2563eb] transition-smooth focus:outline-none";
+    commentBtn.setAttribute('aria-label', 'Comentar no post');
+    commentBtn.innerHTML = `<i class="fas fa-comment"></i><span>${post.comments}</span>`;
+
+    // Share button
+    const shareBtn = document.createElement('button');
+    shareBtn.className = "flex items-center space-x-2 hover:text-[#2563eb] transition-smooth focus:outline-none";
+    shareBtn.setAttribute('aria-label', 'Compartilhar post');
+    shareBtn.innerHTML = `<i class="fas fa-share"></i><span>${post.shares}</span>`;
+
+    actions.appendChild(likeBtn);
+    actions.appendChild(commentBtn);
+    actions.appendChild(shareBtn);
+
+    // Append all to post element
+    postEl.appendChild(header);
+    postEl.appendChild(textContent);
+    if (mediaEl) postEl.appendChild(mediaEl);
+    postEl.appendChild(actions);
+
+    // Interaction logic
+    likeBtn.addEventListener('click', () => {
+      if (likeBtn.classList.contains('text-[#2563eb]')) {
+        post.likes--;
+        likeBtn.classList.remove('text-[#2563eb]');
+      } else {
+        post.likes++;
+        likeBtn.classList.add('text-[#2563eb]');
+        showToast('Post curtido');
+      }
+      likeBtn.querySelector('span').textContent = post.likes;
+    });
+
+    commentBtn.addEventListener('click', () => {
+      showToast('Funcionalidade de comentários não implementada');
+    });
+
+    shareBtn.addEventListener('click', () => {
+      showToast('Post compartilhado');
+    });
+
+    return postEl;
+  }
+
+  // Toast notification
+  function showToast(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = "bg-[#2563eb] text-white px-4 py-2 rounded-md shadow-md text-sm font-medium select-none opacity-0 translate-y-4 transition-all duration-300";
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    // Animate in
+    requestAnimationFrame(() => {
+      toast.classList.remove('opacity-0', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+    });
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'translate-y-4');
+      toast.classList.remove('opacity-100', 'translate-y-0');
+      toast.addEventListener('transitionend', () => {
+        toast.remove();
+      });
+    }, 3000);
+  }
+
+  // Load posts in batches for infinite scroll mock
+  const feed = document.getElementById('feed');
+  const batchSize = 5;
+  let loadedCount = 0;
+
+  function loadPosts() {
+    const nextBatch = postsData.slice(loadedCount, loadedCount + batchSize);
+    nextBatch.forEach(post => {
+      const postEl = createPost(post);
+      feed.appendChild(postEl);
+    });
+    loadedCount += nextBatch.length;
+  }
+
+  // Initial load
+  loadPosts();
+
+  // Infinite scroll mock
+  window.addEventListener('scroll', () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
+      if (loadedCount < postsData.length) {
+        loadPosts();
+      }
+    }
+  });
+
+  // Dark mode toggle
+  const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
+  toggleDarkModeBtn.addEventListener('click', () => {
+    if (document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.remove('dark');
+      toggleDarkModeBtn.innerHTML = '<i class="fas fa-moon fa-lg"></i>';
+      document.body.classList.remove('bg-[#111827]', 'text-[#f9fafb]');
+    } else {
+      document.documentElement.classList.add('dark');
+      toggleDarkModeBtn.innerHTML = '<i class="fas fa-sun fa-lg"></i>';
+      document.body.classList.add('bg-[#111827]', 'text-[#f9fafb]');
+    }
+  });
+
+  // Dark mode styles with Tailwind's dark variant
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          primary: '#2563eb',
+          'soft-black': '#111827',
+          'soft-white': '#f9fafb',
+        }
+      }
+    }
+  };
+  </script>
+  <style>
+   /* Dark mode overrides */
+  .dark body {
+    background-color: #111827 !important;
+    color: #f9fafb !important;
+  }
+  .dark header {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+  .dark #feed > article {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #f9fafb !important;
+  }
+  .dark #feed > article p,
+  .dark #feed > article header span,
+  .dark #feed > article header time {
+    color: #f9fafb !important;
+  }
+  .dark #feed > article nav button {
+    color: #9ca3af !important;
+  }
+  .dark #feed > article nav button:hover {
+    color: #2563eb !important;
+  }
+  .dark aside {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #f9fafb !important;
+  }
+  .dark aside h2 {
+    color: #2563eb !important;
+  }
+  .dark aside button {
+    color: #2563eb !important;
+  }
+  .dark aside button:hover {
+    text-decoration: underline;
+  }
+  .dark input[type="search"] {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+  }
+  .dark input[type="search"]::placeholder {
+    color: #9ca3af !important;
+  }
+  </style>
+ </body>
+</html>

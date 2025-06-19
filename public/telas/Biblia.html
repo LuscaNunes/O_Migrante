@@ -485,6 +485,118 @@
                     window.location.href = "index.html";
                 });
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showFeedback("Você precisa estar logado.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            fetch("http://localhost:3000/verifyToken", {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.auth) {
+                        localStorage.removeItem('token');
+                        showFeedback("Sessão inválida ou expirada.");
+                        window.location.href = "index.html";
+                    } else {
+                        // Configura admin
+                        if (data.user.tipo === 'admin') {
+                            const adminDropdown = document.getElementById('adminDropdown');
+                            adminDropdown.classList.remove('hidden');
+                            const adminMenuButton = document.getElementById('adminMenuButton');
+                            const adminMenuItems = document.getElementById('adminMenuItems');
+                            adminMenuButton.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                adminMenuItems.classList.toggle('hidden');
+                            });
+                            document.addEventListener('click', (e) => {
+                                if (!adminMenuButton.contains(e.target) && !adminMenuItems.contains(e.target)) {
+                                    adminMenuItems.classList.add('hidden');
+                                }
+                            });
+                        }
+
+                        // Carrega referência da URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const versao = urlParams.get('versao');
+                        const livro = urlParams.get('livro');
+                        const capitulo = urlParams.get('capitulo');
+                        const versiculo = urlParams.get('versiculo');
+
+                        if (versao && livro && capitulo && versiculo) {
+                            loadBibleWithReference(versao, livro, capitulo, versiculo);
+                        }
+
+                        // Listeners existentes
+                        document.getElementById('versao').addEventListener('change', (e) => {
+                            if (e.target.value) {
+                                loadBibleXML(e.target.value);
+                            } else {
+                                document.getElementById('livro').innerHTML = '<option value="">Selecione um livro</option>';
+                                document.getElementById('livro').disabled = true;
+                                document.getElementById('capitulo').innerHTML = '<option value="">Selecione um capítulo</option>';
+                                document.getElementById('capitulo').disabled = true;
+                                document.getElementById('versiculos-container').innerHTML = '';
+                                document.getElementById('versiculos-titulo').textContent = 'Selecione uma versão, livro e capítulo';
+                            }
+                        });
+                        document.getElementById('livro').addEventListener('change', populateChapters);
+                        document.getElementById('capitulo').addEventListener('change', showVerses);
+                        document.getElementById('salvar-anotacao').addEventListener('click', saveAnnotation);
+                        document.getElementById('texto-anotacao').addEventListener('input', () => {
+                            const selectedVerse = document.getElementById('versiculo-selecionado').value;
+                            const annotationText = document.getElementById('texto-anotacao').value.trim();
+                            document.getElementById('salvar-anotacao').disabled = !(selectedVerse && annotationText);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao verificar token:", error);
+                    showFeedback("Erro ao verificar autenticação.");
+                    localStorage.removeItem('token');
+                    window.location.href = "index.html";
+                });
+        });
+
+        // Função para carregar referência da URL
+        async function loadBibleWithReference(versao, livroNome, capitulo, versiculo) {
+            try {
+                await loadBibleXML(versao);
+                const livroSelect = document.getElementById('livro');
+                const bookOption = Array.from(livroSelect.options).find(opt => opt.text.toLowerCase() === livroNome.toLowerCase());
+                if (bookOption) {
+                    livroSelect.value = bookOption.value;
+                    populateChapters();
+                    const capituloSelect = document.getElementById('capitulo');
+                    capituloSelect.value = capitulo;
+                    showVerses();
+
+                    // Aguarda renderização dos versículos
+                    setTimeout(() => {
+                        const verseDiv = Array.from(document.querySelectorAll('.versiculo-card')).find(div =>
+                            div.textContent.startsWith(`${versiculo}.`)
+                        );
+                        if (verseDiv) {
+                            verseDiv.classList.add('versiculo-selecionado');
+                            verseDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            document.getElementById('versiculo-selecionado').value =
+                                `${getVersionName(versao)} - ${livroNome} ${capitulo}:${versiculo} - ${verseDiv.textContent.replace(/^\d+\.\s*/, '')}`;
+                        }
+                    }, 100);
+                } else {
+                    showFeedback("Livro não encontrado.", true);
+                }
+            } catch (error) {
+                console.error("Erro ao carregar referência:", error);
+                showFeedback("Erro ao carregar referência bíblica.", true);
+            }
+        }
     </script>
 </body>
 

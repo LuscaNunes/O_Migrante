@@ -71,11 +71,95 @@
                 width: var(--progress);
             }
         }
+
+        .sidebar-right {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            max-width: 384px;
+        }
+
+        .tab {
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            background-color: #2563EB;
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background-color: #EFF6FF;
+            color: #2563EB;
+        }
+
+        /* Estilizar a barra de rolagem para friendsContent */
+        .tab-content {
+            max-height: 20rem;
+            /* Equivalente a max-h-80 */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            /* Firefox */
+            scrollbar-color: #2563EB #ddd;
+            /* Firefox */
+        }
+
+        /* Estilizar a barra de rolagem para navegadores baseados em WebKit (Chrome, Safari, Edge) */
+        .tab-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tab-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb {
+            background: #2563EB;
+            border-radius: 10px;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb:hover {
+            background: #1e40af;
+        }
+
+        /* Garantir que friendsList respeite a altura do contêiner */
+        #friendsList {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            /* Substitui space-y-4 para maior controle */
+            min-height: 0;
+            /* Evita expansão além do contêiner */
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar-right {
+                position: static;
+                max-width: 100%;
+                margin: 1rem auto;
+            }
+
+            main {
+                margin-right: 0 !important;
+            }
+
+            /* Ajustar altura para telas menores */
+            .tab-content {
+                max-height: 24rem;
+                /* Aumentar ligeiramente para telas menores */
+            }
+        }
     </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen flex">
-    <!-- Sidebar -->
+    <!-- Sidebar Esquerda -->
     <nav class="bg-white w-64 p-6 shadow-lg fixed top-0 left-0 h-screen flex flex-col items-start justify-start z-20">
         <h2 class="text-2xl font-bold mb-6">
             Menu
@@ -100,7 +184,6 @@
                     Missão
                 </a>
             </li>
-
             <li>
                 <a class="sidebar-link flex items-center text-gray-700 py-2 px-3 rounded transition w-full justify-start"
                     href="../Biblioteca/paginaBiblioteca.html">
@@ -133,7 +216,7 @@
                         </li>
                         <li>
                             <a class="block px-4 py-2 hover:bg-blue-100" href="../../admin/telas/DadosFases.html">
-                                Dados das Fases
+                                Dados das Amigos
                             </a>
                         </li>
                         <li>
@@ -148,7 +231,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-1 ml-64 p-4 sm:p-8">
+    <main class="flex-1 ml-64 p-4 sm:p-8" style="margin-right: 400px;">
         <div class="w-full max-w-5xl mx-auto">
             <!-- Perfil do Usuário -->
             <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
@@ -164,7 +247,7 @@
                             </button>
                         </div>
                         <div>
-                            <h1 class="text-3xl font-semibold text-gray-900" id="userName">Carregando...</h1>
+                            <h1 class="text-3xl font-semibold text-gray-900" id="userName" data-id="">Carregando...</h1>
                             <p class="text-indigo-600 font-medium" id="userEmail">Carregando...</p>
                             <p class="text-gray-500 text-sm mt-1" id="userJoined">Membro desde: Carregando...</p>
                         </div>
@@ -204,12 +287,11 @@
         </div>
     </main>
 
-    <!-- Informações Pessoais -->
-    <div class="mb-10">
-        <br>
-        <br>
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Informações Pessoais</h2>
+    <!-- Sidebar Direita (Informações Pessoais e Amigos) -->
+    <div class="sidebar-right">
+        <!-- Informações Pessoais -->
         <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Informações Pessoais</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <h3 class="text-gray-500 text-sm">Nome Completo</h3>
@@ -229,12 +311,12 @@
                 </div>
             </div>
             <!-- Botões de Ação -->
-            <div class="mt-6 flex flex-col sm:flex-row gap-4">
+            <div class="mt-6 flex flex-col sm:flex-row gap-1">
                 <a href="Biblia.html"
                     class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition text-center">
                     Bíblia
                 </a>
-                <a href='../PaginaProducao.html'
+                <a href="../PaginaProducao.html"
                     class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition text-center">
                     Pergaminhos
                 </a>
@@ -242,6 +324,58 @@
                     class="action-button bg-indigo-100 text-indigo-700 font-medium py-2 px-4 rounded-lg transition text-center">
                     Anotações
                 </a>
+            </div>
+        </div>
+
+        <!-- Amigos e Pesquisa de Usuários -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10 animate-fadeIn">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Amigos e Usuários</h2>
+
+            <!-- Abas -->
+            <div class="flex border-b border-gray-200 mb-6">
+                <button class="tab px-4 py-2 text-gray-700 font-medium rounded-t-lg active"
+                    id="friendsTab">Amigos</button>
+                <button class="tab px-4 py-2 text-gray-700 font-medium rounded-t-lg"
+                    id="requestsTab">Solicitações</button>
+                <button class="tab px-4 py-2 text-gray-700 font-medium rounded-t-lg" id="searchUsersTab">Pesquisar
+                    Usuários</button>
+            </div>
+
+            <!-- Conteúdo das Abas -->
+            <div id="friendsContent" class="tab-content">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Seus Amigos</h3>
+                    <span class="text-gray-500 text-sm" id="friendsCount">0 amigos</span>
+                </div>
+                <div id="friendsList" class="space-y-4">
+                    <p class="text-gray-600">Carregando amigos...</p>
+                </div>
+            </div>
+
+            <div id="requestsContent" class="tab-content hidden max-h-40 overflow-y-auto">
+                <div class="mb-6">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-1">Solicitações Recebidas</h3>
+                    <div id="receivedRequestsList" class="space-y-4">
+                        <p class="text-gray-600">Carregando solicitações recebidas...</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 mb-2">Solicitações Enviadas</h3>
+                    <div id="sentRequestsList" class="space-y-4">
+                        <p class="text-gray-600">Carregando solicitações enviadas...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="searchUsersContent" class="tab-content hidden max-h-80 overflow-y-auto">
+                <div class="mb-4">
+                    <input type="text" id="searchInput"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Pesquisar por nome ou email">
+                </div>
+                <div id="searchResults" class="space-y-4">
+                    <p class="text-gray-600">Digite para pesquisar usuários...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -313,6 +447,7 @@
 
         // Verificar autenticação e carregar dados do usuário
         document.addEventListener("DOMContentLoaded", async () => {
+            console.log('Página carregada, inicializando...'); // Log para depuração
             const token = localStorage.getItem('token');
             if (!token) {
                 showFeedback("Você precisa estar logado para acessar esta página.");
@@ -341,6 +476,7 @@
 
                 // Update user information
                 document.getElementById('userName').textContent = data.user.nome || 'Usuário';
+                document.getElementById('userName').dataset.id = data.user.id_usuario;
                 document.getElementById('userEmail').textContent = data.user.email || 'Sem email';
                 document.getElementById('fullName').textContent = data.user.nome || 'Usuário';
                 document.getElementById('emailInfo').textContent = data.user.email || 'Sem email';
@@ -389,9 +525,14 @@
                     console.error(`Erro ao buscar progresso detalhado: ${progressRes.status} ${progressRes.statusText}`);
                     document.getElementById('niveisCompletos').textContent = '0';
                 }
+
+                // Carregar amigos inicialmente
+                const userId = data.user.id_usuario;
+                console.log('Carregando amigos na inicialização para userId:', userId);
+                await carregarAmigos(userId, token);
             } catch (error) {
-                console.error("Erro ao carregar dados do usuário:", error);
-                showFeedback("Erro ao carregar dados do usuário: " + error.message);
+                console.error("Erro ao carregar dados do usuário:", error.message);
+                showFeedback("Erro ao carregar dados do usuário: " + error.message, true);
                 localStorage.removeItem('token');
                 window.location.href = "index.html";
             }
@@ -411,7 +552,7 @@
                 if (!niveisRes.ok) {
                     const errorData = await niveisRes.json().catch(() => ({}));
                     console.error('Erro na resposta de /niveis/ativos:', errorData);
-                    throw new Error(`Erro ao buscar níveis ativos: ${niveisRes.status} ${niveisRes.statusText} - ${errorData.message || 'Sem detalhes'}`);
+                    throw new Error(`Erro ao buscar níveis ativos: ${niveisRes.status} ${res.statusText} - ${errorData.message || 'Sem detalhes'}`);
                 }
 
                 const { niveis } = await niveisRes.json();
@@ -587,6 +728,7 @@
                         const verifyData = await verifyRes.json();
                         if (verifyData.auth) {
                             document.getElementById('userName').textContent = verifyData.user.nome || 'Usuário';
+                            document.getElementById('userName').dataset.id = verifyData.user.id_usuario;
                             document.getElementById('userEmail').textContent = verifyData.user.email || 'Sem email';
                             document.getElementById('fullName').textContent = verifyData.user.nome || 'Usuário';
                             document.getElementById('emailInfo').textContent = verifyData.user.email || 'Sem email';
@@ -613,6 +755,354 @@
                 showFeedback("Erro ao atualizar perfil: " + error.message, true);
             }
         });
+
+        // Gerenciar abas
+        const friendsTab = document.getElementById('friendsTab');
+        const requestsTab = document.getElementById('requestsTab');
+        const searchUsersTab = document.getElementById('searchUsersTab');
+        const friendsContent = document.getElementById('friendsContent');
+        const requestsContent = document.getElementById('requestsContent');
+        const searchUsersContent = document.getElementById('searchUsersContent');
+
+        function activateTab(tab, content) {
+            [friendsTab, requestsTab, searchUsersTab].forEach(t => t.classList.remove('active'));
+            [friendsContent, requestsContent, searchUsersContent].forEach(c => c.classList.add('hidden'));
+            tab.classList.add('active');
+            content.classList.remove('hidden');
+        }
+
+        friendsTab.addEventListener('click', () => {
+            activateTab(friendsTab, friendsContent);
+            const token = localStorage.getItem('token');
+            const userId = document.getElementById('userName').dataset.id;
+            if (userId && token) {
+                carregarAmigos(userId, token);
+            }
+        });
+
+        requestsTab.addEventListener('click', () => {
+            activateTab(requestsTab, requestsContent);
+            const token = localStorage.getItem('token');
+            const userId = document.getElementById('userName').dataset.id;
+            if (userId && token) {
+                carregarSolicitacoes(userId, token);
+            }
+        });
+
+        searchUsersTab.addEventListener('click', () => {
+            activateTab(searchUsersTab, searchUsersContent);
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<p class="text-gray-600">Digite para pesquisar usuários...</p>';
+        });
+
+        // Função para carregar amigos
+        async function carregarAmigos(userId, token) {
+            console.log('Iniciando carregamento de amigos para userId:', userId);
+            try {
+                const friendsList = document.getElementById('friendsList');
+                const friendsCount = document.getElementById('friendsCount');
+                friendsList.innerHTML = '<p class="text-gray-600">Carregando amigos...</p>';
+
+                const res = await fetch("http://localhost:3000/amizades/listar", {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({}));
+                    throw new Error(`Erro ao buscar amigos: ${res.status} ${res.statusText} - ${errorData.message || 'Sem detalhes'}`);
+                }
+
+                const { amigos } = await res.json();
+                console.log('Dados de amigos recebidos:', amigos);
+                friendsList.innerHTML = '';
+
+                if (amigos && amigos.length > 0) {
+                    amigos.forEach(amigo => {
+                        const amigoElement = document.createElement('div');
+                        amigoElement.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-200';
+                        amigoElement.innerHTML = `
+                            <div>
+                                <p class="text-gray-900 font-medium">${amigo.nome}</p>
+                                <p class="text-gray-500 text-sm">${amigo.email}</p>
+                            </div>
+                            <button class="action-button bg-red-100 text-red-700 font-medium py-1 px-3 rounded-lg transition remove-friend" data-id="${amigo.id_amizade}">
+                                Remover Amizade
+                            </button>
+                        `;
+                        friendsList.appendChild(amigoElement);
+                    });
+                    friendsCount.textContent = `${amigos.length} amigo${amigos.length !== 1 ? 's' : ''}`;
+                } else {
+                    friendsList.innerHTML = '<p class="text-gray-600">Você ainda não tem amigos adicionados.</p>';
+                    friendsCount.textContent = '0 amigos';
+                }
+
+                // Adicionar eventos aos botões de remover amizade
+                document.querySelectorAll('.remove-friend').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const idAmizade = e.target.dataset.id;
+                        await removerAmizade(idAmizade, token, userId);
+                    });
+                });
+            } catch (error) {
+                console.error("Erro ao carregar amigos:", error.message);
+                document.getElementById('friendsList').innerHTML = `<p class="text-red-500">Erro ao carregar amigos: ${error.message}</p>`;
+                showFeedback("Erro ao carregar amigos.", true);
+            }
+        }
+
+        // Função para carregar solicitações
+        async function carregarSolicitacoes(userId, token) {
+            try {
+                const receivedRequestsList = document.getElementById('receivedRequestsList');
+                const sentRequestsList = document.getElementById('sentRequestsList');
+                receivedRequestsList.innerHTML = '<p class="text-gray-600">Carregando solicitações recebidas...</p>';
+                sentRequestsList.innerHTML = '<p class="text-gray-600">Carregando solicitações enviadas...</p>';
+
+                const res = await fetch("http://localhost:3000/amizades/listar", {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({}));
+                    throw new Error(`Erro ao buscar solicitações: ${res.status} ${res.statusText} - ${errorData.message || 'Sem detalhes'}`);
+                }
+
+                const { pedidosPendentes, solicitacoesEnviadas } = await res.json();
+                receivedRequestsList.innerHTML = '';
+                sentRequestsList.innerHTML = '';
+
+                // Solicitações Recebidas
+                if (pedidosPendentes && pedidosPendentes.length > 0) {
+                    pedidosPendentes.forEach(pedido => {
+                        const pedidoElement = document.createElement('div');
+                        pedidoElement.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-200';
+                        pedidoElement.innerHTML = `
+                            <div>
+                                <p class="text-gray-900 font-medium">${pedido.nome}</p>
+                                <p class="text-gray-500 text-sm">${pedido.email}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="action-button bg-green-100 text-green-700 font-medium py-1 px-3 rounded-lg transition accept-friend" data-id="${pedido.id_amizade}">
+                                    Aceitar
+                                </button>
+                                <button class="action-button bg-red-100 text-red-700 font-medium py-1 px-3 rounded-lg transition reject-friend" data-id="${pedido.id_amizade}">
+                                    Recusar
+                                </button>
+                            </div>
+                        `;
+                        receivedRequestsList.appendChild(pedidoElement);
+                    });
+                } else {
+                    receivedRequestsList.innerHTML = '<p class="text-gray-600">Nenhuma solicitação recebida.</p>';
+                }
+
+                // Solicitações Enviadas
+                if (solicitacoesEnviadas && solicitacoesEnviadas.length > 0) {
+                    solicitacoesEnviadas.forEach(solicitacao => {
+                        const solicitacaoElement = document.createElement('div');
+                        solicitacaoElement.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-200';
+                        solicitacaoElement.innerHTML = `
+                            <div>
+                                <p class="text-gray-900 font-medium">${solicitacao.nome}</p>
+                                <p class="text-gray-500 text-sm">${solicitacao.email}</p>
+                            </div>
+                            <button class="action-button bg-red-100 text-red-700 font-medium py-1 px-3 rounded-lg transition cancel-request" data-id="${solicitacao.id_amizade}">
+                                Cancelar
+                            </button>
+                        `;
+                        sentRequestsList.appendChild(solicitacaoElement);
+                    });
+                } else {
+                    sentRequestsList.innerHTML = '<p class="text-gray-600">Nenhuma solicitação enviada.</p>';
+                }
+
+                // Adicionar eventos aos botões
+                document.querySelectorAll('.accept-friend').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const idAmizade = e.target.dataset.id;
+                        await atualizarAmizade(idAmizade, 'aceito', token, userId);
+                    });
+                });
+
+                document.querySelectorAll('.reject-friend').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const idAmizade = e.target.dataset.id;
+                        await atualizarAmizade(idAmizade, 'recusado', token, userId);
+                    });
+                });
+
+                document.querySelectorAll('.cancel-request').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const idAmizade = e.target.dataset.id;
+                        await cancelarSolicitacao(idAmizade, token, userId);
+                    });
+                });
+            } catch (error) {
+                console.error("Erro ao carregar solicitações:", error);
+                receivedRequestsList.innerHTML = `<p class="text-red-500">Erro ao carregar solicitações recebidas: ${error.message}</p>`;
+                sentRequestsList.innerHTML = `<p class="text-red-500">Erro ao carregar solicitações enviadas: ${error.message}</p>`;
+                showFeedback("Erro ao carregar solicitações.");
+            }
+        }
+
+        // Função para atualizar amizade (aceitar/recusar)
+        async function atualizarAmizade(idAmizade, status, token, userId) {
+            try {
+                const res = await fetch(`http://localhost:3000/amizades/${idAmizade}/atualizar`, {
+                    method: "PATCH",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showFeedback(`Amizade ${status === 'aceito' ? 'aceita' : 'recusada'} com sucesso!`, false);
+                    await carregarSolicitacoes(userId, token);
+                } else {
+                    showFeedback(data.message || "Erro ao atualizar amizade.", true);
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar amizade:", error);
+                showFeedback("Erro ao atualizar amizade: " + error.message, true);
+            }
+        }
+
+        // Função para cancelar solicitação enviada
+        async function cancelarSolicitacao(idAmizade, token, userId) {
+            try {
+                const res = await fetch(`http://localhost:3000/amizades/${idAmizade}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showFeedback("Solicitação cancelada com sucesso!", false);
+                    await carregarSolicitacoes(userId, token);
+                } else {
+                    showFeedback(data.message || "Erro ao cancelar solicitação.", true);
+                }
+            } catch (error) {
+                console.error("Erro ao cancelar solicitação:", error);
+                showFeedback("Erro ao cancelar solicitação: " + error.message, true);
+            }
+        }
+
+        // Função para remover amizade
+        async function removerAmizade(idAmizade, token, userId) {
+            try {
+                const res = await fetch(`http://localhost:3000/amizades/${idAmizade}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showFeedback("Amizade removida com sucesso!", false);
+                    await carregarAmigos(userId, token);
+                } else {
+                    showFeedback(data.message || "Erro ao remover amizade.", true);
+                }
+            } catch (error) {
+                console.error("Erro ao remover amizade:", error);
+                showFeedback("Erro ao remover amizade: " + error.message, true);
+            }
+        }
+
+        // Função para pesquisar usuários
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', async () => {
+            const termo = searchInput.value.trim();
+            const searchResults = document.getElementById('searchResults');
+            const token = localStorage.getItem('token');
+            const userId = document.getElementById('userName').dataset.id;
+
+            console.log('Pesquisando termo:', termo);
+            console.log('UserId:', userId);
+            console.log('Token:', token);
+
+            if (!termo) {
+                searchResults.innerHTML = '<p class="text-gray-600">Digite para pesquisar usuários...</p>';
+                return;
+            }
+
+            try {
+                const res = await fetch(`http://localhost:3000/amizades/pesquisar?termo=${encodeURIComponent(termo)}`, {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({}));
+                    throw new Error(`Erro ao buscar usuários: ${res.status} ${res.statusText} - ${errorData.message || 'Sem detalhes'}`);
+                }
+
+                const { usuarios } = await res.json();
+                searchResults.innerHTML = '';
+
+                if (usuarios && usuarios.length > 0) {
+                    usuarios.forEach(usuario => {
+                        const usuarioElement = document.createElement('div');
+                        usuarioElement.className = 'flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-200';
+                        usuarioElement.innerHTML = `
+                            <div>
+                                <p class="text-gray-900 font-medium">${usuario.nome}</p>
+                                <p class="text-gray-500 text-sm">${usuario.email}</p>
+                            </div>
+                            <button class="action-button bg-indigo-100 text-indigo-700 font-medium py-1 px-3 rounded-lg transition add-friend" data-id="${usuario.id_usuario}" ${usuario.id_usuario == userId ? 'disabled' : ''}>
+                                Adicionar Amigo
+                            </button>
+                        `;
+                        searchResults.appendChild(usuarioElement);
+                    });
+
+                    document.querySelectorAll('.add-friend').forEach(button => {
+                        button.addEventListener('click', async (e) => {
+                            const idUsuario2 = e.target.dataset.id;
+                            await enviarPedidoAmizade(idUsuario2, token, userId);
+                        });
+                    });
+                } else {
+                    searchResults.innerHTML = '<p class="text-gray-600">Nenhum usuário encontrado.</p>';
+                }
+            } catch (error) {
+                console.error("Erro ao pesquisar usuários:", error);
+                searchResults.innerHTML = `<p class="text-red-500">Erro ao pesquisar usuários: ${error.message}</p>`;
+                showFeedback("Erro ao pesquisar usuários.");
+            }
+        });
+
+        // Função para enviar pedido de amizade
+        async function enviarPedidoAmizade(idUsuario2, token, userId) {
+            try {
+                const res = await fetch("http://localhost:3000/amizades/criar", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ id_usuario2: idUsuario2 })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showFeedback("Pedido de amizade enviado com sucesso!", false);
+                    document.getElementById('searchInput').value = '';
+                    document.getElementById('searchResults').innerHTML = '<p class="text-gray-600">Digite para pesquisar usuários...</p>';
+                } else {
+                    showFeedback(data.message || "Erro ao enviar pedido de amizade.", true);
+                }
+            } catch (error) {
+                console.error("Erro ao enviar pedido de amizade:", error);
+                showFeedback("Erro ao enviar pedido de amizade: " + error.message, true);
+            }
+        }
 
         // Logout
         document.getElementById('logoutButton')?.addEventListener('click', () => {
