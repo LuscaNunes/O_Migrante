@@ -12,6 +12,7 @@ CREATE TABLE Usuarios (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
 CREATE TABLE niveis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
@@ -22,6 +23,7 @@ CREATE TABLE niveis (
     usuario_id INT NOT NULL, -- ID do usuário que cadastrou o nível
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE
 );
+
 
 CREATE TABLE perguntas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,6 +57,7 @@ CREATE TABLE IF NOT EXISTS Versoes (
     abreviacao VARCHAR(20) NOT NULL UNIQUE
 );
 
+
 CREATE TABLE Anotacoes (
     id_anotacao INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -68,6 +71,7 @@ CREATE TABLE Anotacoes (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE
 );
+
 
 CREATE TABLE IF NOT EXISTS Livros (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -91,6 +95,7 @@ CREATE TABLE IF NOT EXISTS Versiculos (
     FOREIGN KEY (capitulo_id) REFERENCES Capitulos(id) ON DELETE CASCADE,
     FOREIGN KEY (versao_id) REFERENCES Versoes(id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE Curtidas (
     id_curtida INT AUTO_INCREMENT PRIMARY KEY,
@@ -123,22 +128,5 @@ CREATE TABLE Amizades (
   UNIQUE (id_usuario1, id_usuario2)
 );
 
-CREATE TABLE `mensagensdiarias` (
-  `id_mensagem` int NOT NULL AUTO_INCREMENT,
-  `usuário_id` int NOT NULL,
-  `versao` varchar(10) NOT NULL,
-  `livro` varchar(50) NOT NULL,
-  `capítulo` int NOT NULL,
-  `versículo` int NOT NULL,
-  `texto_versículo` text NOT NULL,
-  `título` varchar(255) NOT NULL,
-  `descrição` text NOT NULL,
-  `ordem_exibição` int NOT NULL,
-  `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_mensagem`),
-  UNIQUE KEY `ordem_exibição` (`ordem_exibição`),
-  KEY `usuário_id` (`usuário_id`),
-  CONSTRAINT `mensagensdiarias_ibfk_1` FOREIGN KEY (`usuário_id`) REFERENCES `usuários` (`id_usuário`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+SELECT * FROM amizades;
 
-SELECT * FROM mensagensdiarias;
