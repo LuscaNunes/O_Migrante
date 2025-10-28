@@ -1,18 +1,33 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
+// Se o DB_PORT não estiver definido, o default é 3306 (padrão)
+// Mas vamos garantir que ele busque a porta 4000 do TiDB
+const DB_PORT = process.env.DB_PORT || 3306;
+const DB_HOST = process.env.DB_HOST || 'localhost';
+
 /**
  * Configuração da conexão com o banco de dados MySQL
  */
-const db = mysql.createConnection({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '2024',
-  database: process.env.DB_NAME || 'Agape_BD',
-  connectTimeout: 10000, // Tempo limite de conexão em milissegundos
-  charset: 'utf8mb4' // Suporte a caracteres UTF-8 para emojis e outros
-});
+const dbConfig = {
+    host: DB_HOST,
+    port: DB_PORT, // <--- NOVO: Adicionamos a porta
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '2024',
+    database: process.env.DB_NAME || 'test', // <--- AJUSTADO: Usando 'test'
+    connectTimeout: 10000,
+    charset: 'utf8mb4',
+    // --- NOVO: Configuração de SSL para Nuvem (TiDB, PlanetScale, etc.) ---
+    ssl: {
+        // Habilita SSL. 'rejectUnauthorized: true' garante que o certificado é válido.
+        // O Render e o TiDB geralmente funcionam com 'rejectUnauthorized: true'
+        // Se falhar, você pode tentar 'rejectUnauthorized: false' (menos seguro) ou fornecer um CA (mais complexo).
+        rejectUnauthorized: true
+    }
+    // -------------------------------------------------------------------
+};
 
+const db = mysql.createConnection(dbConfig);
 /**
  * Conecta ao banco de dados e verifica a conexão
  */
