@@ -41,7 +41,7 @@ app.use('/amizades', amizadeRoutes);
 
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'telas', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'telas', 'Index.html'));
 });
 
 app.use((err, req, res, next) => {
