@@ -185,4 +185,32 @@ router.put('/usuarios/atualizar', authenticateToken, async (req, res) => {
     }
 });
 
+// authRoutes.js (adicione este bloco temporariamente)
+
+router.get('/teste-tabela', async (req, res) => {
+    console.log('--- Executando teste de nome de tabela ---');
+    try {
+        // Tentativa de selecionar da tabela usando o nome que você criou: Usuarios
+        const [rows_upper] = await db.promise().query('SELECT * FROM Usuarios LIMIT 1');
+        console.log('SUCESSO: Tabela encontrada como Usuarios (U maiúsculo)');
+        return res.json({ success: true, tableName: 'Usuarios (U maiúsculo)', data: rows_upper });
+    } catch (error_upper) {
+        console.log(`FALHA com Usuarios (U maiúsculo): ${error_upper.message}`);
+        
+        try {
+            // Tentativa de selecionar da tabela usando o nome em minúsculo (mais provável)
+            const [rows_lower] = await db.promise().query('SELECT * FROM usuarios LIMIT 1');
+            console.log('SUCESSO: Tabela encontrada como usuarios (minúsculo)');
+            return res.json({ success: true, tableName: 'usuarios (minúsculo)', data: rows_lower });
+        } catch (error_lower) {
+            console.error('FALHA com usuarios (minúsculo). O nome é outro:', error_lower);
+            return res.status(500).json({ 
+                success: false, 
+                message: 'Nenhuma das formas de capitalização Usuários/usuarios funcionou.', 
+                error_original: error_lower.message 
+            });
+        }
+    }
+});
+
 module.exports = router;
