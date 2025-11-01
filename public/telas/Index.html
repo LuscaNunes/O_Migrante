@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login e Cadastro - Ágape</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <!-- Container do Login -->
     <div id="loginContainer" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
@@ -13,21 +15,26 @@
         <form id="loginForm">
             <div class="mb-2">
                 <label for="loginEmail" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" id="loginEmail" placeholder="Email" class="w-full p-2 border rounded" aria-label="Email" required>
+                <input type="email" id="loginEmail" placeholder="Email" class="w-full p-2 border rounded"
+                    aria-label="Email" required>
             </div>
             <div class="mb-2">
                 <label for="loginPassword" class="block text-sm font-medium text-gray-700">Senha</label>
-                <input type="password" id="loginPassword" placeholder="Senha" class="w-full p-2 border rounded" aria-label="Senha" required>
+                <input type="password" id="loginPassword" placeholder="Senha" class="w-full p-2 border rounded"
+                    aria-label="Senha" required>
             </div>
-            <button type="submit" id="loginButton" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 flex justify-center items-center">
+            <button type="submit" id="loginButton"
+                class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 flex justify-center items-center">
                 <span id="loginButtonText">Entrar</span>
-                <svg id="loginSpinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg id="loginSpinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                 </svg>
             </button>
         </form>
-        <p class="mt-2 text-center">Não tem uma conta? <a href="#" id="showRegister" class="text-blue-500 hover:underline">Cadastre-se</a></p>
+        <p class="mt-2 text-center">Não tem uma conta? <a href="#" id="showRegister"
+                class="text-blue-500 hover:underline">Cadastre-se</a></p>
         <p id="loginError" class="text-red-500 text-sm mt-2 hidden"></p>
     </div>
 
@@ -37,25 +44,31 @@
         <form id="registerForm">
             <div class="mb-2">
                 <label for="registerName" class="block text-sm font-medium text-gray-700">Nome</label>
-                <input type="text" id="registerName" placeholder="Nome" class="w-full p-2 border rounded" aria-label="Nome" required>
+                <input type="text" id="registerName" placeholder="Nome" class="w-full p-2 border rounded"
+                    aria-label="Nome" required>
             </div>
             <div class="mb-2">
                 <label for="registerEmail" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" id="registerEmail" placeholder="Email" class="w-full p-2 border rounded" aria-label="Email" required>
+                <input type="email" id="registerEmail" placeholder="Email" class="w-full p-2 border rounded"
+                    aria-label="Email" required>
             </div>
             <div class="mb-2">
                 <label for="registerPassword" class="block text-sm font-medium text-gray-700">Senha</label>
-                <input type="password" id="registerPassword" placeholder="Senha" class="w-full p-2 border rounded" aria-label="Senha" required>
+                <input type="password" id="registerPassword" placeholder="Senha" class="w-full p-2 border rounded"
+                    aria-label="Senha" required>
             </div>
-            <button type="submit" id="registerButton" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 flex justify-center items-center">
+            <button type="submit" id="registerButton"
+                class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 flex justify-center items-center">
                 <span id="registerButtonText">Cadastrar</span>
-                <svg id="registerSpinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg id="registerSpinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                 </svg>
             </button>
         </form>
-        <p class="mt-2 text-center">Já tem uma conta? <a href="#" id="showLogin" class="text-blue-500 hover:underline">Faça login</a></p>
+        <p class="mt-2 text-center">Já tem uma conta? <a href="#" id="showLogin"
+                class="text-blue-500 hover:underline">Faça login</a></p>
         <p id="registerError" class="text-red-500 text-sm mt-2 hidden"></p>
     </div>
 
@@ -243,8 +256,8 @@
                     if (data.auth) {
                         console.log('Login bem-sucedido, salvando token');
                         localStorage.setItem('token', data.token);
-                        console.log('Redirecionando para /public/telas/Painel.html');
-                        window.location.href = '/public/telas/Painel.html';
+                        console.log('Redirecionando para /app/Painel.html'); // Novo prefixo!
+                        window.location.href = '/app/Painel.html';
                     } else {
                         mostrarErro('loginError', data.message || 'Email ou senha incorretos.');
                     }
@@ -262,4 +275,5 @@
         console.log('Listener de login registrado no formulário loginForm');
     </script>
 </body>
+
 </html>
