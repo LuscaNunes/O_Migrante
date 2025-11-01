@@ -12,8 +12,8 @@ const DB_HOST = process.env.DB_HOST || 'localhost';
 const poolConfig = {
     host: DB_HOST,
     port: DB_PORT,
-    // user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '2024',
+    user: process.env.DB_USER,
+password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME || 'test',
     connectTimeout: 10000,
     charset: 'utf8mb4',
