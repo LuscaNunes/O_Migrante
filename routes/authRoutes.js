@@ -185,30 +185,35 @@ router.put('/usuarios/atualizar', authenticateToken, async (req, res) => {
     }
 });
 
-// authRoutes.js (adicione este bloco temporariamente)
+// authRoutes.js (Rota /teste-tabela)
 
 router.get('/teste-tabela', async (req, res) => {
     console.log('--- Executando teste de nome de tabela ---');
     try {
-        // Tentativa de selecionar da tabela usando o nome que você criou: Usuarios
-        const [rows_upper] = await db.promise().query('SELECT * FROM Usuarios LIMIT 1');
-        console.log('SUCESSO: Tabela encontrada como Usuarios (U maiúsculo)');
-        return res.json({ success: true, tableName: 'Usuarios (U maiúsculo)', data: rows_upper });
-    } catch (error_upper) {
-        console.log(`FALHA com Usuarios (U maiúsculo): ${error_upper.message}`);
+        // Tentativa 1 (Original): Usuarios (U maiúsculo)
+        const [rows_upper_plural] = await db.promise().query('SELECT * FROM Usuarios LIMIT 1');
+        return res.json({ success: true, tableName: 'Usuarios (U maiúsculo)', data: rows_upper_plural });
+    } catch (error_upper_plural) {
         
         try {
-            // Tentativa de selecionar da tabela usando o nome em minúsculo (mais provável)
-            const [rows_lower] = await db.promise().query('SELECT * FROM usuarios LIMIT 1');
-            console.log('SUCESSO: Tabela encontrada como usuarios (minúsculo)');
-            return res.json({ success: true, tableName: 'usuarios (minúsculo)', data: rows_lower });
-        } catch (error_lower) {
-            console.error('FALHA com usuarios (minúsculo). O nome é outro:', error_lower);
-            return res.status(500).json({ 
-                success: false, 
-                message: 'Nenhuma das formas de capitalização Usuários/usuarios funcionou.', 
-                error_original: error_lower.message 
-            });
+            // Tentativa 2: usuarios (minúsculo)
+            const [rows_lower_plural] = await db.promise().query('SELECT * FROM usuarios LIMIT 1');
+            return res.json({ success: true, tableName: 'usuarios (minúsculo)', data: rows_lower_plural });
+        } catch (error_lower_plural) {
+
+            try {
+                // *** Tentativa 3: usuario (singular, minúsculo) ***
+                const [rows_lower_singular] = await db.promise().query('SELECT * FROM usuario LIMIT 1');
+                return res.json({ success: true, tableName: 'usuario (singular, minúsculo)', data: rows_lower_singular });
+            } catch (error_singular) {
+                
+                console.error('FALHA GERAL. O nome da tabela é outro:', error_singular);
+                return res.status(500).json({ 
+                    success: false, 
+                    message: 'Nenhuma das formas de capitalização Usuários/usuarios/usuario funcionou.', 
+                    error_original: error_singular.message 
+                });
+            }
         }
     }
 });
